@@ -1,0 +1,89 @@
+//
+//  File.swift
+//  Tracker
+//
+//  Created by Игорь Полунин on 23.06.2023.
+//
+
+
+import UIKit
+
+final class TrackerTypeSelectionViewController: UIViewController {
+    
+    private let habitButton: UIButton = {
+        let habitButton = UIButton()
+        habitButton.translatesAutoresizingMaskIntoConstraints = false
+      
+        habitButton.setTitle("Привычка", for: .normal)
+        habitButton.setTitleColor(.WhiteDay, for: .normal)
+        
+        habitButton.backgroundColor = .BlackDay
+       
+        habitButton.titleLabel?.font = UIFont(name: "SF-Pro", size: 16)
+        habitButton.layer.cornerRadius = 16
+        habitButton.addTarget(self, action: #selector(habbitButtonTapped), for: .touchUpInside)
+        
+        return habitButton
+    }()
+    
+    private let irregularIventButton: UIButton = {
+        let irregularIventButton = UIButton()
+        irregularIventButton.translatesAutoresizingMaskIntoConstraints = false
+        irregularIventButton.setTitle("Не регулярное событие", for: .normal)
+        irregularIventButton.setTitleColor(.WhiteDay, for: .normal)
+        irregularIventButton.backgroundColor = .BlackDay
+        
+        irregularIventButton.titleLabel?.font = UIFont(name: "SF-Pro", size: 16)
+        irregularIventButton.layer.cornerRadius = 16
+        irregularIventButton.addTarget(self, action: #selector(irregularIventButtonTapped), for: .touchUpInside)
+        return irregularIventButton
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .WhiteDay
+        setupLayoutViews()
+        setupNavigationBar()
+    }
+    private func  setupNavigationBar() {
+        let titleLabel = UILabel()
+        titleLabel.text = "Создание трекера"
+        titleLabel.textColor = .BlackDay
+        titleLabel.font = UIFont(name: "SFProText-Medium", size: 16)
+        titleLabel.textAlignment = .center
+        
+        navigationItem.titleView = titleLabel
+        
+    }
+    private func setupLayoutViews() {
+        view.addSubview(habitButton)
+        view.addSubview(irregularIventButton)
+        
+        NSLayoutConstraint.activate([
+            habitButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            habitButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 395),
+            habitButton.heightAnchor.constraint(equalToConstant: 60),
+            habitButton.widthAnchor.constraint(equalToConstant: 335)
+        ])
+        NSLayoutConstraint.activate([
+            irregularIventButton.leadingAnchor.constraint(equalTo: habitButton.leadingAnchor),
+            irregularIventButton.topAnchor.constraint(equalTo: habitButton.bottomAnchor, constant: 16),
+            irregularIventButton.heightAnchor.constraint(equalToConstant: 60),
+            irregularIventButton.widthAnchor.constraint(equalToConstant: 335)
+        ])
+    }
+    
+    @objc private func habbitButtonTapped() {
+
+        let addTrackerViewController = AddNewTrackerViewController()
+        let navVC = UINavigationController(rootViewController: addTrackerViewController)
+        present(navVC, animated: true)
+        
+    }
+    @objc private func irregularIventButtonTapped() {
+
+        
+        
+    }
+}

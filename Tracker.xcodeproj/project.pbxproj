@@ -7,9 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE231B602A4DFFC200A5D99F /* AddNewTrackerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE231B5F2A4DFFC200A5D99F /* AddNewTrackerTableViewCell.swift */; };
+		CE6C3B572A500E5700EB0985 /* AddScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6C3B562A500E5700EB0985 /* AddScheduleTableViewCell.swift */; };
+		CE6C3B592A503E2800EB0985 /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6C3B582A503E2800EB0985 /* AddCategoryViewController.swift */; };
+		CE7286522A4B306D0011F679 /* SupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7286512A4B306D0011F679 /* SupplementaryView.swift */; };
+		CE7286542A4B704D0011F679 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7286532A4B704D0011F679 /* DataManager.swift */; };
+		CE7784DD2A45D47700E01A81 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7784DC2A45D47700E01A81 /* TrackersViewController.swift */; };
+		CE7784DF2A45D78500E01A81 /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7784DE2A45D78500E01A81 /* StatisticViewController.swift */; };
+		CE7784E52A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7784E42A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift */; };
+		CE78C3DB2A4F172E00D28141 /* AddScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE78C3DA2A4F172E00D28141 /* AddScheduleViewController.swift */; };
+		CE7ABCE12A447F87000606DA /* UIColors+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7ABCE02A447F87000606DA /* UIColors+Extensions.swift */; };
+		CE7ABCE42A4484AE000606DA /* SF-Pro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE7ABCE32A4484AE000606DA /* SF-Pro.ttf */; };
+		CE7ABCE62A4489A4000606DA /* CardTrackerViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7ABCE52A4489A4000606DA /* CardTrackerViewCell.swift */; };
+		CE7B74392A4D67A3000A3676 /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7B74382A4D67A3000A3676 /* PlaceholderView.swift */; };
+		CE7B743B2A4DA5E9000A3676 /* AddNewTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7B743A2A4DA5E9000A3676 /* AddNewTrackerViewController.swift */; };
 		CEA04AB22A437B4A003A8F70 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA04AB12A437B4A003A8F70 /* AppDelegate.swift */; };
 		CEA04AB42A437B4A003A8F70 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA04AB32A437B4A003A8F70 /* SceneDelegate.swift */; };
-		CEA04AB62A437B4A003A8F70 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA04AB52A437B4A003A8F70 /* ViewController.swift */; };
+		CEA04AB62A437B4A003A8F70 /* MainScreenTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA04AB52A437B4A003A8F70 /* MainScreenTrackerViewController.swift */; };
 		CEA04AB92A437B4A003A8F70 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA04AB72A437B4A003A8F70 /* Main.storyboard */; };
 		CEA04ABB2A437B4C003A8F70 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEA04ABA2A437B4C003A8F70 /* Assets.xcassets */; };
 		CEA04ABE2A437B4C003A8F70 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA04ABC2A437B4C003A8F70 /* LaunchScreen.storyboard */; };
@@ -36,10 +50,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CE231B5F2A4DFFC200A5D99F /* AddNewTrackerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTrackerTableViewCell.swift; sourceTree = "<group>"; };
+		CE6C3B562A500E5700EB0985 /* AddScheduleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleTableViewCell.swift; sourceTree = "<group>"; };
+		CE6C3B582A503E2800EB0985 /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
+		CE7286512A4B306D0011F679 /* SupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplementaryView.swift; sourceTree = "<group>"; };
+		CE7286532A4B704D0011F679 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		CE7784DC2A45D47700E01A81 /* TrackersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewController.swift; sourceTree = "<group>"; };
+		CE7784DE2A45D78500E01A81 /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
+		CE7784E42A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTypeSelectionViewController.swift; sourceTree = "<group>"; };
+		CE78C3DA2A4F172E00D28141 /* AddScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleViewController.swift; sourceTree = "<group>"; };
+		CE7ABCE02A447F87000606DA /* UIColors+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColors+Extensions.swift"; sourceTree = "<group>"; };
+		CE7ABCE32A4484AE000606DA /* SF-Pro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro.ttf"; sourceTree = "<group>"; };
+		CE7ABCE52A4489A4000606DA /* CardTrackerViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTrackerViewCell.swift; sourceTree = "<group>"; };
+		CE7B74382A4D67A3000A3676 /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
+		CE7B743A2A4DA5E9000A3676 /* AddNewTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTrackerViewController.swift; sourceTree = "<group>"; };
 		CEA04AAE2A437B4A003A8F70 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEA04AB12A437B4A003A8F70 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CEA04AB32A437B4A003A8F70 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		CEA04AB52A437B4A003A8F70 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CEA04AB52A437B4A003A8F70 /* MainScreenTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenTrackerViewController.swift; sourceTree = "<group>"; };
 		CEA04AB82A437B4A003A8F70 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CEA04ABA2A437B4C003A8F70 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CEA04ABD2A437B4C003A8F70 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -76,6 +104,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CE7ABCE22A448487000606DA /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				CE7ABCE32A4484AE000606DA /* SF-Pro.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		CEA04AA52A437B4A003A8F70 = {
 			isa = PBXGroup;
 			children = (
@@ -101,11 +137,25 @@
 			children = (
 				CEA04AB12A437B4A003A8F70 /* AppDelegate.swift */,
 				CEA04AB32A437B4A003A8F70 /* SceneDelegate.swift */,
-				CEA04AB52A437B4A003A8F70 /* ViewController.swift */,
+				CE7B74382A4D67A3000A3676 /* PlaceholderView.swift */,
+				CEA04AB52A437B4A003A8F70 /* MainScreenTrackerViewController.swift */,
+				CE7ABCE52A4489A4000606DA /* CardTrackerViewCell.swift */,
+				CE7B743A2A4DA5E9000A3676 /* AddNewTrackerViewController.swift */,
+				CE6C3B582A503E2800EB0985 /* AddCategoryViewController.swift */,
+				CE78C3DA2A4F172E00D28141 /* AddScheduleViewController.swift */,
+				CE6C3B562A500E5700EB0985 /* AddScheduleTableViewCell.swift */,
+				CE231B5F2A4DFFC200A5D99F /* AddNewTrackerTableViewCell.swift */,
+				CE7784E42A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift */,
+				CE7286512A4B306D0011F679 /* SupplementaryView.swift */,
 				CEA04AB72A437B4A003A8F70 /* Main.storyboard */,
 				CEA04ABA2A437B4C003A8F70 /* Assets.xcassets */,
 				CEA04ABC2A437B4C003A8F70 /* LaunchScreen.storyboard */,
 				CEA04ABF2A437B4C003A8F70 /* Info.plist */,
+				CE7ABCE22A448487000606DA /* Fonts */,
+				CE7ABCE02A447F87000606DA /* UIColors+Extensions.swift */,
+				CE7784DC2A45D47700E01A81 /* TrackersViewController.swift */,
+				CE7784DE2A45D78500E01A81 /* StatisticViewController.swift */,
+				CE7286532A4B704D0011F679 /* DataManager.swift */,
 			);
 			path = Tracker;
 			sourceTree = "<group>";
@@ -232,6 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEA04ABE2A437B4C003A8F70 /* LaunchScreen.storyboard in Resources */,
+				CE7ABCE42A4484AE000606DA /* SF-Pro.ttf in Resources */,
 				CEA04ABB2A437B4C003A8F70 /* Assets.xcassets in Resources */,
 				CEA04AB92A437B4A003A8F70 /* Main.storyboard in Resources */,
 			);
@@ -258,9 +309,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEA04AB62A437B4A003A8F70 /* ViewController.swift in Sources */,
+				CE6C3B592A503E2800EB0985 /* AddCategoryViewController.swift in Sources */,
+				CEA04AB62A437B4A003A8F70 /* MainScreenTrackerViewController.swift in Sources */,
+				CE7286542A4B704D0011F679 /* DataManager.swift in Sources */,
+				CE7784DF2A45D78500E01A81 /* StatisticViewController.swift in Sources */,
+				CE78C3DB2A4F172E00D28141 /* AddScheduleViewController.swift in Sources */,
 				CEA04AB22A437B4A003A8F70 /* AppDelegate.swift in Sources */,
+				CE7286522A4B306D0011F679 /* SupplementaryView.swift in Sources */,
+				CE231B602A4DFFC200A5D99F /* AddNewTrackerTableViewCell.swift in Sources */,
+				CE7784DD2A45D47700E01A81 /* TrackersViewController.swift in Sources */,
+				CE7ABCE62A4489A4000606DA /* CardTrackerViewCell.swift in Sources */,
+				CE7784E52A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift in Sources */,
 				CEA04AB42A437B4A003A8F70 /* SceneDelegate.swift in Sources */,
+				CE7B743B2A4DA5E9000A3676 /* AddNewTrackerViewController.swift in Sources */,
+				CE7B74392A4D67A3000A3676 /* PlaceholderView.swift in Sources */,
+				CE7ABCE12A447F87000606DA /* UIColors+Extensions.swift in Sources */,
+				CE6C3B572A500E5700EB0985 /* AddScheduleTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,7 +430,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -420,7 +484,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -443,8 +507,9 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -452,9 +517,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.Tracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -471,8 +539,9 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -480,9 +549,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.yandex.practicum.Tracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
