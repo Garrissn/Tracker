@@ -13,7 +13,7 @@ class MainScreenTrackerViewController: UIViewController {
 
     private let collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView.register(CardTrackerViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(CardTrackerViewCell.self, forCellWithReuseIdentifier: CardTrackerViewCell.cardTrackerViewCellIdentifier)
         return collectionView
     }()
  
@@ -174,7 +174,7 @@ class MainScreenTrackerViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
-        collectionView.register(SupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.register(HeaderCollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCollectionView.headerIdentifier)
     }
 
     private func addViews() {
@@ -316,7 +316,7 @@ extension MainScreenTrackerViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? SupplementaryView else { return UICollectionReusableView()}
+        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionView.headerIdentifier, for: indexPath) as? HeaderCollectionView else { return UICollectionReusableView()}
         
         let titleCategory = visibleCatergories[indexPath.section].title
         view.configureHeader(title: titleCategory)
@@ -413,7 +413,7 @@ struct TrackerRecord {
     let date: Date
 }
 
-enum WeekDay {
+enum WeekDay: String, CaseIterable {
     case monday,tuesday,wednesday,thursday,friday,saturday,sunday
     var numberValue: Int {
             switch self {

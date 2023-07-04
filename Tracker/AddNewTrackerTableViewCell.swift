@@ -62,7 +62,7 @@ final class AddNewTrackerTableViewCell: UITableViewCell {
             categoryLabel.widthAnchor.constraint(equalToConstant: 271),
             
             iconImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -11),
-            iconImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 11),
+            iconImageView.centerYAnchor.constraint(equalTo: categoryLabel.centerYAnchor),
             iconImageView.heightAnchor.constraint(equalToConstant: 24),
             iconImageView.widthAnchor.constraint(equalToConstant: 24)
             

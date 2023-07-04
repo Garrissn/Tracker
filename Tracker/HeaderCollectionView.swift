@@ -7,17 +7,28 @@
 
 import UIKit
 
-final class SupplementaryView: UICollectionReusableView {
-    let titleLabel = UILabel()
+final class HeaderCollectionView: UICollectionReusableView {
+    
+    static let headerIdentifier = "HeaderIdentifier"
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.ypBold19()
+        label.textColor = .BlackDay
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+   
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
         
         NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
             titleLabel.topAnchor.constraint(equalTo: topAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         
@@ -26,6 +37,7 @@ final class SupplementaryView: UICollectionReusableView {
     
     func configureHeader(title: String) {
         titleLabel.text = title
+        
     }
     
     required init?(coder: NSCoder) {
