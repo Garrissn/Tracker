@@ -7,6 +7,9 @@
 
 
 import UIKit
+protocol TrackerTypeSelectionViewControllerDelegate: AnyObject {
+    func didselectNewTracker(newTracker: TrackerCategory)
+}
 
 final class TrackerTypeSelectionViewController: UIViewController {
     
@@ -36,6 +39,8 @@ final class TrackerTypeSelectionViewController: UIViewController {
         irregularIventButton.addTarget(self, action: #selector(irregularIventButtonTapped), for: .touchUpInside)
         return irregularIventButton
     }()
+    
+    weak var delegate: TrackerTypeSelectionViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,14 +80,33 @@ final class TrackerTypeSelectionViewController: UIViewController {
     
     @objc private func habbitButtonTapped() {
 
-        let addTrackerViewController = AddNewTrackerViewController()
-//        let navVC = UINavigationController(rootViewController: addTrackerViewController)
-        present(addTrackerViewController, animated: true)
+        let addNewTrackerViewController = AddNewTrackerViewController()
+        addNewTrackerViewController.trackerType = .habitTracker
+        addNewTrackerViewController.delegate = self
+        
+        present(addNewTrackerViewController, animated: true)
         
     }
     @objc private func irregularIventButtonTapped() {
 
+        let addNewTrackerViewController = AddNewTrackerViewController()
+        addNewTrackerViewController.trackerType = .irregularIvent
+        addNewTrackerViewController.delegate = self
         
+        present(addNewTrackerViewController, animated: true)
         
     }
+}
+
+extension TrackerTypeSelectionViewController: AddNewTrackerViewControllerDelegate {
+    func didSelectNewTracker(newTracker: TrackerCategory) {
+        self.delegate?.didselectNewTracker(newTracker: newTracker)
+        let mainScreenViewController = MainScreenTrackerViewController()
+        //let navVC = UINavigationController(rootViewController: mainScreenViewController)
+       // present(navVC, animated: true)
+        dismiss(animated: true)
+        
+    }
+    
+    
 }

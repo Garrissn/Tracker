@@ -17,10 +17,10 @@
 		CE7784DF2A45D78500E01A81 /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7784DE2A45D78500E01A81 /* StatisticViewController.swift */; };
 		CE7784E52A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7784E42A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift */; };
 		CE78C3DB2A4F172E00D28141 /* AddScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE78C3DA2A4F172E00D28141 /* AddScheduleViewController.swift */; };
+		CE7A56DB2A55A8F600F494EF /* TrackerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7A56DA2A55A8F600F494EF /* TrackerType.swift */; };
 		CE7ABCE12A447F87000606DA /* UIColors+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7ABCE02A447F87000606DA /* UIColors+Extensions.swift */; };
 		CE7ABCE42A4484AE000606DA /* SF-Pro.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CE7ABCE32A4484AE000606DA /* SF-Pro.ttf */; };
 		CE7ABCE62A4489A4000606DA /* CardTrackerViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7ABCE52A4489A4000606DA /* CardTrackerViewCell.swift */; };
-		CE7B74392A4D67A3000A3676 /* PlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7B74382A4D67A3000A3676 /* PlaceholderView.swift */; };
 		CE7B743B2A4DA5E9000A3676 /* AddNewTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7B743A2A4DA5E9000A3676 /* AddNewTrackerViewController.swift */; };
 		CEA04AB22A437B4A003A8F70 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA04AB12A437B4A003A8F70 /* AppDelegate.swift */; };
 		CEA04AB42A437B4A003A8F70 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA04AB32A437B4A003A8F70 /* SceneDelegate.swift */; };
@@ -61,10 +61,10 @@
 		CE7784DE2A45D78500E01A81 /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
 		CE7784E42A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTypeSelectionViewController.swift; sourceTree = "<group>"; };
 		CE78C3DA2A4F172E00D28141 /* AddScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleViewController.swift; sourceTree = "<group>"; };
+		CE7A56DA2A55A8F600F494EF /* TrackerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerType.swift; sourceTree = "<group>"; };
 		CE7ABCE02A447F87000606DA /* UIColors+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColors+Extensions.swift"; sourceTree = "<group>"; };
 		CE7ABCE32A4484AE000606DA /* SF-Pro.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro.ttf"; sourceTree = "<group>"; };
 		CE7ABCE52A4489A4000606DA /* CardTrackerViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTrackerViewCell.swift; sourceTree = "<group>"; };
-		CE7B74382A4D67A3000A3676 /* PlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderView.swift; sourceTree = "<group>"; };
 		CE7B743A2A4DA5E9000A3676 /* AddNewTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTrackerViewController.swift; sourceTree = "<group>"; };
 		CEA04AAE2A437B4A003A8F70 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEA04AB12A437B4A003A8F70 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -124,6 +124,7 @@
 		CE71C06A2A534450009836E7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				CE7A56DA2A55A8F600F494EF /* TrackerType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -172,7 +173,6 @@
 				CE71C0692A534410009836E7 /* Cell */,
 				CEA04AB12A437B4A003A8F70 /* AppDelegate.swift */,
 				CEA04AB32A437B4A003A8F70 /* SceneDelegate.swift */,
-				CE7B74382A4D67A3000A3676 /* PlaceholderView.swift */,
 				CE7ABCE52A4489A4000606DA /* CardTrackerViewCell.swift */,
 				CEA04AB52A437B4A003A8F70 /* MainScreenTrackerViewController.swift */,
 				CE7784E42A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift */,
@@ -349,6 +349,7 @@
 				CE7286542A4B704D0011F679 /* DataManager.swift in Sources */,
 				CE7784DF2A45D78500E01A81 /* StatisticViewController.swift in Sources */,
 				CE78C3DB2A4F172E00D28141 /* AddScheduleViewController.swift in Sources */,
+				CE7A56DB2A55A8F600F494EF /* TrackerType.swift in Sources */,
 				CEA04AB22A437B4A003A8F70 /* AppDelegate.swift in Sources */,
 				CE7286522A4B306D0011F679 /* HeaderCollectionView.swift in Sources */,
 				CE231B602A4DFFC200A5D99F /* AddNewTrackerTableViewCell.swift in Sources */,
@@ -358,7 +359,6 @@
 				CEA04AB42A437B4A003A8F70 /* SceneDelegate.swift in Sources */,
 				CE71C0682A5343B9009836E7 /* UIFonts+Extensions.swift in Sources */,
 				CE7B743B2A4DA5E9000A3676 /* AddNewTrackerViewController.swift in Sources */,
-				CE7B74392A4D67A3000A3676 /* PlaceholderView.swift in Sources */,
 				CE7ABCE12A447F87000606DA /* UIColors+Extensions.swift in Sources */,
 				CE6C3B572A500E5700EB0985 /* AddScheduleTableViewCell.swift in Sources */,
 			);

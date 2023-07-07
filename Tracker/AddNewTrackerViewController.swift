@@ -7,12 +7,25 @@
 
 import UIKit
 
+protocol AddNewTrackerViewControllerDelegate: AnyObject {
+    func didSelectNewTracker(newTracker: TrackerCategory)
+}
 
 final class AddNewTrackerViewController: UIViewController {
     
-    private var titleLabel: UILabel = {
+    var trackerType: TrackerType?
+    
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Новая привычка"
+        
+        switch trackerType {
+        case .none:
+            break
+        case .habitTracker: label.text = "Новая привычка"
+        case .irregularIvent: label.text = "Новое нерегулярное событие"
+            
+        }
+        
         label.textColor = .BlackDay
         label.font = UIFont.ypMedium16()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -30,11 +43,14 @@ final class AddNewTrackerViewController: UIViewController {
        let attributedPlaceHolder = NSAttributedString(string: "Введите название трекера", attributes: attributes)
        textField.attributedPlaceholder = attributedPlaceHolder
        textField.heightAnchor.constraint(equalToConstant: 75).isActive = true
-       textField.textColor = .Gray
+       let leftInsertView = UIView(frame: CGRect(x: 0, y: 0, width: 17, height: 30))
+       textField.leftView = leftInsertView
+       textField.leftViewMode = .always
+       textField.textColor = .BlackDay
        textField.font = UIFont.ypRegular17()
        textField.layer.cornerRadius = 16
        textField.clipsToBounds = true
-       //textField.delegate = self
+       textField.delegate = self
         return textField
     }()
     
@@ -52,7 +68,7 @@ final class AddNewTrackerViewController: UIViewController {
        
         return tableView
     }()
-    private let collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         
        // collectionView.register(<#T##nib: UINib?##UINib?#>, forCellWithReuseIdentifier: <#T##String#>)
@@ -90,31 +106,28 @@ final class AddNewTrackerViewController: UIViewController {
          return button
      }()
     
-    private let labelArray: [String] = ["Категория", "Расписание"]
-    private var currentCatergory: String = "Новая категория"
+    
+    private var currentCatergory: String? = "Новая категория"
+    private var schedule: [WeekDay] = []
+    private var newTrackerText: String = ""
+    private var heightTableView: CGFloat = 74
+            
+    weak var delegate: AddNewTrackerViewControllerDelegate?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       // setupNavigationBar()
+      
         setupViews()
         setupConstraints()
         view.backgroundColor = .WhiteDay
-      //  tableView.register(AddNewTrackerTableViewCell.self, forCellReuseIdentifier: AddNewTrackerTableViewCell.reuseIdentifier)
+    
         tableView.dataSource = self
         tableView.delegate = self
         
     }
     
-//    private func setupNavigationBar() {
-//        let titleLabel = UILabel()
-//        titleLabel.text = "Новая привычка"
-//        titleLabel.textColor = .BlackDay
-//        titleLabel.font = UIFont.ypMedium16()
-//        titleLabel.textAlignment = .center
-//
-//        navigationItem.titleView = titleLabel
-        
-    //}
+
     private func setupViews() {
         view.addSubview(titleLabel)
         view.addSubview(habitNameTextField)
@@ -124,6 +137,12 @@ final class AddNewTrackerViewController: UIViewController {
         view.addSubview(createButton)
     }
     private func setupConstraints() {
+        switch trackerType {
+        case .habitTracker: heightTableView = 174
+        case .irregularIvent: heightTableView = 75
+        case.none: break
+        }
+        
         NSLayoutConstraint.activate([
             
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -132,11 +151,12 @@ final class AddNewTrackerViewController: UIViewController {
             habitNameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
             habitNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             habitNameTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            habitNameTextField.heightAnchor.constraint(equalToConstant: 75),
             
             tableView.topAnchor.constraint(equalTo: habitNameTextField.bottomAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            tableView.heightAnchor.constraint(equalToConstant: 150),
+            tableView.heightAnchor.constraint(equalToConstant: heightTableView),
             
 //            collectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 50),
 //            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -147,11 +167,13 @@ final class AddNewTrackerViewController: UIViewController {
             cancellButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             cancellButton.heightAnchor.constraint(equalToConstant: 60),
             cancellButton.widthAnchor.constraint(equalToConstant: 166),
+            cancellButton.trailingAnchor.constraint(equalTo: createButton.leadingAnchor, constant: -8),
             
             createButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            createButton.centerXAnchor.constraint(equalTo: cancellButton.centerXAnchor),
             createButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             createButton.heightAnchor.constraint(equalToConstant: 60),
-            createButton.widthAnchor.constraint(equalToConstant: 161),
+           
             
             
         ])
@@ -159,44 +181,91 @@ final class AddNewTrackerViewController: UIViewController {
     }
     @objc private func createButtonTapped() {
         //обновили таблицу вернулись в мейн
+        
+        let trackerTitleName = habitNameTextField.text ?? ""
+        self.delegate?.didSelectNewTracker(newTracker: TrackerCategory(title: "Новая Категория", trackers: [Tracker.init(id: UUID(),
+                                                                                                                        title: trackerTitleName,
+                                                                                                                        color: .ColorSelection1,
+                                                                                                                        emoji: "😻",
+                                                                                                                        schedule: schedule)]))
+        
+        dismiss(animated: true)
+        
     }
     @objc private func cancelButtonTapped() {
        dismiss(animated: true)
     }
-}
+    
+    private func createButtonIsEnabled() {
+        if habitNameTextField.text?.isEmpty == false && (currentCatergory?.isEmpty != nil ) {
+            createButton.backgroundColor = .BlackDay
+            createButton.setTitleColor(.WhiteDay, for: .normal)
+            createButton.isEnabled = true
+        }
+            
+        }
+        
+    }
+
 extension AddNewTrackerViewController : AddscheduleViewControllerDelegate {
-    func didSelectCategoryValue(_ vulue: String) {
-        // сохранить категорию в дескрипш лейбл таблицы
+    func didSelectScheduleValue(_ value: [WeekDay]) {
+        self.schedule = value
+        
+        tableView.reloadData()
+        createButtonIsEnabled()
     }
-    
-    func didSelectScheduleValue(_ value: String) {
-        //сохранить день недели в таблицу
-    }
-    
-    
-    
     
 }
 extension AddNewTrackerViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let currentText = textField.text else { return true }
-        let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
-        return updatedText.count <= 38
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        newTrackerText = textField.text ?? ""
+        textField.resignFirstResponder()
+        return true
     }
     
-   
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        if textField.text?.isEmpty == true {
+            createButton.backgroundColor = .Gray
+            createButton.isEnabled = false
+        }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+     //   guard let currentText = textField.text else { return true }
+        
+        
+        if range.location == 0 &&  string == " " { return false }
+        
+        switch trackerType {
+        case .habitTracker:
+            if schedule.isEmpty == false {
+                createButtonIsEnabled()
+                return true
+            }
+        case .irregularIvent:
+            
+            createButtonIsEnabled()
+            
+            return true
+        case .none:
+            return true
+        }
+        return true
+        
+    }
 }
-
 
 extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        switch trackerType {
+        case .habitTracker: return 2
+        case .irregularIvent: return 1
+        case .none: return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       
-//        let cell = tableView.dequeueReusableCell(withIdentifier: AddNewTrackerTableViewCell.reuseIdentifier, for: indexPath)
-//        guard let addNewTrackerTableViewCell = cell as? AddNewTrackerTableViewCell else { return UITableViewCell()}
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
@@ -209,14 +278,16 @@ extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource
             cell.textLabel?.text = "Категория"
             cell.detailTextLabel?.text = currentCatergory
         case 1:
+            
             cell.textLabel?.text = "Расписание"
+            let scheduleShortValueText = schedule.map { $0.shortValue }.joined(separator: ",")
+            cell.detailTextLabel?.text = scheduleShortValueText
+            
         default: break
             
         }
-        
         return cell
     }
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)

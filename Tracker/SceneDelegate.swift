@@ -30,10 +30,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         //настройка вкладок
         mainScreenViewController.tabBarItem = UITabBarItem(title: "Трекеры", image: UIImage(named:"record.circle.fill"), tag: 0)
 
-      statisticViewController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(named: "hare.fill"), tag: 1)
-        let tabBar = tabBarController.tabBar
-            // Установите желаемый цвет фона
-        //tabBar.backgroundColor = .BackGroundDay
+        statisticViewController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(named: "hare.fill"), tag: 1)
+       
+//        let tabBar = tabBarController.tabBar
+      
         
         window.rootViewController = tabBarController
         self.window = window

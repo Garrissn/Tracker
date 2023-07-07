@@ -9,8 +9,8 @@
 import UIKit
 
 protocol AddscheduleViewControllerDelegate: AnyObject {
-    func didSelectScheduleValue( _ value: String)
-    func didSelectCategoryValue(_ vulue: String)
+    func didSelectScheduleValue( _ value: [WeekDay])
+   
 }
 
 final class AddScheduleViewController: UIViewController {
@@ -24,7 +24,7 @@ final class AddScheduleViewController: UIViewController {
         return label
     }()
     
-    private let tableView: UITableView = {
+    private lazy var tableView: UITableView = {
          let tableView = UITableView()
          tableView.translatesAutoresizingMaskIntoConstraints = false
          tableView.register(UITableViewCell.self, forCellReuseIdentifier: "shceduleCell")
@@ -38,15 +38,15 @@ final class AddScheduleViewController: UIViewController {
         
          return tableView
     }()
-    private let doneButton: UIButton = {
-         let button = UIButton()
+    private lazy var doneButton: UIButton = {
+        let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Готово", for: .normal)
         button.titleLabel?.font = UIFont(name: "SP-Pro", size: 16)
         button.tintColor = .WhiteDay
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
-        button.backgroundColor = .BlackDay
+        button.backgroundColor = .Gray
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         button.isEnabled = false
         return button
@@ -61,26 +61,17 @@ final class AddScheduleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       // setupNavigationBar()
+       
         setupViews()
         setupConstraints()
         view.backgroundColor = .WhiteDay
-//        tableView.register(AddScheduleTableViewCell.self, forCellReuseIdentifier: AddScheduleTableViewCell.reuseIdentifier)
+
         tableView.delegate = self
         tableView.dataSource = self
         
     }
     
-//    private func setupNavigationBar() {
-//        let titleLabel = UILabel()
-//        titleLabel.text = "Расписание"
-//        titleLabel.textColor = .BlackDay
-//        titleLabel.font = UIFont(name: "SFProText-Medium", size: 16)
-//        titleLabel.textAlignment = .center
-//
-//        navigationItem.titleView = titleLabel
-//
-//    }
+
     private func setupViews() {
         view.addSubview(titleLabel)
         view.addSubview(tableView)
@@ -107,11 +98,36 @@ final class AddScheduleViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
+        self.delegate?.didSelectScheduleValue(self.selectedDays)
+        dismiss(animated: true)
+    }
+    
+    @objc private func switchValueChanged(_ sender: UISwitch) {
+        
+        if sender.isOn {
+            selectedDays.append(allDay[sender.tag])
+            print(allDay[sender.tag])
+        } else {
+            if let index = selectedDays.firstIndex(of: allDay[sender.tag]) {
+                selectedDays.remove(at: index)
+            }
+            
+        }
+        doneButtonEnabled(!selectedDays.isEmpty)
         
         
-        let addNewTrackerViewController  = AddNewTrackerViewController()
-        let navVC = UINavigationController(rootViewController: addNewTrackerViewController)
-        present(navVC, animated: true)
+    }
+    private func doneButtonEnabled(_ isOn: Bool) {
+        
+        print("aas \(isOn)")
+        if isOn {
+            doneButton.isEnabled = isOn
+            doneButton.backgroundColor = .BlackDay
+            doneButton.setTitleColor(.WhiteDay, for: .normal)
+        } else {
+            doneButton.backgroundColor = .Gray
+            doneButton.setTitleColor(.WhiteDay, for: .normal)
+        }
     }
     
 }
@@ -126,13 +142,14 @@ extension AddScheduleViewController: UITableViewDataSource {
         let daySwitcher = UISwitch()
         daySwitcher.onTintColor = .Blue
         daySwitcher.tag = indexPath.row
-        daySwitcher.addTarget(self, action: #selector(doneButtonTapped), for: .valueChanged)
+        daySwitcher.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
         
         let cell = UITableViewCell(style: .default, reuseIdentifier: "shceduleCell")
         cell.selectionStyle = .none
         cell.backgroundColor = .BackGroundDay
         cell.textLabel?.font = .ypRegular17()
         cell.textLabel?.text = allDay[indexPath.row].stringValue
+        
         cell.accessoryView = daySwitcher
         
         
@@ -142,22 +159,8 @@ extension AddScheduleViewController: UITableViewDataSource {
     
 }
 extension AddScheduleViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-       
-        
-    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
-}
-extension AddScheduleViewController: AddScheduleTableViewCellDelegate {
-    func switchWeekDay(sender: UISwitch) {
-        
-    }
-    
-    
-    
-    
 }

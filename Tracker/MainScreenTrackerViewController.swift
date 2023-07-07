@@ -11,46 +11,31 @@ class MainScreenTrackerViewController: UIViewController {
     
     
 
-    private let collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.register(CardTrackerViewCell.self, forCellWithReuseIdentifier: CardTrackerViewCell.cardTrackerViewCellIdentifier)
         return collectionView
     }()
- 
-    
-//    private let headerView: UIView = {
-//        let headerView = UIView()
-//        headerView.translatesAutoresizingMaskIntoConstraints = false
-//        return headerView
-//    }()
-    
-//    private lazy var plusButton: UIButton = {
-//        let plusButton = UIButton()
-//        plusButton.setImage(UIImage(named: "PlusButton"), for: .normal)
-//        plusButton.translatesAutoresizingMaskIntoConstraints = false
-//        plusButton.addTarget(self, action: #selector(addTask), for: .touchUpInside)
-//        return plusButton
-//    }()
-    
-//    private let errorImage: UIImageView = {
-//        let image = UIImage(named: "error")
-//        let errorImage = UIImageView(image: image)
-//        errorImage.translatesAutoresizingMaskIntoConstraints = false
-//        return errorImage
-//    }()
-    
-    private let placeholderView = PlaceholderView()
-    
 
     
-//    private let titleHeader: UILabel = {
-//        let label = UILabel ()
-//        label.text = "Трекеры"
-//        label.textColor = .BlackDay
-//        label.font = UIFont(name: "SP-Pro", size: 34)
-//        label.translatesAutoresizingMaskIntoConstraints = false
-//        return label
-//    }()
+    private lazy var errorImage: UIImageView = {
+        let imageView = UIImageView()
+        let image = UIImage(named: "error")
+        imageView.image = image
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private lazy var titleHeader: UILabel = {
+        let label = UILabel ()
+        label.text = "Что будем отслеживать"
+        label.textColor = .BlackDay
+        label.font = UIFont.ypMedium12()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+   
     
 //    private lazy var dateLabel: UILabel = {
 //        let dateLabel = UILabel ()
@@ -65,31 +50,18 @@ class MainScreenTrackerViewController: UIViewController {
 //        return dateLabel
 //    }()
     
-    private let datePicker: UIDatePicker = {
+    private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.preferredDatePickerStyle = .compact
         datePicker.datePickerMode = .date
         datePicker.locale = Locale(identifier: "ru_Ru")
         datePicker.calendar.firstWeekday = 2
-        datePicker.clipsToBounds = true
         datePicker.layer.cornerRadius = 8
         datePicker.tintColor = .Blue
         datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
         return datePicker
     }()
-    
-    
-    
-//    private let searchStackview: UIStackView = {
-//        let stack = UIStackView()
-//        stack.axis = .horizontal
-//        stack.distribution = .fill
-//        stack.spacing = 14
-//        stack.translatesAutoresizingMaskIntoConstraints = false
-//        return stack
-//    }()
-    
     
     
     private lazy var searchTextField: UISearchTextField = {
@@ -130,9 +102,9 @@ class MainScreenTrackerViewController: UIViewController {
     }()
     private let params = GeometricParams(
         cellCount: 2,
-        leftInset: 16,
+        leftInset: 9,
         rightInset: 16,
-        cellSpacing: 9)
+        cellSpacing: 16)
     
     private var categories: [TrackerCategory] = [] //список категорий и вложенных в них трекеров
     private var completedTrackers: [TrackerRecord] = [] // трекуры выполненные в выбранную дату
@@ -171,6 +143,7 @@ class MainScreenTrackerViewController: UIViewController {
     }
     private func setupCollectionView() {
         collectionView.translatesAutoresizingMaskIntoConstraints =  false
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
@@ -180,7 +153,8 @@ class MainScreenTrackerViewController: UIViewController {
     private func addViews() {
        
         view.addSubview(searchTextField)
-        view.addSubview(placeholderView)
+        view.addSubview(errorImage)
+        view.addSubview(titleHeader)
         view.addSubview(collectionView)
         view.addSubview(filterButton)
 
@@ -195,8 +169,14 @@ class MainScreenTrackerViewController: UIViewController {
         searchTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
         searchTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
         
-        placeholderView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        placeholderView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor,constant: 220),
+        errorImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        errorImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        errorImage.heightAnchor.constraint(equalToConstant: 80),
+        errorImage.widthAnchor.constraint(equalToConstant: 80),
+        
+        titleHeader.topAnchor.constraint(equalTo: errorImage.bottomAnchor, constant: 8),
+        titleHeader.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        titleHeader.heightAnchor.constraint(equalToConstant: 18),
         
 
         
@@ -213,28 +193,27 @@ class MainScreenTrackerViewController: UIViewController {
         ])
     }
     
-    private func formattedDate(from date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yy"
-        return dateFormatter.string(from: date)
-    }
-    
-    private func updateLabelTitle( with date: Date) {
-        let dateString = formattedDate(from: date)
-       // dateLabel.text = dateString
-    }
+//    private func updateLabelTitle( with date: Date) {
+//        let dateString = formattedDate(from: date)
+//       // dateLabel.text = dateString
+//    }
     
     @objc private func addTask() {
 
         let trackerTypeSelectionViewController = TrackerTypeSelectionViewController()
-        //trackerTypeSelectionViewController.updateDelegate = self
+        trackerTypeSelectionViewController.delegate = self
         let navVC = UINavigationController(rootViewController: trackerTypeSelectionViewController)
         present(navVC, animated: true)
     }
     
     @objc private func dateChanged() {
-        updateLabelTitle(with: datePicker.date)
+     //   updateLabelTitle(with: datePicker.date)
+        currentDate = datePicker.date
+        self.dismiss(animated: false)
         reloadVisibleCategories(text: searchTextField.text, date: datePicker.date)
+        print( " date \(datePicker.date)")
+        
+        
     }
     
     @objc private func  selectFilterTapped() {
@@ -264,7 +243,8 @@ class MainScreenTrackerViewController: UIViewController {
     private func reloadVisibleCategories(text: String?, date: Date) {
         let calendar = Calendar.current
         let filterWeekday = calendar.component(.weekday, from: datePicker.date)
-        let filterText = (text ?? " ").lowercased()
+        print("filterweekDate \(filterWeekday)")
+        let filterText = (text ?? "").lowercased()
         
         visibleCatergories = categories.compactMap { category in
             
@@ -289,7 +269,8 @@ class MainScreenTrackerViewController: UIViewController {
         reloadPlaceHolder()
     }
     private func reloadPlaceHolder() {
-        placeholderView.isHidden = !categories.isEmpty
+        errorImage.isHidden = !categories.isEmpty
+        titleHeader.isHidden = !categories.isEmpty
     }
 
 }
@@ -302,6 +283,8 @@ extension MainScreenTrackerViewController: UITextFieldDelegate {
         return true
     }
 }
+
+// MARK: - UICollectionViewDataSource
 
 extension MainScreenTrackerViewController: UICollectionViewDataSource {
     
@@ -326,15 +309,15 @@ extension MainScreenTrackerViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? CardTrackerViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardTrackerViewCell.cardTrackerViewCellIdentifier, for: indexPath) as? CardTrackerViewCell else { return UICollectionViewCell() }
         let cellData = visibleCatergories
         let tracker = cellData[indexPath.section].trackers[indexPath.row]
        
         cell.delegate = self
+        
         let isCompletedToday = isTrackerCompletedToday(id: tracker.id)
-        let completedDays = completedTrackers.filter {
-            $0.trackerId == tracker.id
-        }.count
+        let completedDays = completedTrackers.filter { $0.trackerId == tracker.id }.count
+        
         cell.configure(with: tracker, isCompletedToday: isCompletedToday, completedDays: completedDays, indexPath: indexPath)
 
         return cell
@@ -352,20 +335,7 @@ extension MainScreenTrackerViewController: UICollectionViewDataSource {
     }
 }
 
-extension MainScreenTrackerViewController: CardTrackerViewCellDelegate {
-    func completedTracker(id: UUID,at indexPath: IndexPath) {
-        let trackerRecord = TrackerRecord(trackerId: id, date: datePicker.date)
-        completedTrackers.append(trackerRecord)
-        collectionView.reloadItems(at: [indexPath])
-    }
-    
-    func uncompletedTracker(id: UUID,at indexPath: IndexPath) {
-        completedTrackers.removeAll { trackerRecord in
-            isSameTrackerRecord(trackerRecord: trackerRecord, id: id)
-        }
-        collectionView.reloadItems(at: [indexPath])
-    }
-}
+// MARK: - UICollectionViewDelegateFlowLayout
 
 extension MainScreenTrackerViewController: UICollectionViewDelegateFlowLayout {
     
@@ -382,18 +352,82 @@ extension MainScreenTrackerViewController: UICollectionViewDelegateFlowLayout {
         params.cellSpacing
     }
     
-    
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let availableWidth = collectionView.frame.width - params.paddingWidth
         let cellWidth = availableWidth / CGFloat(params.cellCount)
         
-        return CGSize(width: cellWidth, height: 132)
+        return CGSize(width: cellWidth, height: 148)
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        UIEdgeInsets(top: 12, left: params.rightInset, bottom: params.rightInset, right: params.rightInset)
     }
     
 }
 
+// MARK: - CardTrackerViewCellDelegate
 
+extension MainScreenTrackerViewController: CardTrackerViewCellDelegate {
+    func completedTracker(id: UUID,at indexPath: IndexPath) {
+        let trackerRecord = TrackerRecord(trackerId: id, date: datePicker.date)
+        completedTrackers.append(trackerRecord)
+        collectionView.reloadItems(at: [indexPath])
+    }
+    
+    func uncompletedTracker(id: UUID,at indexPath: IndexPath) {
+        completedTrackers.removeAll { trackerRecord in
+            isSameTrackerRecord(trackerRecord: trackerRecord, id: id)
+        }
+        collectionView.reloadItems(at: [indexPath])
+    }
+}
+
+// MARK: - TrackerTypeSelectionViewControllerDelegate
+
+extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDelegate {
+    func didselectNewTracker(newTracker: TrackerCategory) {
+        dismiss(animated: true)
+        var trackerCategory = newTracker
+        //собираем трекер для нерегулярного события
+        
+        if ((trackerCategory.trackers[0].schedule?.isEmpty) != nil) {
+            guard let numberOfDay = currentDate.weekDayNumber() else { return }
+            var currentDay = numberOfDay
+            if numberOfDay == 1 {
+                currentDay = 8
+            }
+            let newSchedule = WeekDay.allCases[currentDay]
+            let updatedTracker = Tracker(id: trackerCategory.trackers[0].id,
+                                         title: trackerCategory.trackers[0].title,
+                                         color: trackerCategory.trackers[0].color,
+                                         emoji: trackerCategory.trackers[0].emoji,
+                                         schedule: (trackerCategory.trackers[0].schedule ?? [WeekDay.allCases[0]]) + [newSchedule])
+            var updatedTrackers = trackerCategory.trackers
+            updatedTrackers[0] = updatedTracker
+             
+            trackerCategory = TrackerCategory(title: trackerCategory.title, trackers: updatedTrackers)
+            
+        }
+        if categories.contains(where: { $0.title == trackerCategory.title}) {
+            guard let index = categories.firstIndex(where: {$0.title == trackerCategory.title}) else { return }
+             let oldCategory = categories[index]
+            let updatedTrackers = oldCategory.trackers + trackerCategory.trackers
+            let updatedTrackerByCategory = TrackerCategory(title: trackerCategory.title, trackers: updatedTrackers)
+                categories[index] = updatedTrackerByCategory
+        } else {
+            categories.append(trackerCategory)
+        }
+        collectionView.reloadData()
+        // todo
+        reloadVisibleCategories(text: searchTextField.text, date: datePicker.date)
+        reloadPlaceHolder()
+        
+    }
+}
+extension Date {
+    func weekDayNumber() -> Int? {
+        return Calendar.current.dateComponents([.weekday], from: self).weekday
+    }
+}
 
 
 struct Tracker {
@@ -418,13 +452,13 @@ enum WeekDay: String, CaseIterable {
     var numberValue: Int {
             switch self {
             
-            case .monday: return 1
-            case .tuesday: return 2
-            case .wednesday: return 3
-            case .thursday: return 4
-            case .friday: return 5
-            case .saturday: return 6
-            case .sunday: return 7
+            case .monday: return 2
+            case .tuesday: return 3
+            case .wednesday: return 4
+            case .thursday: return 5
+            case .friday: return 6
+            case .saturday: return 7
+            case .sunday: return 1
             }
         }
     
