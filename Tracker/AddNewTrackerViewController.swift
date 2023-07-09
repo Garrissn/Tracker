@@ -170,7 +170,6 @@ final class AddNewTrackerViewController: UIViewController {
             cancellButton.trailingAnchor.constraint(equalTo: createButton.leadingAnchor, constant: -8),
             
             createButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            createButton.centerXAnchor.constraint(equalTo: cancellButton.centerXAnchor),
             createButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             createButton.heightAnchor.constraint(equalToConstant: 60),
            
@@ -183,11 +182,11 @@ final class AddNewTrackerViewController: UIViewController {
         //обновили таблицу вернулись в мейн
         
         let trackerTitleName = habitNameTextField.text ?? ""
-        self.delegate?.didSelectNewTracker(newTracker: TrackerCategory(title: "Новая Категория", trackers: [Tracker.init(id: UUID(),
+        self.delegate?.didSelectNewTracker(newTracker: TrackerCategory(title: "Новая Категория", trackers:                                                           [Tracker.init(id: UUID(),
                                                                                                                         title: trackerTitleName,
-                                                                                                                        color: .ColorSelection1,
+                                                                                                                        color: .ColorSelection2,
                                                                                                                         emoji: "😻",
-                                                                                                                        schedule: schedule)]))
+                                                                                                                                                                                   schedule: self.schedule)]))
         
         dismiss(animated: true)
         
@@ -210,7 +209,7 @@ final class AddNewTrackerViewController: UIViewController {
 extension AddNewTrackerViewController : AddscheduleViewControllerDelegate {
     func didSelectScheduleValue(_ value: [WeekDay]) {
         self.schedule = value
-        
+        print(" schedule :\(schedule)")
         tableView.reloadData()
         createButtonIsEnabled()
     }

@@ -193,10 +193,7 @@ class MainScreenTrackerViewController: UIViewController {
         ])
     }
     
-//    private func updateLabelTitle( with date: Date) {
-//        let dateString = formattedDate(from: date)
-//       // dateLabel.text = dateString
-//    }
+
     
     @objc private func addTask() {
 
@@ -207,7 +204,7 @@ class MainScreenTrackerViewController: UIViewController {
     }
     
     @objc private func dateChanged() {
-     //   updateLabelTitle(with: datePicker.date)
+     
         currentDate = datePicker.date
         self.dismiss(animated: false)
         reloadVisibleCategories(text: searchTextField.text, date: datePicker.date)
@@ -242,35 +239,51 @@ class MainScreenTrackerViewController: UIViewController {
     
     private func reloadVisibleCategories(text: String?, date: Date) {
         let calendar = Calendar.current
-        let filterWeekday = calendar.component(.weekday, from: datePicker.date)
+        currentDate = datePicker.date
+        let filterWeekday = currentDate.weekDayNumber()
         print("filterweekDate \(filterWeekday)")
         let filterText = (text ?? "").lowercased()
         
-        visibleCatergories = categories.compactMap { category in
-            
+//        visibleCatergories = categories.compactMap { category in
+//
+//            let trackers = category.trackers.filter { tracker in
+//                let textCondition = filterText.isEmpty ||
+//                tracker.title.lowercased().contains(filterText)
+//                let dateCondition = tracker.schedule!.contains { weekDay in
+//
+//                      weekDay.numberValue == filterWeekday
+//
+//                }
+//                return textCondition && dateCondition
+//            }
+//            if trackers.isEmpty {
+//                return nil
+//            }
+//            return TrackerCategory(title: category.title, trackers: trackers)
+//        }
+        
+        var categoriesFiltered = categories.map { category in
             let trackers = category.trackers.filter { tracker in
-                let textCondition = filterText.isEmpty ||
-                tracker.title.lowercased().contains(filterText)
-                let dateCondition =
-                tracker.schedule?.contains { weekDay in
-                    
-                     weekDay.numberValue == filterWeekday
-                    
-                } == true
-                return textCondition && dateCondition
+                (tracker.title.lowercased().contains(filterText) || (filterText.isEmpty)) &&
+               ( tracker.schedule!.contains(where: { weekday in weekday.numberValue == filterWeekday  } ))
+                
             }
-            if trackers.isEmpty {
-                return nil
-            }
-            return TrackerCategory(title: category.title, trackers: trackers)
+            let filteredCategory = TrackerCategory(title: category.title, trackers: trackers)
+            return filteredCategory
         }
-
+        
+        categoriesFiltered = categoriesFiltered.filter({ category in
+            !category.trackers.isEmpty
+        })
+        
+        visibleCatergories = categoriesFiltered
         collectionView.reloadData()
         reloadPlaceHolder()
     }
     private func reloadPlaceHolder() {
-        errorImage.isHidden = !categories.isEmpty
-        titleHeader.isHidden = !categories.isEmpty
+        errorImage.isHidden = !categories.isEmpty && !visibleCatergories.isEmpty
+        titleHeader.isHidden = !categories.isEmpty && !visibleCatergories.isEmpty
+        // to do
     }
 
 }
@@ -368,12 +381,20 @@ extension MainScreenTrackerViewController: UICollectionViewDelegateFlowLayout {
 
 extension MainScreenTrackerViewController: CardTrackerViewCellDelegate {
     func completedTracker(id: UUID,at indexPath: IndexPath) {
-        let trackerRecord = TrackerRecord(trackerId: id, date: datePicker.date)
-        completedTrackers.append(trackerRecord)
-        collectionView.reloadItems(at: [indexPath])
+     let dete = Date()
+        if datePicker.date > dete  { return }
+        else {    let trackerRecord = TrackerRecord(trackerId: id, date: datePicker.date)
+            completedTrackers.append(trackerRecord)
+            collectionView.reloadItems(at: [indexPath])
+            
+        }
+        
     }
     
     func uncompletedTracker(id: UUID,at indexPath: IndexPath) {
+        
+//        let selectedDate = datePicker.date
+//        if selectedDate > currentDate { return }
         completedTrackers.removeAll { trackerRecord in
             isSameTrackerRecord(trackerRecord: trackerRecord, id: id)
         }
@@ -389,13 +410,15 @@ extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDel
         var trackerCategory = newTracker
         //собираем трекер для нерегулярного события
         
-        if ((trackerCategory.trackers[0].schedule?.isEmpty) != nil) {
+        if (((trackerCategory.trackers[0].schedule!.isEmpty)) ) {
             guard let numberOfDay = currentDate.weekDayNumber() else { return }
-            var currentDay = numberOfDay
+           var currentDay = numberOfDay
+            print(" currentDay \(currentDay)")
             if numberOfDay == 1 {
                 currentDay = 8
             }
-            let newSchedule = WeekDay.allCases[currentDay]
+       
+            let newSchedule = WeekDay.allCases[currentDay - 2]
             let updatedTracker = Tracker(id: trackerCategory.trackers[0].id,
                                          title: trackerCategory.trackers[0].title,
                                          color: trackerCategory.trackers[0].color,
@@ -418,7 +441,7 @@ extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDel
         }
         collectionView.reloadData()
         // todo
-        reloadVisibleCategories(text: searchTextField.text, date: datePicker.date)
+       reloadVisibleCategories(text: searchTextField.text, date: datePicker.date)
         reloadPlaceHolder()
         
     }

@@ -141,6 +141,8 @@ final class CardTrackerViewCell: UICollectionViewCell {
     @objc private func plusButtonTapped() {
         guard let trackerID = trackerID, let indexPath = indexPath else { return assertionFailure(" no id Tracker")}
         
+        
+       
         if isCompletedToday {
            
             delegate?.uncompletedTracker(id: trackerID, at: indexPath)
