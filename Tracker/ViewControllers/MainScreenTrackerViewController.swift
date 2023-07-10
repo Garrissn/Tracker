@@ -218,9 +218,8 @@ class MainScreenTrackerViewController: UIViewController {
     }
     
     private func reloadVisibleCategories(text: String?, date: Date) {
-        let calendar = Calendar.current
+       
         let filterWeekday = currentDate.weekDayNumber()
-        print("filterweekDate \(filterWeekday)")
         let filterText = (text ?? "").lowercased()
         
         visibleCatergories = categories.compactMap { category in
@@ -410,60 +409,9 @@ extension Date {
 }
 
 
-struct Tracker {
-    let id: UUID
-    let title: String
-    let color: UIColor
-    let emoji: String
-    let schedule: [WeekDay]?
-}
 
-struct TrackerCategory {
-    let title: String
-    let trackers: [Tracker]
-}
-struct TrackerRecord {
-    let trackerId: UUID
-    let date: Date
-}
 
-enum WeekDay: String, CaseIterable {
-    case monday,tuesday,wednesday,thursday,friday,saturday,sunday
-    var numberValue: Int {
-        switch self {
-            
-        case .monday: return 2
-        case .tuesday: return 3
-        case .wednesday: return 4
-        case .thursday: return 5
-        case .friday: return 6
-        case .saturday: return 7
-        case .sunday: return 1
-        }
-    }
-    
-    var stringValue: String {
-        switch self {
-        case .monday: return "Понедельник"
-        case .tuesday: return "Вторник"
-        case .wednesday: return "Среда"
-        case .thursday: return "Четверг"
-        case .friday: return "Пятница"
-        case .saturday: return "Суббота"
-        case .sunday: return "Воскресенье"
-        }
-    }
-    
-    var shortValue: String {
-        switch self {
-        case .monday: return "Пн"
-        case .tuesday: return "Вт"
-        case .wednesday: return "Ср"
-        case .thursday: return "Чт"
-        case .friday: return "Пт"
-        case .saturday: return "Сб"
-        case .sunday: return "Вс"
-        }
-    }
-    
-}
+
+
+
+
