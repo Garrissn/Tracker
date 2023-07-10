@@ -10,6 +10,7 @@ import UIKit
 protocol CardTrackerViewCellDelegate: AnyObject  {
     func completedTracker(id: UUID, at indexPath: IndexPath)
     func uncompletedTracker(id: UUID, at indexPath: IndexPath)
+    
 }
 
 final class CardTrackerViewCell: UICollectionViewCell {
@@ -54,7 +55,7 @@ final class CardTrackerViewCell: UICollectionViewCell {
     private lazy var plusButton: UIButton = {
         let button = UIButton(type: .system)
         let pointSize = UIImage.SymbolConfiguration(pointSize: 11)
-        let image = UIImage(systemName: "plus", withConfiguration: pointSize)
+        let image = UIImage(systemName: "plus")
         button.tintColor = .WhiteDay
         button.setImage(image, for: .normal)
         button.layer.cornerRadius = 34 / 2
@@ -67,11 +68,14 @@ final class CardTrackerViewCell: UICollectionViewCell {
        weak var delegate:CardTrackerViewCellDelegate?
     private var trackerID: UUID?
     private var indexPath: IndexPath?
+    private var currentDate: Date =  Date()
+    private var date: Date = Date()
     
-    func configure(with tracker: Tracker, isCompletedToday: Bool, completedDays: Int, indexPath: IndexPath ) {
+    func configure(with tracker: Tracker, isCompletedToday: Bool, completedDays: Int, indexPath: IndexPath, currentDate: Date ) {
         self.trackerID = tracker.id
         self.isCompletedToday = isCompletedToday
         self.indexPath = indexPath
+        self.currentDate = currentDate
         let color = tracker.color
         addCardViews()
         setupConstraints()
@@ -104,8 +108,6 @@ final class CardTrackerViewCell: UICollectionViewCell {
             cardTrackerView.topAnchor.constraint(equalTo: topAnchor),
             cardTrackerView.leadingAnchor.constraint(equalTo: leadingAnchor),
             cardTrackerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-           // cardTrackerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            cardTrackerView.widthAnchor.constraint(equalToConstant: 167),
             cardTrackerView.heightAnchor.constraint(equalToConstant: 90),
             
             
@@ -117,10 +119,6 @@ final class CardTrackerViewCell: UICollectionViewCell {
             cardTrackerText.leadingAnchor.constraint(equalTo: cardTrackerView.leadingAnchor, constant: 12),
             cardTrackerText.trailingAnchor.constraint(equalTo: cardTrackerView.trailingAnchor, constant: -12),
             cardTrackerText.bottomAnchor.constraint(equalTo: cardTrackerView.bottomAnchor, constant: -12),
-            
-//            pinImageView.centerYAnchor.constraint(equalTo: emojiLabel.centerYAnchor),
-//            pinImageView.trailingAnchor.constraint(equalTo: cardTrackerView.trailingAnchor, constant: -4),
-            
             
             plusButton.topAnchor.constraint(equalTo: cardTrackerView.bottomAnchor, constant: 8),
             plusButton.trailingAnchor.constraint(equalTo: cardTrackerView.trailingAnchor, constant: -12),
@@ -140,17 +138,18 @@ final class CardTrackerViewCell: UICollectionViewCell {
     
     @objc private func plusButtonTapped() {
         guard let trackerID = trackerID, let indexPath = indexPath else { return assertionFailure(" no id Tracker")}
-        
-        
-       
-        if isCompletedToday {
-           
-            delegate?.uncompletedTracker(id: trackerID, at: indexPath)
 
-        } else {
-           
-            delegate?.completedTracker(id: trackerID, at: indexPath)
-
+        if date > currentDate {
+            if isCompletedToday {
+                
+                delegate?.uncompletedTracker(id: trackerID, at: indexPath)
+                
+            } else {
+                
+                delegate?.completedTracker(id: trackerID, at: indexPath)
+                
+            }
+            
         }
     }
     

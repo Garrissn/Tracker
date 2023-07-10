@@ -10,10 +10,10 @@ import UIKit
 
 protocol AddscheduleViewControllerDelegate: AnyObject {
     func didSelectScheduleValue( _ value: [WeekDay])
-   
 }
 
 final class AddScheduleViewController: UIViewController {
+    // MARK: - Private Properties
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -25,19 +25,18 @@ final class AddScheduleViewController: UIViewController {
     }()
     
     private lazy var tableView: UITableView = {
-         let tableView = UITableView()
-         tableView.translatesAutoresizingMaskIntoConstraints = false
-         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "shceduleCell")
-         tableView.layer.cornerRadius = 16
-         tableView.clipsToBounds = true
-         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-         tableView.separatorColor = .Gray
-         tableView.backgroundColor = .WhiteDay
-         tableView.isScrollEnabled = false
-        
-        
-         return tableView
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "shceduleCell")
+        tableView.layer.cornerRadius = 16
+        tableView.clipsToBounds = true
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = .Gray
+        tableView.backgroundColor = .WhiteDay
+        tableView.isScrollEnabled = false
+        return tableView
     }()
+    
     private lazy var doneButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -50,36 +49,33 @@ final class AddScheduleViewController: UIViewController {
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         button.isEnabled = false
         return button
-     }()
+    }()
     
-    weak var delegate: AddscheduleViewControllerDelegate?
-   
     private var selectedDays: [WeekDay] = []
     private var allDay = WeekDay.allCases
-     
+    weak var delegate: AddscheduleViewControllerDelegate?
+    
+    // MARK: - LifeCircle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-       
         setupViews()
         setupConstraints()
         view.backgroundColor = .WhiteDay
-
         tableView.delegate = self
         tableView.dataSource = self
-        
     }
     
-
+    // MARK: - Private Methods
+    
     private func setupViews() {
         view.addSubview(titleLabel)
         view.addSubview(tableView)
         view.addSubview(doneButton)
     }
+    
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            
             titleLabel.bottomAnchor.constraint(equalTo: view.topAnchor, constant: 40),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
@@ -91,7 +87,6 @@ final class AddScheduleViewController: UIViewController {
             doneButton.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 39),
             doneButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             doneButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-           // doneButton.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
             doneButton.heightAnchor.constraint(equalToConstant: 60),
             doneButton.widthAnchor.constraint(equalToConstant: 335)
         ])
@@ -111,15 +106,11 @@ final class AddScheduleViewController: UIViewController {
             if let index = selectedDays.firstIndex(of: allDay[sender.tag]) {
                 selectedDays.remove(at: index)
             }
-            
         }
         doneButtonEnabled(!selectedDays.isEmpty)
-        
-        
     }
+    
     private func doneButtonEnabled(_ isOn: Bool) {
-        
-        print("aas \(isOn)")
         if isOn {
             doneButton.isEnabled = isOn
             doneButton.backgroundColor = .BlackDay
@@ -129,8 +120,9 @@ final class AddScheduleViewController: UIViewController {
             doneButton.setTitleColor(.WhiteDay, for: .normal)
         }
     }
-    
 }
+
+// MARK: - UITableViewDataSource
 
 extension AddScheduleViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -151,15 +143,12 @@ extension AddScheduleViewController: UITableViewDataSource {
         cell.textLabel?.text = allDay[indexPath.row].stringValue
         
         cell.accessoryView = daySwitcher
-        
-        
         return cell
     }
-    
-    
 }
-extension AddScheduleViewController: UITableViewDelegate {
-    
+// MARK: - UITableViewDelegate
+
+extension AddScheduleViewController: UITableViewDelegate {  
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }

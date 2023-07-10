@@ -13,6 +13,8 @@ protocol TrackerTypeSelectionViewControllerDelegate: AnyObject {
 
 final class TrackerTypeSelectionViewController: UIViewController {
     
+    // MARK: - Private Properties
+    
     private lazy var habitButton: UIButton = {
         let habitButton = UIButton()
         habitButton.translatesAutoresizingMaskIntoConstraints = false
@@ -23,7 +25,6 @@ final class TrackerTypeSelectionViewController: UIViewController {
         habitButton.titleLabel?.font = UIFont.ypMedium16()
         habitButton.layer.cornerRadius = 16
         habitButton.addTarget(self, action: #selector(habbitButtonTapped), for: .touchUpInside)
-        
         return habitButton
     }()
     
@@ -42,6 +43,8 @@ final class TrackerTypeSelectionViewController: UIViewController {
     
     weak var delegate: TrackerTypeSelectionViewControllerDelegate?
     
+    // MARK: - LifeCircle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,23 +52,24 @@ final class TrackerTypeSelectionViewController: UIViewController {
         setupLayoutViews()
         setupNavigationBar()
     }
+    // MARK: - Private Methods
+    
     private func  setupNavigationBar() {
         let titleLabel = UILabel()
         titleLabel.text = "Создание трекера"
         titleLabel.textColor = .BlackDay
         titleLabel.font = UIFont.ypMedium16()
         titleLabel.textAlignment = .center
-        
         navigationItem.titleView = titleLabel
-        
     }
+    
     private func setupLayoutViews() {
+        
         view.addSubview(habitButton)
         view.addSubview(irregularIventButton)
         
         NSLayoutConstraint.activate([
             habitButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            //habitButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             habitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 281),
             habitButton.heightAnchor.constraint(equalToConstant: 60),
             habitButton.widthAnchor.constraint(equalToConstant: 335)
@@ -79,34 +83,29 @@ final class TrackerTypeSelectionViewController: UIViewController {
     }
     
     @objc private func habbitButtonTapped() {
-
+        
         let addNewTrackerViewController = AddNewTrackerViewController()
         addNewTrackerViewController.trackerType = .habitTracker
         addNewTrackerViewController.delegate = self
-        
         present(addNewTrackerViewController, animated: true)
         
     }
     @objc private func irregularIventButtonTapped() {
-
+        
         let addNewTrackerViewController = AddNewTrackerViewController()
         addNewTrackerViewController.trackerType = .irregularIvent
         addNewTrackerViewController.delegate = self
-        
         present(addNewTrackerViewController, animated: true)
         
     }
 }
 
+// MARK: - AddNewTrackerViewControllerDelegate
+
 extension TrackerTypeSelectionViewController: AddNewTrackerViewControllerDelegate {
     func didSelectNewTracker(newTracker: TrackerCategory) {
         self.delegate?.didselectNewTracker(newTracker: newTracker)
         let mainScreenViewController = MainScreenTrackerViewController()
-        //let navVC = UINavigationController(rootViewController: mainScreenViewController)
-       // present(navVC, animated: true)
         dismiss(animated: true)
-        
     }
-    
-    
 }

@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CE231B602A4DFFC200A5D99F /* AddNewTrackerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE231B5F2A4DFFC200A5D99F /* AddNewTrackerTableViewCell.swift */; };
-		CE6C3B572A500E5700EB0985 /* AddScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6C3B562A500E5700EB0985 /* AddScheduleTableViewCell.swift */; };
+		CE6692C62A5BF08000D7FB5F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6692C52A5BF08000D7FB5F /* Models.swift */; };
 		CE6C3B592A503E2800EB0985 /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6C3B582A503E2800EB0985 /* AddCategoryViewController.swift */; };
 		CE71C0682A5343B9009836E7 /* UIFonts+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE71C0672A5343B9009836E7 /* UIFonts+Extensions.swift */; };
 		CE7286522A4B306D0011F679 /* HeaderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7286512A4B306D0011F679 /* HeaderCollectionView.swift */; };
@@ -51,8 +50,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		CE231B5F2A4DFFC200A5D99F /* AddNewTrackerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTrackerTableViewCell.swift; sourceTree = "<group>"; };
-		CE6C3B562A500E5700EB0985 /* AddScheduleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleTableViewCell.swift; sourceTree = "<group>"; };
+		CE6692C52A5BF08000D7FB5F /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		CE6C3B582A503E2800EB0985 /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
 		CE71C0672A5343B9009836E7 /* UIFonts+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFonts+Extensions.swift"; sourceTree = "<group>"; };
 		CE7286512A4B306D0011F679 /* HeaderCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionView.swift; sourceTree = "<group>"; };
@@ -106,17 +104,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CE62DA982A5432A800CA1167 /* Helper */ = {
+		CE62DA982A5432A800CA1167 /* Mock */ = {
 			isa = PBXGroup;
 			children = (
 				CE7286532A4B704D0011F679 /* DataManager.swift */,
 			);
-			path = Helper;
+			path = Mock;
 			sourceTree = "<group>";
 		};
 		CE71C0692A534410009836E7 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				CE7286512A4B306D0011F679 /* HeaderCollectionView.swift */,
+				CE7ABCE52A4489A4000606DA /* CardTrackerViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -125,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				CE7A56DA2A55A8F600F494EF /* TrackerType.swift */,
+				CE6692C52A5BF08000D7FB5F /* Models.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -132,6 +133,13 @@
 		CE71C06B2A5344A0009836E7 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CEA04AB52A437B4A003A8F70 /* MainScreenTrackerViewController.swift */,
+				CE7784E42A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift */,
+				CE7B743A2A4DA5E9000A3676 /* AddNewTrackerViewController.swift */,
+				CE78C3DA2A4F172E00D28141 /* AddScheduleViewController.swift */,
+				CE6C3B582A503E2800EB0985 /* AddCategoryViewController.swift */,
+				CE7784DC2A45D47700E01A81 /* TrackersViewController.swift */,
+				CE7784DE2A45D78500E01A81 /* StatisticViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -167,23 +175,12 @@
 		CEA04AB02A437B4A003A8F70 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				CE62DA982A5432A800CA1167 /* Helper */,
+				CEA04AB12A437B4A003A8F70 /* AppDelegate.swift */,
+				CEA04AB32A437B4A003A8F70 /* SceneDelegate.swift */,
+				CE62DA982A5432A800CA1167 /* Mock */,
 				CE71C06A2A534450009836E7 /* Models */,
 				CE71C06B2A5344A0009836E7 /* ViewControllers */,
 				CE71C0692A534410009836E7 /* Cell */,
-				CEA04AB12A437B4A003A8F70 /* AppDelegate.swift */,
-				CEA04AB32A437B4A003A8F70 /* SceneDelegate.swift */,
-				CE7ABCE52A4489A4000606DA /* CardTrackerViewCell.swift */,
-				CEA04AB52A437B4A003A8F70 /* MainScreenTrackerViewController.swift */,
-				CE7784E42A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift */,
-				CE7B743A2A4DA5E9000A3676 /* AddNewTrackerViewController.swift */,
-				CE78C3DA2A4F172E00D28141 /* AddScheduleViewController.swift */,
-				CE6C3B582A503E2800EB0985 /* AddCategoryViewController.swift */,
-				CE7286512A4B306D0011F679 /* HeaderCollectionView.swift */,
-				CE7784DC2A45D47700E01A81 /* TrackersViewController.swift */,
-				CE7784DE2A45D78500E01A81 /* StatisticViewController.swift */,
-				CE6C3B562A500E5700EB0985 /* AddScheduleTableViewCell.swift */,
-				CE231B5F2A4DFFC200A5D99F /* AddNewTrackerTableViewCell.swift */,
 				CEA04AB72A437B4A003A8F70 /* Main.storyboard */,
 				CEA04ABA2A437B4C003A8F70 /* Assets.xcassets */,
 				CEA04ABC2A437B4C003A8F70 /* LaunchScreen.storyboard */,
@@ -352,15 +349,14 @@
 				CE7A56DB2A55A8F600F494EF /* TrackerType.swift in Sources */,
 				CEA04AB22A437B4A003A8F70 /* AppDelegate.swift in Sources */,
 				CE7286522A4B306D0011F679 /* HeaderCollectionView.swift in Sources */,
-				CE231B602A4DFFC200A5D99F /* AddNewTrackerTableViewCell.swift in Sources */,
 				CE7784DD2A45D47700E01A81 /* TrackersViewController.swift in Sources */,
 				CE7ABCE62A4489A4000606DA /* CardTrackerViewCell.swift in Sources */,
 				CE7784E52A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift in Sources */,
+				CE6692C62A5BF08000D7FB5F /* Models.swift in Sources */,
 				CEA04AB42A437B4A003A8F70 /* SceneDelegate.swift in Sources */,
 				CE71C0682A5343B9009836E7 /* UIFonts+Extensions.swift in Sources */,
 				CE7B743B2A4DA5E9000A3676 /* AddNewTrackerViewController.swift in Sources */,
 				CE7ABCE12A447F87000606DA /* UIColors+Extensions.swift in Sources */,
-				CE6C3B572A500E5700EB0985 /* AddScheduleTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

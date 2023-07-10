@@ -13,19 +13,16 @@ protocol AddNewTrackerViewControllerDelegate: AnyObject {
 
 final class AddNewTrackerViewController: UIViewController {
     
-    var trackerType: TrackerType?
+    // MARK: - Private Properties
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        
         switch trackerType {
         case .none:
             break
         case .habitTracker: label.text = "Новая привычка"
         case .irregularIvent: label.text = "Новое нерегулярное событие"
-            
         }
-        
         label.textColor = .BlackDay
         label.font = UIFont.ypMedium16()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -33,67 +30,65 @@ final class AddNewTrackerViewController: UIViewController {
     }()
     
     
-   private lazy var habitNameTextField: UITextField = {
+    private lazy var habitNameTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.backgroundColor = .BackGroundDay
         textField.layer.cornerRadius = 16
-       
-       let attributes = [ NSAttributedString.Key.foregroundColor: UIColor.gray]
-       let attributedPlaceHolder = NSAttributedString(string: "Введите название трекера", attributes: attributes)
-       textField.attributedPlaceholder = attributedPlaceHolder
-       textField.heightAnchor.constraint(equalToConstant: 75).isActive = true
-       let leftInsertView = UIView(frame: CGRect(x: 0, y: 0, width: 17, height: 30))
-       textField.leftView = leftInsertView
-       textField.leftViewMode = .always
-       textField.textColor = .BlackDay
-       textField.font = UIFont.ypRegular17()
-       textField.layer.cornerRadius = 16
-       textField.clipsToBounds = true
-       textField.delegate = self
+        
+        let attributes = [ NSAttributedString.Key.foregroundColor: UIColor.gray]
+        let attributedPlaceHolder = NSAttributedString(string: "Введите название трекера", attributes: attributes)
+        textField.attributedPlaceholder = attributedPlaceHolder
+        textField.heightAnchor.constraint(equalToConstant: 75).isActive = true
+        let leftInsertView = UIView(frame: CGRect(x: 0, y: 0, width: 17, height: 30))
+        textField.leftView = leftInsertView
+        textField.leftViewMode = .always
+        textField.textColor = .BlackDay
+        textField.font = UIFont.ypRegular17()
+        textField.layer.cornerRadius = 16
+        textField.clipsToBounds = true
+        textField.delegate = self
         return textField
     }()
     
-   private lazy var tableView: UITableView = {
+    private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        
         tableView.backgroundColor = .BackGroundDay
         tableView.layer.cornerRadius = 16
         tableView.clipsToBounds = true
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.isScrollEnabled = false
         tableView.separatorColor = .Gray
-       
         return tableView
     }()
+    
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        
-       // collectionView.register(<#T##nib: UINib?##UINib?#>, forCellWithReuseIdentifier: <#T##String#>)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-         
-         return collectionView
-     }()
-    private lazy var cancellButton: UIButton = {
-         let button = UIButton()
-         button.translatesAutoresizingMaskIntoConstraints = false
-         button.setTitle("Отменить", for: .normal)
-         button.setTitleColor(.Red, for: .normal)
-         button.titleLabel?.font = UIFont.ypMedium16()
-         button.tintColor = .Red
-         button.backgroundColor = .WhiteDay
-         button.layer.borderColor = UIColor.Red.cgColor
-         button.layer.borderWidth = 1
-         button.layer.cornerRadius = 16
-         button.clipsToBounds = true
         
+        return collectionView
+    }()
+    
+    private lazy var cancellButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Отменить", for: .normal)
+        button.setTitleColor(.Red, for: .normal)
+        button.titleLabel?.font = UIFont.ypMedium16()
+        button.tintColor = .Red
+        button.backgroundColor = .WhiteDay
+        button.layer.borderColor = UIColor.Red.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 16
+        button.clipsToBounds = true
         button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
-         return button
-     }()
+        return button
+    }()
+    
     private lazy var createButton: UIButton = {
-         let button = UIButton()
+        let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Создать", for: .normal)
         button.titleLabel?.font = UIFont.ypMedium16()
@@ -102,32 +97,32 @@ final class AddNewTrackerViewController: UIViewController {
         button.backgroundColor = .Gray
         button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         button.isEnabled = false
-        
-         return button
-     }()
+        return button
+    }()
     
     
     private var currentCatergory: String? = "Новая категория"
     private var schedule: [WeekDay] = []
     private var newTrackerText: String = ""
     private var heightTableView: CGFloat = 74
-            
-    weak var delegate: AddNewTrackerViewControllerDelegate?
     
+    weak var delegate: AddNewTrackerViewControllerDelegate?
+    var trackerType: TrackerType?
+    
+    // MARK: - LifeCircle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
         setupViews()
         setupConstraints()
         view.backgroundColor = .WhiteDay
-    
+        
         tableView.dataSource = self
         tableView.delegate = self
-        
     }
     
-
+    // MARK: - Private Methods
+    
     private func setupViews() {
         view.addSubview(titleLabel)
         view.addSubview(habitNameTextField)
@@ -158,10 +153,10 @@ final class AddNewTrackerViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             tableView.heightAnchor.constraint(equalToConstant: heightTableView),
             
-//            collectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 50),
-//            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-//            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-//            collectionView.heightAnchor.constraint(equalToConstant: 204),
+            //            collectionView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 50),
+            //            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            //            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            //            collectionView.heightAnchor.constraint(equalToConstant: 204),
             
             cancellButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             cancellButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -172,27 +167,22 @@ final class AddNewTrackerViewController: UIViewController {
             createButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             createButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             createButton.heightAnchor.constraint(equalToConstant: 60),
-           
-            
-            
         ])
         
     }
     @objc private func createButtonTapped() {
-        //обновили таблицу вернулись в мейн
-        
         let trackerTitleName = habitNameTextField.text ?? ""
-        self.delegate?.didSelectNewTracker(newTracker: TrackerCategory(title: "Новая Категория", trackers:                                                           [Tracker.init(id: UUID(),
-                                                                                                                        title: trackerTitleName,
-                                                                                                                        color: .ColorSelection2,
-                                                                                                                        emoji: "😻",
-                                                                                                                                                                                   schedule: self.schedule)]))
+        self.delegate?.didSelectNewTracker(newTracker: TrackerCategory(title: "Новая Категория",
+                                                                       trackers: [Tracker.init(id: UUID(),
+                                                                                               title: trackerTitleName,
+                                                                                               color: .ColorSelection2,
+                                                                                               emoji: "😻", schedule: self.schedule)]))
         
         dismiss(animated: true)
-        
     }
+    
     @objc private func cancelButtonTapped() {
-       dismiss(animated: true)
+        dismiss(animated: true)
     }
     
     private func createButtonIsEnabled() {
@@ -201,10 +191,10 @@ final class AddNewTrackerViewController: UIViewController {
             createButton.setTitleColor(.WhiteDay, for: .normal)
             createButton.isEnabled = true
         }
-            
-        }
-        
     }
+}
+
+// MARK: - AddscheduleViewControllerDelegate
 
 extension AddNewTrackerViewController : AddscheduleViewControllerDelegate {
     func didSelectScheduleValue(_ value: [WeekDay]) {
@@ -213,8 +203,10 @@ extension AddNewTrackerViewController : AddscheduleViewControllerDelegate {
         tableView.reloadData()
         createButtonIsEnabled()
     }
-    
 }
+
+// MARK: - UITextFieldDelegate
+
 extension AddNewTrackerViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -231,11 +223,8 @@ extension AddNewTrackerViewController: UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-     //   guard let currentText = textField.text else { return true }
-        
-        
+        //   guard let currentText = textField.text else { return true }
         if range.location == 0 &&  string == " " { return false }
-        
         switch trackerType {
         case .habitTracker:
             if schedule.isEmpty == false {
@@ -243,17 +232,16 @@ extension AddNewTrackerViewController: UITextFieldDelegate {
                 return true
             }
         case .irregularIvent:
-            
             createButtonIsEnabled()
-            
             return true
         case .none:
             return true
         }
         return true
-        
     }
 }
+
+// MARK: - UITableViewDelegate,UITableViewDataSource
 
 extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -277,13 +265,11 @@ extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource
             cell.textLabel?.text = "Категория"
             cell.detailTextLabel?.text = currentCatergory
         case 1:
-            
             cell.textLabel?.text = "Расписание"
             let scheduleShortValueText = schedule.map { $0.shortValue }.joined(separator: ",")
             cell.detailTextLabel?.text = scheduleShortValueText
             
         default: break
-            
         }
         return cell
     }
@@ -298,17 +284,13 @@ extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource
         case 1:
             let addScheduleViewController = AddScheduleViewController()
             addScheduleViewController.delegate = self
-            
             present(addScheduleViewController, animated: true)
         default: break
-            
         }
-        
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-         return 75
+        return 75
     }
-    
 }
 
 
