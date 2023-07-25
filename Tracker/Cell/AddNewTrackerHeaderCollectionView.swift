@@ -1,15 +1,15 @@
 //
-//  SupplementaryView.swift
+//  AddNewTrackerHeaderCollectionView.swift
 //  Tracker
 //
-//  Created by Игорь Полунин on 27.06.2023.
+//  Created by Игорь Полунин on 15.07.2023.
 //
 
 import UIKit
 
-final class HeaderCollectionView: UICollectionReusableView {
+final class AddNewTrackerHeaderCollectionView: UICollectionReusableView {
     
-    static let headerIdentifier = "HeaderIdentifier"
+    static let headerIdentifier = "AddNewTrackerHeaderHeaderIdentifier"
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -43,4 +43,6 @@ final class HeaderCollectionView: UICollectionReusableView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
 }
