@@ -21,7 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return conteiner
     }()
     
-    
+    lazy var context: NSManagedObjectContext = {
+        return persistantConteiner.viewContext
+    }()
     
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
