@@ -53,19 +53,19 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         try context.save()
     }
     
-    func convertTrackerCategoryEntityToTrackerCategories(_ trackersEntity: [TrackerEntity]) throws -> [TrackerCategory] {
+    func convertTrackerCategoryEntityToTrackerCategories(_ trackersEntity: [TrackerEntity]) throws  -> [TrackerCategory] {
         var trackerCategories: [TrackerCategory] = []
-        
-        let trackersGroupedByTitle = Dictionary(grouping: trackersEntity) {$0.trackerCategory?.title}
-        for (key, value) in trackersGroupedByTitle {
-            let trackers = try value.map ({ try trackerStore.convertTrackerEntityToTracker($0)})
-            guard let key else {
-                throw TrackerErrors.decodingError
+      
+            let trackersGroupedByTitle = Dictionary(grouping: trackersEntity) {$0.trackerCategory?.title}
+            for (key, value) in trackersGroupedByTitle {
+                let trackers = try value.map ({ try trackerStore.convertTrackerEntityToTracker($0)})
+                guard let key else {
+                    return []
+                }
+                let trackerCategory = TrackerCategory(title: key, trackers: trackers)
+                trackerCategories.append(trackerCategory)
             }
-            let trackerCategory = TrackerCategory(title: key, trackers: trackers)
-            trackerCategories.append(trackerCategory)
-        }
-        
+       
         return trackerCategories
     }
     
