@@ -18,6 +18,6 @@
     </entity>
     <entity name="TrackerRecordEntity" representedClassName="TrackerRecordEntity" syncable="YES" codeGenerationType="class">
         <attribute name="date" attributeType="String"/>
-        <attribute name="id" attributeType="String"/>
+        <attribute name="trackerRecordID" attributeType="String"/>
     </entity>
 </model>
