@@ -8,13 +8,18 @@
 import Foundation
 import CoreData
 
+protocol TrackerStoreProtocol {
+    func convertTrackerEntityToTracker(_ object: TrackerEntity) throws -> Tracker
+    func convertTrackerToTrackerEntity(_ tracker: Tracker) -> TrackerEntity
+}
+
+enum TrackerErrors: Error {
+    case noTrackerInCategory
+    case decodingError
+    case fetchError
+}
+
 final  class TrackerStore {
-    enum TrackerErrors: Error {
-        case noTrackerInCategory
-        case decodingError
-        case fetchError
-    }
-    
     private let context: NSManagedObjectContext
     private let uiColorMarshalling = UIColorMarshalling()
     
@@ -42,8 +47,12 @@ final  class TrackerStore {
         }
         return NSSet(set: scheduleEntitySet)
     }
-    
-     func convertTrackerEntityToTracker(_ object: TrackerEntity) throws -> Tracker {
+}
+
+// MARK: - TrackerStoreProtocol
+
+extension TrackerStore: TrackerStoreProtocol {
+    func convertTrackerEntityToTracker(_ object: TrackerEntity) throws -> Tracker {
         guard let id = object.id,
               let title = object.title,
               let emoji = object.emoji,
@@ -52,16 +61,15 @@ final  class TrackerStore {
         else {
             throw TrackerErrors.decodingError
         }
-         let schedule = convertScheduleEntityToArray(scheduleSet)
+        let schedule = convertScheduleEntityToArray(scheduleSet)
         let color = uiColorMarshalling.color(from: hexColor)
-       
+        
         let tracker = Tracker(id: id,
                               title: title,
                               color: color,
                               emoji: emoji,
                               schedule: schedule)
         return tracker
-                
     }
     
     func convertTrackerToTrackerEntity(_ tracker: Tracker) -> TrackerEntity {
@@ -76,9 +84,6 @@ final  class TrackerStore {
         if let schedule = tracker.schedule {
             trackerEntity.schedule = convertScheduleArrayToScheduleEntity(schedule)
         }
-        
-        
         return trackerEntity
-        
     }
 }
