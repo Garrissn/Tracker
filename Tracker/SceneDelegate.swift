@@ -19,7 +19,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: scene)
         
         let tabBarController = UITabBarController()
-        let mainScreenViewController = MainScreenTrackerViewController()
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistantConteiner.viewContext
+        let trackerStore = TrackerStore(context: context)
+        let trackerCategoryStore = TrackerCategoryStore(context: context,
+                                                        trackerStore: trackerStore)
+        let trackerRecordStore = TrackerRecordStore(context: context)
+        let trackerDataManager = TrackerDataManager(trackerStore: trackerStore,
+                                                    trackerCategoryStore: trackerCategoryStore,
+                                                    trackerRecordStore: trackerRecordStore,
+                                                    context: context)
+        let mainScreenViewController = MainScreenTrackerViewController(trackerDataManager: trackerDataManager)
         
         let mainScreenNavigationController = UINavigationController(rootViewController: mainScreenViewController)
         

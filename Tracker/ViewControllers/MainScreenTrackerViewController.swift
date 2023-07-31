@@ -91,15 +91,22 @@ class MainScreenTrackerViewController: UIViewController {
         rightInset: 16,
         cellSpacing: 16)
     
+    private var insertedIndexesInSearch: [IndexPath] = []
+    private var removedIndexesInSearch: [IndexPath] = []
+    private var insertedSectionsInSearch: IndexSet = []
+    private var removedSectionsInSearch: IndexSet = []
+    
     private var categories: [TrackerCategory] = [] //список категорий и вложенных в них трекеров
     private var completedTrackers: [TrackerRecord] = [] // трекуры выполненные в выбранную дату
     private var currentDate: Date
     private let dataManager = DataManager.shared
     private var visibleCatergories: [TrackerCategory] = [] // массив который пользователь увидит после фильтр
     let dete = Date()
+    private let trackerDataManager: TrackerDataManagerProtocol
     
-    init() {
+    init(trackerDataManager: TrackerDataManagerProtocol) {
         currentDate = Date()
+        self.trackerDataManager = trackerDataManager
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -117,6 +124,9 @@ class MainScreenTrackerViewController: UIViewController {
         setupConstraints()
         configureView()
         setupNavigationBar()
+        
+        trackerDataManager.delegate = self
+     //
     }
     
     // MARK: - Private Methods
@@ -128,6 +138,7 @@ class MainScreenTrackerViewController: UIViewController {
     }
     private func reloadData() {
         
+       // trackerDataManager.fetchCategoriesFor(weekDay: String, animating: true)
         categories = dataManager.categories  // mock
         visibleCatergories = categories
         dateChanged()
@@ -189,8 +200,15 @@ class MainScreenTrackerViewController: UIViewController {
         currentDate = datePicker.date
         self.dismiss(animated: false)
         reloadVisibleCategories(text: searchTextField.text, date: datePicker.date)
-        print( " date \(datePicker.date)")
+        print("currentDate\(currentDate)")
         
+        let weekDay = currentDate.weekDayNumber()
+        if let weekDayString = WeekDay.allCases.first(where: { $0.numberValue == weekDay})
+        { trackerDataManager.fetchCategoriesFor(weekDay: weekDayString.rawValue, animating: true)
+            print( " weekdayStringRaw \(weekDayString.rawValue)")
+        } else {
+                print("ошибка дейтпикера")
+            }
     }
     
     @objc private func  selectFilterTapped() {
@@ -401,7 +419,92 @@ extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDel
         reloadPlaceHolder()
         
     }
+    
+    
+    
+    private func findDiff(newCategories: [TrackerCategory]) {
+        removedIndexesInSearch.removeAll()
+        insertedIndexesInSearch.removeAll()
+        removedSectionsInSearch.removeAll()
+        insertedSectionsInSearch.removeAll()
+        
+        for (section, category) in visibleCatergories.enumerated() {
+            for (index, item) in category.trackers.enumerated() {
+                if !newCategories.contains(where: { $0.trackers.contains { $0.id == item.id } })
+                { removedIndexesInSearch.append(IndexPath(item: index, section: section))}
+            }
+        }
+        
+        for (section, category) in newCategories.enumerated() {
+            for (index, item) in category.trackers.enumerated() {
+                if !visibleCatergories.contains(where: { $0.trackers.contains { $0.id == item.id } })
+                { insertedIndexesInSearch.append(IndexPath(item: index, section: section))}
+            }
+        }
+        
+        for (section, category) in visibleCatergories.enumerated() {
+            if !newCategories.contains(where: { $0.title == category.title})
+            { removedSectionsInSearch.insert(section) }
+                
+        }
+        
+        for (section, category) in newCategories.enumerated() {
+            if !visibleCatergories.contains(where: { $0.title == category.title})
+            { insertedSectionsInSearch.insert(section) }
+        }
+    }
+    
+    private func performBatchUpdates() {
+        if  removedSectionsInSearch.isEmpty &&
+            insertedSectionsInSearch.isEmpty &&
+            removedIndexesInSearch.isEmpty &&
+            insertedIndexesInSearch.isEmpty
+        {
+            collectionView.reloadData()
+        }
+        
+        collectionView.performBatchUpdates {
+            if !removedSectionsInSearch.isEmpty {
+                collectionView.deleteSections(removedSectionsInSearch)
+            }
+            if !insertedSectionsInSearch.isEmpty {
+                collectionView.insertSections(insertedSectionsInSearch)
+            }
+            if !removedIndexesInSearch.isEmpty {
+                collectionView.deleteItems(at: removedIndexesInSearch)
+            }
+            if !insertedIndexesInSearch.isEmpty {
+                collectionView.insertItems(at: insertedIndexesInSearch)
+            }
+        }
+    }
+    
+    
 }
+
+extension MainScreenTrackerViewController: TrackerDataManagerDelegate {
+    
+    
+    func updateViewByController(_ update: TrackerCategoryStoreUpdate) {
+        let newCategories = trackerDataManager.categories
+        findDiff(newCategories: newCategories)
+        visibleCatergories = newCategories
+        performBatchUpdates()
+        // todo placeHolder
+    }
+    
+    func updateView(categories: [TrackerCategory], animating: Bool) {
+        findDiff(newCategories: categories)
+        visibleCatergories = categories
+        if animating {
+            performBatchUpdates()
+        } else {
+            collectionView.reloadData()
+        }
+        // todo placeHolder
+    }
+}
+
 extension Date {
     func weekDayNumber() -> Int? {
         return Calendar.current.dateComponents([.weekday], from: self).weekday

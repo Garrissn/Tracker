@@ -141,13 +141,13 @@
 		CE6BA0C82A70047400ADCDBF /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				CE6BA0C92A7004DB00ADCDBF /* CoreDataModel.xcdatamodeld */,
 				CE711D962A7154B400C8A401 /* TrackerDataManager.swift */,
 				CE727B142A72A88100CA96D3 /* TrackerCategoryStore.swift */,
 				CE711D982A716C0D00C8A401 /* TrackerStore.swift */,
 				CE711D9A2A7195E800C8A401 /* UIColorMarshalling.swift */,
 				CE6633C32A765C5E00607EC1 /* TrackerRecordStore.swift */,
 				CE6633C52A76A72200607EC1 /* TrackerCategoryStoreUpdate.swift */,
+				CE6BA0C92A7004DB00ADCDBF /* CoreDataModel.xcdatamodeld */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
