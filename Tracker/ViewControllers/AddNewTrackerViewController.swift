@@ -97,7 +97,7 @@ final class AddNewTrackerViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(AddNewTrackerEmojiesViewCell.self, forCellWithReuseIdentifier: AddNewTrackerEmojiesViewCell.addNewTrackerEmojiesViewCellIdentifier)
-
+        collectionView.register(AddNewTrackerColorViewCell.self, forCellWithReuseIdentifier: AddNewTrackerColorViewCell.addNewTrackerColorViewCellIdentifier)
         collectionView.register(HeaderCollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCollectionView.headerIdentifier)
         collectionView.isScrollEnabled = false
         collectionView.allowsMultipleSelection = false
@@ -165,7 +165,7 @@ final class AddNewTrackerViewController: UIViewController {
         setupViews()
         setupConstraints()
         view.backgroundColor = .WhiteDay
-        
+        collectionView.allowsMultipleSelection = false
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -348,16 +348,18 @@ extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource
         cell.backgroundColor = .clear
         cell.detailTextLabel?.font = UIFont.ypRegular17()
         cell.detailTextLabel?.textColor = .Gray
-        
         switch indexPath.row {
         case 0:
             cell.textLabel?.text = "Категория"
             cell.detailTextLabel?.text = currentCatergory
         case 1:
             cell.textLabel?.text = "Расписание"
-            let scheduleShortValueText = schedule.map { $0.shortValue }.joined(separator: ",")
-            cell.detailTextLabel?.text = scheduleShortValueText
-            
+            if schedule.count == 7 {
+                cell.detailTextLabel?.text = "Каждый день"
+            } else {
+                let scheduleShortValueText = schedule.map { $0.shortValue }.joined(separator: ",")
+                cell.detailTextLabel?.text = scheduleShortValueText
+            }
         default: break
         }
         return cell
@@ -387,18 +389,17 @@ extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource
 
 extension AddNewTrackerViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        
         return 2
     }
-    
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
-        case 0:  return emojiesAndColors.emojies.count
-        case 1:  return emojiesAndColors.colors.count
-        default: return 0
+        case 0:
+            return emojiesAndColors.emojies.count
+        case 1:
+            return emojiesAndColors.colors.count
+        default:
+            return 0
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -407,75 +408,76 @@ extension AddNewTrackerViewController: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             let emojiesTitle = emojiesAndColors.emojiesTitle
-            
             view.configureHeader(title: emojiesTitle)
         case 1:
             let colorTitle = emojiesAndColors.colorTitle
-            
             view.configureHeader(title: colorTitle)
         default: break
         }
-        
         return view
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AddNewTrackerEmojiesViewCell.addNewTrackerEmojiesViewCellIdentifier, for: indexPath) as? AddNewTrackerEmojiesViewCell
+        guard let cellEmoji = collectionView.dequeueReusableCell(withReuseIdentifier: AddNewTrackerEmojiesViewCell.addNewTrackerEmojiesViewCellIdentifier, for: indexPath) as? AddNewTrackerEmojiesViewCell else { return UICollectionViewCell() }
+        
+        guard let cellColor = collectionView.dequeueReusableCell(withReuseIdentifier: AddNewTrackerColorViewCell.addNewTrackerColorViewCellIdentifier, for: indexPath) as? AddNewTrackerColorViewCell else { return UICollectionViewCell() }
         
         switch indexPath.section {
         case 0:
-            
-            
-            cell?.emojiLabel.text = emojiesAndColors.emojies[indexPath.row]
-           
-            
-         
-            return cell!
+            cellEmoji.emojiLabel.text = emojiesAndColors.emojies[indexPath.row]
+            return cellEmoji
         case 1:
-
-        
-            
-            cell?.emojiLabel.backgroundColor = emojiesAndColors.colors[indexPath.row]
-           
-            
-        
-            
-            return cell!
-        default: return AddNewTrackerEmojiesViewCell()
+            cellColor.colorViewFront.backgroundColor = emojiesAndColors.colors[indexPath.row]
+            return cellColor
+        default:
+            return UICollectionViewCell()
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as? AddNewTrackerEmojiesViewCell
-        cell?.layer.masksToBounds = true
-
-        
-        cell?.emojiLabel.layer.masksToBounds = true
-        
+       
     
+        
         
         switch indexPath.section {
         case 0:
-            cell?.emojiView.layer.backgroundColor = UIColor.lightGray.cgColor
+            
+            if let selectedEmojiIndexPath,
+               let previousCell = collectionView.cellForItem(at: selectedEmojiIndexPath) as? AddNewTrackerEmojiesViewCell {
+                previousCell.deselected()
+            }
+           
+            guard let cellEmoji = collectionView.cellForItem(at: indexPath) as? AddNewTrackerEmojiesViewCell else { return }
+            cellEmoji.selected()
             selectedEmojiIndexPath = indexPath
+                
+                
+
+           
+            
 
         case 1:
-
+            
+            
+           
+            if let selectedColorIndexPath,
+               let previousCell = collectionView.cellForItem(at: selectedColorIndexPath) as? AddNewTrackerColorViewCell {
+                previousCell.deselectedColor()
+            }
+            guard let cellColor = collectionView.cellForItem(at: indexPath) as? AddNewTrackerColorViewCell else { return }
             let coloru = emojiesAndColors.colors[indexPath.row]
-            cell?.emojiView.layer.borderWidth = 3
-            cell?.emojiView.layer.borderColor = coloru.cgColor
+            cellColor.selectedColor(forColor: coloru)
             selectedColorIndexPath = indexPath
 
         default: break
         }
-        //collectionView.reloadData()
+       
+        
         createButtonIsEnabled()
     }
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as? AddNewTrackerEmojiesViewCell
-        
-    }
+    
+
 }
 // MARK: - UICollectionViewDelegate
 extension AddNewTrackerViewController: UICollectionViewDelegate {

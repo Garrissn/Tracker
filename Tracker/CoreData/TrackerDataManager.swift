@@ -98,15 +98,16 @@ extension TrackerDataManager: TrackerDataManagerProtocol {
     }
     
     func fetchCategoriesFor(weekDay: String, animating: Bool) {
-        let predicate = NSPredicate(format: "ANY %K.%K == %ld", #keyPath(TrackerEntity.schedule), #keyPath(ScheduleEntity.weekDay), weekDay)
+        let predicate = NSPredicate(format: "ANY %K.%K == %@", #keyPath(TrackerEntity.schedule), #keyPath(ScheduleEntity.weekDay), weekDay)
         var trackerCategories = trackerCategoryStore.fetchCategoriesWithPredicate(predicate)
         trackerCategories.sort { $0.title < $1.title }
-        delegate?.updateView(categories: trackerCategories, animating: true)
+        print("called")
+        delegate?.updateView(categories: trackerCategories, animating: animating)
     }
     
     func fetchSearchCategories(textToSearch: String, weekDay: String) {
-        let textPredicate = NSPredicate(format: "ANY %K.%K == %ld", #keyPath(TrackerEntity.title), textToSearch)
-        let weekDayPredicate = NSPredicate(format: "ANY %K.%K == %ld", #keyPath(TrackerEntity.schedule), #keyPath(ScheduleEntity.weekDay), weekDay )
+        let textPredicate = NSPredicate(format: "ANY %K CONTAINS[c] %@", #keyPath(TrackerEntity.title), textToSearch)
+        let weekDayPredicate = NSPredicate(format: "ANY %K CONTAINS[c] %@", #keyPath(TrackerEntity.schedule), #keyPath(ScheduleEntity.weekDay), weekDay )
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
         textPredicate,weekDayPredicate
         ])

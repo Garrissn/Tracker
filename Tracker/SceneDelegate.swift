@@ -28,6 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                                                     trackerCategoryStore: trackerCategoryStore,
                                                     trackerRecordStore: trackerRecordStore,
                                                     context: context)
+        trackerCategoryStore.setTrackerDataController(trackerDataManager.fetchResultController)
         let mainScreenViewController = MainScreenTrackerViewController(trackerDataManager: trackerDataManager)
         
         let mainScreenNavigationController = UINavigationController(rootViewController: mainScreenViewController)

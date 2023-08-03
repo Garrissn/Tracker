@@ -71,22 +71,22 @@ final class CardTrackerViewCell: UICollectionViewCell {
     private var currentDate: Date =  Date()
     private var date: Date = Date()
     
-    func configure(with tracker: Tracker, isCompletedToday: Bool, completedDays: Int, indexPath: IndexPath, currentDate: Date ) {
-        self.trackerID = tracker.id
-        self.isCompletedToday = isCompletedToday
-        self.indexPath = indexPath
-        self.currentDate = currentDate
-        let color = tracker.color
+    func configure(with model: CardTrackerViewModel) {
+        self.trackerID = model.tracker.id
+        self.isCompletedToday = model.isCompletedToday
+        self.indexPath = model.indexPath
+        self.currentDate = model.currentDate
+        let color = model.tracker.color
         addCardViews()
         setupConstraints()
         
         cardTrackerView.backgroundColor = color
         plusButton.backgroundColor = color
         
-        cardTrackerText.text = tracker.title
-        emojiLabel.text = tracker.emoji
+        cardTrackerText.text = model.tracker.title
+        emojiLabel.text = model.tracker.emoji
         
-        let wordDay = pluralizeDays(completedDays)
+        let wordDay = pluralizeDays(model.completedDays)
         counterDaysLabelText.text = "\(wordDay)"
         
         let image = isCompletedToday ? doneImage : plusImage
@@ -128,28 +128,19 @@ final class CardTrackerViewCell: UICollectionViewCell {
             
             counterDaysLabelText.centerYAnchor.constraint(equalTo: plusButton.centerYAnchor),
             counterDaysLabelText.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12)
-            
-            
         ])
-        
     }
     
     
     
     @objc private func plusButtonTapped() {
         guard let trackerID = trackerID, let indexPath = indexPath else { return assertionFailure(" no id Tracker")}
-
         if date > currentDate {
             if isCompletedToday {
-                
                 delegate?.uncompletedTracker(id: trackerID, at: indexPath)
-                
             } else {
-                
                 delegate?.completedTracker(id: trackerID, at: indexPath)
-                
             }
-            
         }
     }
     

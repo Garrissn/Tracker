@@ -7,9 +7,8 @@
 
 import UIKit
 
-
 final class AddNewTrackerEmojiesViewCell: UICollectionViewCell {
-    
+ 
     static let addNewTrackerEmojiesViewCellIdentifier = "AddNewTrackerEmojiesViewCellIdentifier"
     
      let emojiView: UIView = {
@@ -47,6 +46,22 @@ final class AddNewTrackerEmojiesViewCell: UICollectionViewCell {
         
     }
     
+    func selected () {
+        
+        
+            let lightGrayWithOpacity = UIColor.lightGray.withAlphaComponent(0.3).cgColor
+            emojiView.layer.backgroundColor = lightGrayWithOpacity
+      
+           
+        
+        
+    }
+    
+    func deselected() {
+        emojiView.backgroundColor = .clear
+        emojiView.layer.borderColor = UIColor.clear.cgColor
+    }
+    
     private func addViews() {
         contentView.addSubview(emojiView)
         emojiView.addSubview(emojiLabel)
@@ -61,10 +76,10 @@ final class AddNewTrackerEmojiesViewCell: UICollectionViewCell {
             
             emojiLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             emojiLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-           emojiLabel.topAnchor.constraint(equalTo: emojiView.topAnchor, constant: 6),
-            emojiLabel.leadingAnchor.constraint(equalTo: emojiView.leadingAnchor, constant: 6),
-            emojiLabel.heightAnchor.constraint(equalToConstant: 40),
-            emojiLabel.widthAnchor.constraint(equalToConstant: 40)
+            emojiLabel.topAnchor.constraint(equalTo: emojiView.topAnchor, constant: 7),
+            emojiLabel.leadingAnchor.constraint(equalTo: emojiView.leadingAnchor, constant: 10),
+            emojiLabel.heightAnchor.constraint(equalToConstant: 38),
+            emojiLabel.widthAnchor.constraint(equalToConstant: 32)
             
         ])
     }

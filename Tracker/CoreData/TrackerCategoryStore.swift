@@ -19,7 +19,7 @@ protocol TrackerCategoryStoreProtocol {
 final class TrackerCategoryStore {
     private let context: NSManagedObjectContext
     private var trackerStore: TrackerStoreProtocol
-    private weak var trackerDataController: NSFetchedResultsController<TrackerEntity>?
+    private weak var trackerDataManager: NSFetchedResultsController<TrackerEntity>?
     
     init(context: NSManagedObjectContext, trackerStore: TrackerStoreProtocol) {
         self.context = context
@@ -30,7 +30,7 @@ final class TrackerCategoryStore {
 
 extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
     func setTrackerDataController(_ controller: NSFetchedResultsController<TrackerEntity>?) {
-        self.trackerDataController = controller
+        self.trackerDataManager = controller
     }
     
     func addTrackerCategory(_ trackerCategory: TrackerCategory) throws {
@@ -84,7 +84,7 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
     }
     
     func fetchCategoriesWithPredicate(_ predicate: NSPredicate) -> [TrackerCategory] {
-        guard let fetchRequest = trackerDataController?.fetchRequest else { return [] }
+        guard let fetchRequest = trackerDataManager?.fetchRequest else { return [] }
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(keyPath: \TrackerEntity.title, ascending: true)
@@ -92,8 +92,8 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         fetchRequest.predicate = predicate
         
         do {
-            try trackerDataController?.performFetch()
-            guard let trackersEntities = trackerDataController?.fetchedObjects else { return [] }
+            try trackerDataManager?.performFetch()
+            guard let trackersEntities = trackerDataManager?.fetchedObjects else { return [] }
             let trackerCategories = try convertTrackerCategoryEntityToTrackerCategories(trackersEntities)
             return trackerCategories
         } catch {
