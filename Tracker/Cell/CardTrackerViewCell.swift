@@ -10,10 +10,12 @@ import UIKit
 protocol CardTrackerViewCellDelegate: AnyObject  {
     func completedTracker(id: UUID, at indexPath: IndexPath)
     func uncompletedTracker(id: UUID, at indexPath: IndexPath)
+    
 }
 
 final class CardTrackerViewCell: UICollectionViewCell {
     
+    static let cardTrackerViewCellIdentifier = "CardTrackerCollectionViewIdentifier"
     
     private  let cardTrackerView: UIView = {
         let cardTrackerView = UIView()
@@ -28,6 +30,7 @@ final class CardTrackerViewCell: UICollectionViewCell {
         emojiLabel.clipsToBounds = true
         emojiLabel.layer.cornerRadius = 24 / 2
         emojiLabel.font = UIFont.systemFont(ofSize: 16)
+        emojiLabel.backgroundColor = .BackGroundDay
         emojiLabel.textAlignment = .center
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         return emojiLabel
@@ -42,14 +45,6 @@ final class CardTrackerViewCell: UICollectionViewCell {
         return cardTrackerText
     }()
     
-    private let pinImageView: UIImageView = {
-        let pinImageView = UIImageView()
-        pinImageView.image = UIImage(systemName: "pin.fill")
-        pinImageView.tintColor = .WhiteDay
-        pinImageView.translatesAutoresizingMaskIntoConstraints = false
-        return pinImageView
-    }()
-    
     private var counterDaysLabelText: UILabel = {
         let label = UILabel()
         label.font =  UIFont.systemFont(ofSize: 12, weight: .medium)
@@ -60,12 +55,10 @@ final class CardTrackerViewCell: UICollectionViewCell {
     private lazy var plusButton: UIButton = {
         let button = UIButton(type: .system)
         let pointSize = UIImage.SymbolConfiguration(pointSize: 11)
-        let image = UIImage(systemName: "plus", withConfiguration: pointSize)
+        let image = UIImage(systemName: "plus")
         button.tintColor = .WhiteDay
         button.setImage(image, for: .normal)
         button.layer.cornerRadius = 34 / 2
-        button.layer.masksToBounds = true
-       // button.setImage(UIImage(named: "plus.button.fill"), for: .normal)
         button.addTarget(nil, action: #selector(plusButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -75,11 +68,14 @@ final class CardTrackerViewCell: UICollectionViewCell {
        weak var delegate:CardTrackerViewCellDelegate?
     private var trackerID: UUID?
     private var indexPath: IndexPath?
+    private var currentDate: Date =  Date()
+    private var date: Date = Date()
     
-    func configure(with tracker: Tracker, isCompletedToday: Bool, completedDays: Int, indexPath: IndexPath ) {
+    func configure(with tracker: Tracker, isCompletedToday: Bool, completedDays: Int, indexPath: IndexPath, currentDate: Date ) {
         self.trackerID = tracker.id
         self.isCompletedToday = isCompletedToday
         self.indexPath = indexPath
+        self.currentDate = currentDate
         let color = tracker.color
         addCardViews()
         setupConstraints()
@@ -100,7 +96,7 @@ final class CardTrackerViewCell: UICollectionViewCell {
     private func addCardViews() {
         contentView.addSubview(cardTrackerView)
         cardTrackerView.addSubview(emojiLabel)
-        cardTrackerView.addSubview(pinImageView)
+        //cardTrackerView.addSubview(pinImageView)
         cardTrackerView.addSubview(cardTrackerText)
         contentView.addSubview(plusButton)
         contentView.addSubview(counterDaysLabelText)
@@ -111,9 +107,7 @@ final class CardTrackerViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             cardTrackerView.topAnchor.constraint(equalTo: topAnchor),
             cardTrackerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            //cardTrackerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-           // cardTrackerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            cardTrackerView.widthAnchor.constraint(equalToConstant: 167),
+            cardTrackerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             cardTrackerView.heightAnchor.constraint(equalToConstant: 90),
             
             
@@ -126,12 +120,8 @@ final class CardTrackerViewCell: UICollectionViewCell {
             cardTrackerText.trailingAnchor.constraint(equalTo: cardTrackerView.trailingAnchor, constant: -12),
             cardTrackerText.bottomAnchor.constraint(equalTo: cardTrackerView.bottomAnchor, constant: -12),
             
-            pinImageView.centerYAnchor.constraint(equalTo: emojiLabel.centerYAnchor),
-            pinImageView.trailingAnchor.constraint(equalTo: cardTrackerView.trailingAnchor, constant: -4),
-            
-            
             plusButton.topAnchor.constraint(equalTo: cardTrackerView.bottomAnchor, constant: 8),
-            plusButton.trailingAnchor.constraint(equalTo: cardTrackerView.trailingAnchor),
+            plusButton.trailingAnchor.constraint(equalTo: cardTrackerView.trailingAnchor, constant: -12),
             plusButton.heightAnchor.constraint(equalToConstant: 34),
             plusButton.widthAnchor.constraint(equalToConstant: 34),
             
@@ -148,20 +138,18 @@ final class CardTrackerViewCell: UICollectionViewCell {
     
     @objc private func plusButtonTapped() {
         guard let trackerID = trackerID, let indexPath = indexPath else { return assertionFailure(" no id Tracker")}
-        
-        if isCompletedToday {
-           
-            delegate?.uncompletedTracker(id: trackerID, at: indexPath)
+
+        if date > currentDate {
+            if isCompletedToday {
+                
+                delegate?.uncompletedTracker(id: trackerID, at: indexPath)
+                
+            } else {
+                
+                delegate?.completedTracker(id: trackerID, at: indexPath)
+                
+            }
             
-//            plusButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-//            plusButton.layer.opacity = 1
-//            isCompletedToday = false
-        } else {
-           
-            delegate?.completedTracker(id: trackerID, at: indexPath)
-//            plusButton.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
-//            plusButton.layer.opacity = 0.3
-//            isCompletedToday = true
         }
     }
     
@@ -194,7 +182,7 @@ struct GeometricParams {
     let leftInset: CGFloat
     let rightInset: CGFloat
     let cellSpacing: CGFloat
-    // Параметр вычисляется уже при создании, что экономит время на вычислениях при отрисовке коллекции.
+    
     let paddingWidth: CGFloat
     
     init(cellCount: Int, leftInset: CGFloat, rightInset: CGFloat, cellSpacing: CGFloat) {

@@ -7,37 +7,43 @@
 
 
 import UIKit
+protocol TrackerTypeSelectionViewControllerDelegate: AnyObject {
+    func didselectNewTracker(newTracker: TrackerCategory)
+}
 
 final class TrackerTypeSelectionViewController: UIViewController {
     
-    private let habitButton: UIButton = {
+    // MARK: - Private Properties
+    
+    private lazy var habitButton: UIButton = {
         let habitButton = UIButton()
         habitButton.translatesAutoresizingMaskIntoConstraints = false
-      
         habitButton.setTitle("Привычка", for: .normal)
         habitButton.setTitleColor(.WhiteDay, for: .normal)
-        
         habitButton.backgroundColor = .BlackDay
-       
-        habitButton.titleLabel?.font = UIFont(name: "SF-Pro", size: 16)
+        habitButton.clipsToBounds = true
+        habitButton.titleLabel?.font = UIFont.ypMedium16()
         habitButton.layer.cornerRadius = 16
         habitButton.addTarget(self, action: #selector(habbitButtonTapped), for: .touchUpInside)
-        
         return habitButton
     }()
     
-    private let irregularIventButton: UIButton = {
+    private lazy var irregularIventButton: UIButton = {
         let irregularIventButton = UIButton()
         irregularIventButton.translatesAutoresizingMaskIntoConstraints = false
         irregularIventButton.setTitle("Не регулярное событие", for: .normal)
         irregularIventButton.setTitleColor(.WhiteDay, for: .normal)
         irregularIventButton.backgroundColor = .BlackDay
-        
-        irregularIventButton.titleLabel?.font = UIFont(name: "SF-Pro", size: 16)
+        irregularIventButton.clipsToBounds = true
+        irregularIventButton.titleLabel?.font = UIFont.ypMedium16()
         irregularIventButton.layer.cornerRadius = 16
         irregularIventButton.addTarget(self, action: #selector(irregularIventButtonTapped), for: .touchUpInside)
         return irregularIventButton
     }()
+    
+    weak var delegate: TrackerTypeSelectionViewControllerDelegate?
+    
+    // MARK: - LifeCircle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,23 +52,25 @@ final class TrackerTypeSelectionViewController: UIViewController {
         setupLayoutViews()
         setupNavigationBar()
     }
+    // MARK: - Private Methods
+    
     private func  setupNavigationBar() {
         let titleLabel = UILabel()
         titleLabel.text = "Создание трекера"
         titleLabel.textColor = .BlackDay
-        titleLabel.font = UIFont(name: "SFProText-Medium", size: 16)
+        titleLabel.font = UIFont.ypMedium16()
         titleLabel.textAlignment = .center
-        
         navigationItem.titleView = titleLabel
-        
     }
+    
     private func setupLayoutViews() {
+        
         view.addSubview(habitButton)
         view.addSubview(irregularIventButton)
         
         NSLayoutConstraint.activate([
-            habitButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            habitButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 395),
+            habitButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            habitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 281),
             habitButton.heightAnchor.constraint(equalToConstant: 60),
             habitButton.widthAnchor.constraint(equalToConstant: 335)
         ])
@@ -75,15 +83,29 @@ final class TrackerTypeSelectionViewController: UIViewController {
     }
     
     @objc private func habbitButtonTapped() {
-
-        let addTrackerViewController = AddNewTrackerViewController()
-        let navVC = UINavigationController(rootViewController: addTrackerViewController)
-        present(navVC, animated: true)
+        
+        let addNewTrackerViewController = AddNewTrackerViewController()
+        addNewTrackerViewController.trackerType = .habitTracker
+        addNewTrackerViewController.delegate = self
+        present(addNewTrackerViewController, animated: true)
         
     }
     @objc private func irregularIventButtonTapped() {
+        
+        let addNewTrackerViewController = AddNewTrackerViewController()
+        addNewTrackerViewController.trackerType = .irregularIvent
+        addNewTrackerViewController.delegate = self
+        present(addNewTrackerViewController, animated: true)
+        
+    }
+}
 
-        
-        
+// MARK: - AddNewTrackerViewControllerDelegate
+
+extension TrackerTypeSelectionViewController: AddNewTrackerViewControllerDelegate {
+    func didSelectNewTracker(newTracker: TrackerCategory) {
+        self.delegate?.didselectNewTracker(newTracker: newTracker)
+        let mainScreenViewController = MainScreenTrackerViewController()
+        dismiss(animated: true)
     }
 }

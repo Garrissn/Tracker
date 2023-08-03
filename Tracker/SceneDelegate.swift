@@ -27,14 +27,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         tabBarController.viewControllers = [mainScreenNavigationController,statisticViewController]
         
-        //настройка вкладок
+        //настройка вкладок таббара
         mainScreenViewController.tabBarItem = UITabBarItem(title: "Трекеры", image: UIImage(named:"record.circle.fill"), tag: 0)
-
-      statisticViewController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(named: "hare.fill"), tag: 1)
-        let tabBar = tabBarController.tabBar
-            // Установите желаемый цвет фона
-        //tabBar.backgroundColor = .BackGroundDay
-        
+        statisticViewController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(named: "hare.fill"), tag: 1)
+       
+       let tabBar = tabBarController.tabBar
+        tabBar.barTintColor = .Gray
+        tabBar.backgroundColor = .WhiteDay
+        let lineView = UIView(frame: CGRect(x: 0, y: 0, width: tabBar.frame.width, height: 1))
+        lineView.backgroundColor = UIColor.Gray
+        tabBar.insertSubview(lineView, at: 0)
         window.rootViewController = tabBarController
         self.window = window
         window.makeKeyAndVisible()
