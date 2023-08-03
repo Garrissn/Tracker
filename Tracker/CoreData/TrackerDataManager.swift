@@ -101,16 +101,17 @@ extension TrackerDataManager: TrackerDataManagerProtocol {
         let predicate = NSPredicate(format: "ANY %K.%K == %@", #keyPath(TrackerEntity.schedule), #keyPath(ScheduleEntity.weekDay), weekDay)
         var trackerCategories = trackerCategoryStore.fetchCategoriesWithPredicate(predicate)
         trackerCategories.sort { $0.title < $1.title }
-        print("called")
+        print("запрос1")
         delegate?.updateView(categories: trackerCategories, animating: animating)
     }
     
     func fetchSearchCategories(textToSearch: String, weekDay: String) {
         let textPredicate = NSPredicate(format: "ANY %K CONTAINS[c] %@", #keyPath(TrackerEntity.title), textToSearch)
-        let weekDayPredicate = NSPredicate(format: "ANY %K CONTAINS[c] %@", #keyPath(TrackerEntity.schedule), #keyPath(ScheduleEntity.weekDay), weekDay )
+       // let weekDayPredicate = NSPredicate(format: "ANY %K.%K CONTAINS[c] %@", #keyPath(TrackerEntity.schedule), #keyPath(ScheduleEntity.weekDay), weekDay )
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-        textPredicate,weekDayPredicate
+        textPredicate
         ])
+        print("запрос2")
         var trackerCategories = trackerCategoryStore.fetchCategoriesWithPredicate(predicate)
         trackerCategories.sort { $0.title < $1.title }
         delegate?.updateView(categories: trackerCategories, animating: true)

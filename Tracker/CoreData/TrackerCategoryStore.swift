@@ -53,9 +53,9 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         try context.save()
     }
     
-    func convertTrackerCategoryEntityToTrackerCategories(_ trackersEntity: [TrackerEntity]) throws  -> [TrackerCategory] {
+    func convertTrackerCategoryEntityToTrackerCategories(_ trackersEntity: [TrackerEntity])   -> [TrackerCategory] {
         var trackerCategories: [TrackerCategory] = []
-      
+        do {
             let trackersGroupedByTitle = Dictionary(grouping: trackersEntity) {$0.trackerCategory?.title}
             for (key, value) in trackersGroupedByTitle {
                 let trackers = try value.map ({ try trackerStore.convertTrackerEntityToTracker($0)})
@@ -65,14 +65,18 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
                 let trackerCategory = TrackerCategory(title: key, trackers: trackers)
                 trackerCategories.append(trackerCategory)
             }
-       
+        } catch {
+            print("Ошибка конвертации в котегорию")
+        }
         return trackerCategories
     }
     
     func convertTrackerCategoryEntityToTrackerCategory(_ objects: [TrackerCategoryEntity]) throws -> [TrackerCategory] {
         var trackerCategories: [TrackerCategory] = []
         for object in objects {
-            guard let title = object.title else {
+            guard let title = object.title
+                  
+            else {
                 throw TrackerErrors.decodingError
             }
             let trackersArray = try object.trackers?.compactMap({ $0 as? TrackerEntity}).compactMap({ try trackerStore.convertTrackerEntityToTracker($0)
@@ -94,7 +98,7 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         do {
             try trackerDataManager?.performFetch()
             guard let trackersEntities = trackerDataManager?.fetchedObjects else { return [] }
-            let trackerCategories = try convertTrackerCategoryEntityToTrackerCategories(trackersEntities)
+            let trackerCategories =  convertTrackerCategoryEntityToTrackerCategories(trackersEntities)
             return trackerCategories
         } catch {
             return []

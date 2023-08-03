@@ -42,12 +42,8 @@ final class AddNewTrackerColorViewCell: UICollectionViewCell {
     }
     
     func selectedColor (forColor: UIColor?) {
-     
-            colorViewBack.layer.borderWidth = 3
-            
-            colorViewBack.layer.borderColor = forColor?.withAlphaComponent(0.3).cgColor
-        
-        
+        colorViewBack.layer.borderWidth = 3
+        colorViewBack.layer.borderColor = forColor?.withAlphaComponent(0.3).cgColor
     }
     
     func deselectedColor() {
@@ -73,8 +69,6 @@ final class AddNewTrackerColorViewCell: UICollectionViewCell {
             colorViewFront.leadingAnchor.constraint(equalTo: colorViewBack.leadingAnchor, constant: 6),
             colorViewFront.heightAnchor.constraint(equalToConstant: 40),
             colorViewFront.widthAnchor.constraint(equalToConstant: 40)
-            
-                                            
         ])
     }
 }

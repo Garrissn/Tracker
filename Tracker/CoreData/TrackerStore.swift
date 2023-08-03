@@ -81,9 +81,9 @@ extension TrackerStore: TrackerStoreProtocol {
         let hexColor = uiColorMarshalling.hexString(from: color)
         trackerEntity.color = hexColor
         
-        if let schedule = tracker.schedule {
+         let schedule = tracker.schedule
             trackerEntity.schedule = convertScheduleArrayToScheduleEntity(schedule)
-        }
+        
         return trackerEntity
     }
 }

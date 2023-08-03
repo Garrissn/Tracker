@@ -19,25 +19,17 @@ final class HeaderCollectionView: UICollectionReusableView {
         return label
     }()
     
-   
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         addSubview(titleLabel)
-        
         
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 24),
-           // titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 12)
-        
-])
+        ])
     }
-    
     func configureHeader(title: String) {
         titleLabel.text = title
-        
     }
     
     required init?(coder: NSCoder) {

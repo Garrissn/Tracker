@@ -8,10 +8,10 @@
 import UIKit
 
 final class AddNewTrackerEmojiesViewCell: UICollectionViewCell {
- 
+    
     static let addNewTrackerEmojiesViewCellIdentifier = "AddNewTrackerEmojiesViewCellIdentifier"
     
-     let emojiView: UIView = {
+    let emojiView: UIView = {
         let view = UIView()
         view.layer.masksToBounds = true
         view.layer.cornerRadius = 16
@@ -19,13 +19,13 @@ final class AddNewTrackerEmojiesViewCell: UICollectionViewCell {
         return view
     }()
     
-     var emojiLabel: UILabel = {
+    var emojiLabel: UILabel = {
         let label = UILabel()
-         label.textAlignment = .center
-         label.font = UIFont.ypBold32()
-         label.layer.masksToBounds = true
-         label.layer.cornerRadius = 8
-         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.font = UIFont.ypBold32()
+        label.layer.masksToBounds = true
+        label.layer.cornerRadius = 8
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -43,18 +43,11 @@ final class AddNewTrackerEmojiesViewCell: UICollectionViewCell {
     
     func configureAddNewTrackerEmojiesViewCell(with emoji: String) {
         emojiLabel.text = emoji
-        
     }
     
     func selected () {
-        
-        
-            let lightGrayWithOpacity = UIColor.lightGray.withAlphaComponent(0.3).cgColor
-            emojiView.layer.backgroundColor = lightGrayWithOpacity
-      
-           
-        
-        
+        let lightGrayWithOpacity = UIColor.lightGray.withAlphaComponent(0.3).cgColor
+        emojiView.layer.backgroundColor = lightGrayWithOpacity
     }
     
     func deselected() {
@@ -68,7 +61,7 @@ final class AddNewTrackerEmojiesViewCell: UICollectionViewCell {
     }
     
     private func setupConstraints() {
-      NSLayoutConstraint.activate([
+        NSLayoutConstraint.activate([
             emojiView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             emojiView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             emojiView.heightAnchor.constraint(equalToConstant: 52),
