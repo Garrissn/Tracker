@@ -105,7 +105,7 @@ final class TrackerTypeSelectionViewController: UIViewController {
 extension TrackerTypeSelectionViewController: AddNewTrackerViewControllerDelegate {
     func didSelectNewTracker(newTracker: TrackerCategory) {
         self.delegate?.didselectNewTracker(newTracker: newTracker)
-        let mainScreenViewController = MainScreenTrackerViewController()
+       // let mainScreenViewController = MainScreenTrackerViewController()
         dismiss(animated: true)
     }
 }

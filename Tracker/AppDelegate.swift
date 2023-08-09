@@ -6,9 +6,25 @@
 //
 
 import UIKit
+import CoreData
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    lazy var persistantConteiner:NSPersistentContainer = {
+        let conteiner = NSPersistentContainer(name: "CoreDataModel")
+        conteiner.loadPersistentStores { (storeDescription, error) in
+            if let error = error as? NSError {
+                fatalError("Unresolved error \(error), \(error.userInfo)")
+            }
+        }
+        return conteiner
+    }()
+    
+    lazy var context: NSManagedObjectContext = {
+        return persistantConteiner.viewContext
+    }()
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -26,5 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return configuration
     }
+    
+   
 }
 
