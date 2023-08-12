@@ -13,6 +13,9 @@ final class AddCategoryViewModel {
     init(model: AddCategoryModel) {
         self.model = model
         model.setupDelegate(vc: self)
+        model.trackerCategoryStore.onTrackerCategoryAdded = { [weak self] in
+                    self?.loadCategories()
+                }
     }
     
     @Observable

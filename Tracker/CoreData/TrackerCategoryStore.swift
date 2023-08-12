@@ -26,6 +26,8 @@ final class TrackerCategoryStore: NSObject {
     private weak var trackerDataManager: NSFetchedResultsController<TrackerEntity>?
     weak var delegate: TrackerCategoryStoreDelegate?
     
+    var onTrackerCategoryAdded: (() -> Void)?
+    
     init(context: NSManagedObjectContext, trackerStore: TrackerStoreProtocol) {
         self.context = context
         self.trackerStore = trackerStore
@@ -62,7 +64,7 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         newCategory.title = trackerCategory.title
         
         try context.save()
-        
+        onTrackerCategoryAdded?()
     }
     
     func convertTrackerCategoryEntityToTrackerCategories(_ trackersEntity: [TrackerEntity])   -> [TrackerCategory] {

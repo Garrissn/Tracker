@@ -17,7 +17,7 @@ final class AddCategoryModel {
             return TrackerStore(context: context)
         }()
     
-        private lazy var trackerCategoryStore: TrackerCategoryStore = {
+        lazy var trackerCategoryStore: TrackerCategoryStore = {
             return TrackerCategoryStore(context: context, trackerStore: trackerStore)
         }()
         
