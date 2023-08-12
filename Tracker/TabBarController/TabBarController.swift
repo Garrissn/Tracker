@@ -12,20 +12,20 @@ final class TabBarController: UITabBarController {
         super.viewDidLoad()
         
        
-//        let context = (UIApplication.shared.delegate as! AppDelegate).persistantConteiner.viewContext
-//        let trackerStore = TrackerStore(context: context)
-//        let trackerCategoryStore = TrackerCategoryStore(context: context,
-//                                                        trackerStore: trackerStore)
-//        let trackerRecordStore = TrackerRecordStore(context: context)
-//        let trackerDataManager = TrackerDataManager(trackerStore: trackerStore,
-//                                                    trackerCategoryStore: trackerCategoryStore,
-//                                                    trackerRecordStore: trackerRecordStore,
-//                                                    context: context)
-//        trackerCategoryStore.setTrackerDataController(trackerDataManager.fetchResultController)
-//        let mainScreenViewController = MainScreenTrackerViewController(trackerDataManager: trackerDataManager)
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistantConteiner.viewContext
+        let trackerStore = TrackerStore(context: context)
+        let trackerCategoryStore = TrackerCategoryStore(context: context,
+                                                        trackerStore: trackerStore)
+        let trackerRecordStore = TrackerRecordStore(context: context)
+        let trackerDataManager = TrackerDataManager(trackerStore: trackerStore,
+                                                    trackerCategoryStore: trackerCategoryStore,
+                                                    trackerRecordStore: trackerRecordStore,
+                                                    context: context)
+        trackerCategoryStore.setTrackerDataController(trackerDataManager.fetchResultController)
+        let mainScreenViewController = MainScreenTrackerViewController(trackerDataManager: trackerDataManager)
         
         
-        let mainScreenViewController = MainScreenTrackerViewController()
+        
         let mainScreenNavigationController = UINavigationController(rootViewController: mainScreenViewController)
         let statisticViewController = StatisticViewController()
         self.viewControllers = [mainScreenNavigationController,statisticViewController]

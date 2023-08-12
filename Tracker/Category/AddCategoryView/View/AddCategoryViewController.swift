@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AddCategoryViewControllerDelegate: AnyObject {
-    func didNewCategoryselect(category: TrackerCategory)
+    func didNewCategorySelect(categoryTitle: String)
 }
 
 final class AddCategoryViewController: UIViewController {
@@ -66,7 +66,21 @@ final class AddCategoryViewController: UIViewController {
         return button
     }()
     
- //   weak var delegate: CategoriesListViewControllerDelegate?
+    private var viewModel: AddCategoryViewModel
+    private var categoryTitle: String
+    
+    init( viewModel: AddCategoryViewModel, categoryTitle: String) {
+        self.categoryTitle = categoryTitle
+        self.viewModel = viewModel
+        viewModel.loadCategories()
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+       weak var delegate: AddCategoryViewControllerDelegate?
     // MARK: - LifeCircle
     
     override func viewDidLoad() {
@@ -76,6 +90,13 @@ final class AddCategoryViewController: UIViewController {
         addViews()
         setupConstraints()
         checkPlaceHolder()
+    }
+    
+    func bind() {
+        viewModel.$categories.bind { [weak self] _ in
+            guard let self = self else { return }
+            self.categoryTableView.reloadData()
+        }
     }
     // MARK: - Private Methods
     
@@ -109,34 +130,36 @@ final class AddCategoryViewController: UIViewController {
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60),
             addCategoryButton.widthAnchor.constraint(equalToConstant: 335),
             addCategoryButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-            
         ])
-        
     }
     
     @objc private func addCategoryButtonTapped() {
-        
-        let categoriesViewController = AddNewCategoryViewController()
-        //addNewTrackerViewController.trackerType = .habitTracker
-        //addNewTrackerViewController.delegate = self
-        present(categoriesViewController, animated: true)
+        let model = AddNewCategoryModel()
+        let viewModel = AddNewCategoryViewModel(model: model)
+        let addNewcategoryViewController = AddNewCategoryViewController(viewModel: viewModel)
+        addNewcategoryViewController.delegate = self
+        present(addNewcategoryViewController, animated: true)
         
     }
     
     private func checkPlaceHolder() {
-        
-        placenolderImageView.isHidden = true
-        placeHolderTextLabel.isHidden = true
+        if viewModel.categories.count != 0 {
+            placenolderImageView.isHidden = true
+            placeHolderTextLabel.isHidden = true
+        }
     }
 }
 
 extension AddCategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return viewModel.categories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CategoryTableViewCell.categoryTableViewCellIdentifier) as? CategoryTableViewCell else { return UITableViewCell()}
+        let cellTitle = viewModel.categories[indexPath.row].title
+        cell.configure(cellTitle: cellTitle, isSelected: cellTitle == categoryTitle)
+        return cell
     }
     
     
@@ -153,16 +176,18 @@ extension AddCategoryViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let selectedCategory = viewModel.categories[indexPath.row]
+        delegate?.didNewCategorySelect(categoryTitle: selectedCategory.title)
+        dismiss(animated: true)
     }
 }
 
 extension AddCategoryViewController: AddNewCategoryViewControllerDelegate {
     func didSelectNewCategory(name: TrackerCategory) {
         //получмлм название категории и через модель записать в контекст
+        viewModel.addNewCategory(category: name)
         categoryTableView.reloadData()
+        checkPlaceHolder()
         //проверка вьюмодели трекер категории пуст -Ю кнопка неактивна
     }
-    
-    
 }

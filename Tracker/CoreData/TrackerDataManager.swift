@@ -8,6 +8,8 @@
 import Foundation
 import CoreData
 
+
+
 protocol TrackerDataManagerDelegate: AnyObject {
     func updateViewByController(_ update: TrackerCategoryStoreUpdate)
     func updateView(categories: [TrackerCategory], animating: Bool)
@@ -40,7 +42,11 @@ final class TrackerDataManager: NSObject { //берем трекеры из ко
     private var updatedIndexes: [IndexPath]?
     private var movedIndexes: [TrackerCategoryStoreUpdate.Move]?
     
-    init(trackerStore: TrackerStoreProtocol, trackerCategoryStore: TrackerCategoryStoreProtocol, trackerRecordStore: TrackerRecordStoreProtocol, context: NSManagedObjectContext) {
+    
+    init(trackerStore: TrackerStoreProtocol,
+         trackerCategoryStore: TrackerCategoryStoreProtocol,
+         trackerRecordStore: TrackerRecordStoreProtocol,
+         context: NSManagedObjectContext) {
         self.trackerStore = trackerStore
         self.trackerCategoryStore = trackerCategoryStore
         self.trackerRecordStore = trackerRecordStore
@@ -60,6 +66,7 @@ final class TrackerDataManager: NSObject { //берем трекеры из ко
         controller.delegate = self
         self.fetchResultController = controller
         try? controller.performFetch()
+        
     }
 }
 // MARK: - TrackerDataManagerProtocol
@@ -167,3 +174,6 @@ extension TrackerDataManager: NSFetchedResultsControllerDelegate {
         }
     }
 }
+
+
+

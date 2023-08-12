@@ -31,9 +31,11 @@ final class AddNewCategoryViewController: UIViewController {
         textField.textColor = .BlackDay
         textField.font = UIFont.ypRegular17()
         // Создаем отступ, для текста в плейсхолдере
+        
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: textField.frame.height))
         textField.leftView = paddingView
         textField.leftViewMode = .always
+        textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
     
@@ -42,42 +44,63 @@ final class AddNewCategoryViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Готово", for: .normal)
         button.setTitleColor(.WhiteDay, for: .normal)
-        button.backgroundColor = .BlackDay
+        button.backgroundColor = .Gray
         button.clipsToBounds = true
         button.titleLabel?.font = UIFont.ypMedium16()
         button.layer.cornerRadius = 16
-        button.isEnabled = false
-      //  button.isUserInteractionEnabled = false
+        
+        button.isUserInteractionEnabled = false
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         return button
     }()
     
     weak var delegate: AddNewCategoryViewControllerDelegate?
     private var newCategoryText: String = ""
+    private let viewModel: AddNewCategoryViewModel
+    
+    init(viewModel: AddNewCategoryViewModel) {
+        
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.bind()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .WhiteDay
-        addViews()
-        setupConstraints()
+        addTableViews()
+        setupTableConstraints()
     }
     
-    private func addViews() {
+    func bind() {
+        viewModel.$isCategoryTitleFilled.bind { [weak self] isFilled in
+            guard let self = self else { return }
+            updateDoneButton(isActive: isFilled)
+        }
+    }
+    
+    private func addTableViews() {
         view.addSubview(titleLabel)
         view.addSubview(categoryNameTextField)
         view.addSubview(doneButton)
     }
     
-    private func setupConstraints() {
+    private func  setupTableConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 27),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             categoryNameTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
             categoryNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             categoryNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            categoryNameTextField.heightAnchor.constraint(equalToConstant: 75),
             
+            doneButton.heightAnchor.constraint(equalToConstant: 60),
             doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
@@ -111,21 +134,22 @@ final class AddNewCategoryViewController: UIViewController {
 
 extension AddNewCategoryViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        newCategoryText = textField.text ?? ""
         textField.resignFirstResponder()
-        //передать вьюмодели текст 
+        newCategoryText = textField.text ?? ""
+        //передать вьюмодели текст
+        viewModel.checkCategoryTitle(text: textField.text)
         return true
     }
     
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        if textField.text?.isEmpty == true {
-            doneButton.backgroundColor = .Gray
-            doneButton.isEnabled = false
-        } else {
-            doneButton.isEnabled = true
-            doneButton.backgroundColor = .BlackDay
-        }
-    }
+//    func textFieldDidChangeSelection(_ textField: UITextField) {
+//        if textField.text?.isEmpty == true {
+//            doneButton.backgroundColor = .Gray
+//            doneButton.isEnabled = false
+//        } else {
+//            doneButton.isEnabled = true
+//            doneButton.backgroundColor = .BlackDay
+//        }
+//    }
 }
 
 

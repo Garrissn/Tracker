@@ -11,6 +11,8 @@
 		CE34D0B42A826C2100FFC06E /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE34D0B32A826C2000FFC06E /* OnboardingViewController.swift */; };
 		CE4BAD4A2A604A8A0057215D /* AddNewTrackerEmojiesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4BAD492A604A8A0057215D /* AddNewTrackerEmojiesViewCell.swift */; };
 		CE4BAD4C2A6169090057215D /* EmojiesAndColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4BAD4B2A6169090057215D /* EmojiesAndColors.swift */; };
+		CE5FA9BA2A862711001AF0E1 /* AddNewCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5FA9B92A862711001AF0E1 /* AddNewCategoryModel.swift */; };
+		CE5FA9BC2A862C8A001AF0E1 /* AddNewCategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5FA9BB2A862C8A001AF0E1 /* AddNewCategoryViewModel.swift */; };
 		CE6633C42A765C5E00607EC1 /* TrackerRecordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6633C32A765C5E00607EC1 /* TrackerRecordStore.swift */; };
 		CE6633C62A76A72200607EC1 /* TrackerCategoryStoreUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6633C52A76A72200607EC1 /* TrackerCategoryStoreUpdate.swift */; };
 		CE6692C62A5BF08000D7FB5F /* WeekDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6692C52A5BF08000D7FB5F /* WeekDay.swift */; };
@@ -76,6 +78,8 @@
 		CE34D0B32A826C2000FFC06E /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		CE4BAD492A604A8A0057215D /* AddNewTrackerEmojiesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTrackerEmojiesViewCell.swift; sourceTree = "<group>"; };
 		CE4BAD4B2A6169090057215D /* EmojiesAndColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiesAndColors.swift; sourceTree = "<group>"; };
+		CE5FA9B92A862711001AF0E1 /* AddNewCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCategoryModel.swift; sourceTree = "<group>"; };
+		CE5FA9BB2A862C8A001AF0E1 /* AddNewCategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCategoryViewModel.swift; sourceTree = "<group>"; };
 		CE6633C32A765C5E00607EC1 /* TrackerRecordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordStore.swift; sourceTree = "<group>"; };
 		CE6633C52A76A72200607EC1 /* TrackerCategoryStoreUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryStoreUpdate.swift; sourceTree = "<group>"; };
 		CE6692C52A5BF08000D7FB5F /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
@@ -316,6 +320,7 @@
 		CEFCC59C2A85559900AF1F94 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CE5FA9B92A862711001AF0E1 /* AddNewCategoryModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -331,6 +336,7 @@
 		CEFCC59F2A8555CE00AF1F94 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				CE5FA9BB2A862C8A001AF0E1 /* AddNewCategoryViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -339,8 +345,8 @@
 			isa = PBXGroup;
 			children = (
 				CEFCC59E2A8555B800AF1F94 /* View */,
-				CEFCC59C2A85559900AF1F94 /* Model */,
 				CEFCC59F2A8555CE00AF1F94 /* ViewModel */,
+				CEFCC59C2A85559900AF1F94 /* Model */,
 			);
 			path = AddNewCategory;
 			sourceTree = "<group>";
@@ -348,8 +354,8 @@
 		CEFCC5A12A8556B500AF1F94 /* AddCategoryView */ = {
 			isa = PBXGroup;
 			children = (
-				CEFCC5A42A8556EA00AF1F94 /* ViewModel */,
 				CEFCC5A22A8556CA00AF1F94 /* Model */,
+				CEFCC5A42A8556EA00AF1F94 /* ViewModel */,
 				CEFCC5A32A8556DB00AF1F94 /* View */,
 			);
 			path = AddCategoryView;
@@ -524,6 +530,8 @@
 				CE7784DF2A45D78500E01A81 /* StatisticViewController.swift in Sources */,
 				CE78C3DB2A4F172E00D28141 /* AddScheduleViewController.swift in Sources */,
 				CE7A56DB2A55A8F600F494EF /* TrackerType.swift in Sources */,
+				CE5FA9BC2A862C8A001AF0E1 /* AddNewCategoryViewModel.swift in Sources */,
+				CE5FA9BA2A862711001AF0E1 /* AddNewCategoryModel.swift in Sources */,
 				CEA04AB22A437B4A003A8F70 /* AppDelegate.swift in Sources */,
 				CE7286522A4B306D0011F679 /* HeaderCollectionView.swift in Sources */,
 				CEFCC5AA2A85719200AF1F94 /* AddCategoryModel.swift in Sources */,

@@ -11,6 +11,7 @@ protocol AddNewTrackerViewControllerDelegate: AnyObject {
     func didSelectNewTracker(newTracker: TrackerCategory)
 }
 
+
 final class AddNewTrackerViewController: UIViewController {
     
     // MARK: - Private Properties
@@ -127,19 +128,22 @@ final class AddNewTrackerViewController: UIViewController {
     }()
     
     
-    private var currentCatergory: String? = "Новая категория"
+    private var currentCatergory: String?
     private var schedule: [WeekDay] = []
     private var selectedEmojiIndexPath: IndexPath?
     private var selectedColorIndexPath: IndexPath?
     private var newTrackerText: String = ""
     private var heightTableView: CGFloat = 75
     private let emojiesAndColors: EmojiesAndColors = EmojiesAndColors()
-    
-    
+//    private let trackerDataManager: TrackerDataManagerProtocol? /// dhghjc
+  
     weak var delegate: AddNewTrackerViewControllerDelegate?
     var trackerType: TrackerType?
+    
     private let paramsForAddNewTrackerCell = GeometricParams(cellCount:6,
                                                              leftInset: 0, rightInset: 0, cellSpacing: 5)
+    
+    
     
     // MARK: - LifeCircle
     override func viewDidLoad() {
@@ -226,7 +230,7 @@ final class AddNewTrackerViewController: UIViewController {
         guard let colorIndex = selectedColorIndexPath else { return }
         let selectedColor = emojiesAndColors.colors[colorIndex.row]
         self.delegate?.didSelectNewTracker(newTracker: TrackerCategory(
-            title: "Новая Категория",
+            title: currentCatergory ?? "",
             trackers: [Tracker.init(id: UUID(),
                                     title: trackerTitleName,
                                     color: selectedColor,
@@ -332,8 +336,18 @@ extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource
         tableView.deselectRow(at: indexPath, animated: true)
         switch indexPath.row {
         case 0:
-            let addCategoryViewController = AddCategoryViewController()
-            present(addCategoryViewController, animated: true)
+            
+                let model = AddCategoryModel()
+                let viewModel = AddCategoryViewModel(model: model)
+            let value = currentCatergory ?? " "
+            let addCategoryVC = AddCategoryViewController(viewModel: viewModel, categoryTitle: value)
+               
+            addCategoryVC.bind()
+                addCategoryVC.delegate = self
+            
+                present(addCategoryVC, animated: true)
+           
+          
         case 1:
             let addScheduleViewController = AddScheduleViewController()
             addScheduleViewController.delegate = self
@@ -449,5 +463,12 @@ extension AddNewTrackerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: 24, left: 18, bottom: 24, right: 18)
+    }
+}
+
+extension AddNewTrackerViewController: AddCategoryViewControllerDelegate {
+    func didNewCategorySelect(categoryTitle: String) {
+        currentCatergory = categoryTitle
+        tableView.reloadData()
     }
 }

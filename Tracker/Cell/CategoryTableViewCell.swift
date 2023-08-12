@@ -11,16 +11,17 @@ final class CategoryTableViewCell: UITableViewCell {
     
     static let categoryTableViewCellIdentifier = "CategoryTableViewCellIdentifier"
     
-    private lazy var cellTitleLabel: UILabel = {
+    private  var cellTitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .BlackDay
         label.font = UIFont.ypRegular17()
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private lazy var doneImageView: UIImageView = {
+    private  var doneImageView: UIImageView = {
         let imageView = UIImageView()
-        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
@@ -50,5 +51,17 @@ final class CategoryTableViewCell: UITableViewCell {
             doneImageView.centerYAnchor.constraint(equalTo: cellTitleLabel.centerYAnchor),
             doneImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         ])
+    }
+    
+    func configure(cellTitle: String, isSelected: Bool?) {
+        self.cellTitleLabel.text = cellTitle
+        guard let isSelected = isSelected else { return }
+        
+        categoryIsSelected(_ : isSelected)
+    }
+    
+    func categoryIsSelected(_ : Bool) {
+        let imageCheckMark = UIImage(named: "checkMark")
+        doneImageView.image = isSelected ? imageCheckMark : nil
     }
 }
