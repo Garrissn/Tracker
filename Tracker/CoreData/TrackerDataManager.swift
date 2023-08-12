@@ -72,6 +72,23 @@ final class TrackerDataManager: NSObject { //берем трекеры из ко
 // MARK: - TrackerDataManagerProtocol
 
 extension TrackerDataManager: TrackerDataManagerProtocol {
+    
+    var categor: [TrackerCategoryEntity]  {
+        let fetchRequest = TrackerCategoryEntity.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \TrackerCategoryEntity.title, ascending: true)]
+        let fetchResultController = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: context,
+            sectionNameKeyPath: nil, cacheName: nil)
+        try? fetchResultController.performFetch()
+        
+        
+        guard let objects = fetchResultController.fetchedObjects else { return [] }
+        return objects
+    }
+    
+    
+
     var categories: [TrackerCategory]  {
         guard let objects = self.fetchResultController?.fetchedObjects else { return [] }
         do {

@@ -34,8 +34,8 @@ final class AddCategoryModel {
     
     
     func loadCategoriesFromCoreData() -> [Category] {
-        return trackerDataManager.categories.compactMap {
-            let title = $0.title
+        return trackerDataManager.categor.compactMap {
+           guard let title = $0.title else {return nil}
             return Category(title: title, isSelected: false)
         }
     }
