@@ -268,11 +268,12 @@ class MainScreenTrackerViewController: UIViewController {
             placeHolderImageView.isHidden = false
             switch view {
             case .notFound:
-                placeHolderImageView.image = UIImage(named: "errorNothingFound")
-                placeHolderText.text = "Ничего не найдено"
-            case .whatToTrack:
                 placeHolderImageView.image = UIImage(named: "error")
                 placeHolderText.text = "Что будем отслеживать?"
+            case .whatToTrack:
+               
+                placeHolderImageView.image = UIImage(named: "errorNothingFound")
+                placeHolderText.text = "Ничего не найдено"
             }
         } else {
             placeHolderText.isHidden = true
