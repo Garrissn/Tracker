@@ -434,7 +434,7 @@ extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDel
             }
         }
                 
-        
+        // ToDo:
 //                if categories.contains(where: { $0.title == trackerCategory.title}) {
 //                    guard let index = categories.firstIndex(where: {$0.title == trackerCategory.title}) else { return }
 //                    let oldCategory = categories[index]
