@@ -41,13 +41,8 @@ final class AddCategoryModel {
     }
     
     func addNewCategory(category: TrackerCategory) {
-        try? trackerDataManager.addTrackerCategory(category)
+        try? trackerDataManager.addTrackerCategoryTitle(category)
     }
-    
-    func setupDelegate(vc: AddCategoryViewModel) {
-        self.trackerCategoryStore.setDelegate(delegateForStore: vc)
-    }
-    
 }
 
 struct Category {

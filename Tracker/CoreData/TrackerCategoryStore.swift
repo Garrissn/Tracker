@@ -13,6 +13,7 @@ protocol TrackerCategoryStoreDelegate: AnyObject {
 }
 
 protocol TrackerCategoryStoreProtocol {
+    func addTrackerCategoryTitle(_ trackerCategory: TrackerCategory) throws
     func setTrackerDataController(_ controller: NSFetchedResultsController<TrackerEntity>?)
     func addTrackerCategory(_ trackerCategory: TrackerCategory) throws
     func convertTrackerCategoryEntityToTrackerCategories(_ trackersEntity: [TrackerEntity]) throws -> [TrackerCategory]
@@ -32,9 +33,9 @@ final class TrackerCategoryStore: NSObject {
         self.context = context
         self.trackerStore = trackerStore
     }
-    func setDelegate(delegateForStore: TrackerCategoryStoreDelegate) {
-        delegate = delegateForStore
-    }
+//    func setDelegate(delegateForStore: TrackerCategoryStoreDelegate) {
+//        delegate = delegateForStore
+//    }
 }
 // MARK: - TrackerCategoryStoreProtocol
 
@@ -43,29 +44,36 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         self.trackerDataManager = controller
     }
     
-    func addTrackerCategory(_ trackerCategory: TrackerCategory) throws {
-//        guard let firstTracker = trackerCategory.trackers.first else {
-//            throw TrackerErrors.noTrackerInCategory
-//        }
-//        let trackerEntity =  trackerStore.convertTrackerToTrackerEntity(firstTracker)
-//
-//        let request = NSFetchRequest<TrackerCategoryEntity>(entityName: "TrackerCategoryEntity")
-//        request.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerCategoryEntity.title), trackerCategory.title)
-//
-//        let categories = try context.fetch(request)
-//        if let category = categories.first {
-//            category.addToTrackers(trackerEntity)
-//        } else {
-//            let newCategory = TrackerCategoryEntity(context: context)
-//            newCategory.title = trackerCategory.title
-//            newCategory.addToTrackers(trackerEntity)
-//        }
+    func addTrackerCategoryTitle(_ trackerCategory: TrackerCategory) throws {
         let newCategory = TrackerCategoryEntity(context: context)
         newCategory.title = trackerCategory.title
-        
         try context.save()
         onTrackerCategoryAdded?()
     }
+    
+    func addTrackerCategory(_ trackerCategory: TrackerCategory) throws {
+        guard let firstTracker = trackerCategory.trackers.first else {
+            throw TrackerErrors.noTrackerInCategory
+        }
+        let trackerEntity =  trackerStore.convertTrackerToTrackerEntity(firstTracker)
+
+        let request = NSFetchRequest<TrackerCategoryEntity>(entityName: "TrackerCategoryEntity")
+        request.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerCategoryEntity.title), trackerCategory.title)
+
+        let categories = try context.fetch(request)
+        if let category = categories.first {
+            category.addToTrackers(trackerEntity)
+        } else {
+            let newCategory = TrackerCategoryEntity(context: context)
+            newCategory.title = trackerCategory.title
+            newCategory.addToTrackers(trackerEntity)
+        }
+
+        try context.save()
+        
+    }
+    
+    
     
     func convertTrackerCategoryEntityToTrackerCategories(_ trackersEntity: [TrackerEntity])   -> [TrackerCategory] {
         var trackerCategories: [TrackerCategory] = []

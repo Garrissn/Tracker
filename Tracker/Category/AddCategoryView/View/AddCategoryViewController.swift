@@ -23,7 +23,6 @@ final class AddCategoryViewController: UIViewController {
         return label
     }()
     
-    
     private lazy var placenolderImageView: UIImageView = {
         let imageView = UIImageView()
         let image = UIImage(named: "error")
@@ -68,6 +67,7 @@ final class AddCategoryViewController: UIViewController {
     
     private var viewModel: AddCategoryViewModel
     private var categoryTitle: String
+    private var checkFlag: Bool = false
     
     init( viewModel: AddCategoryViewModel, categoryTitle: String) {
         self.categoryTitle = categoryTitle
@@ -80,12 +80,11 @@ final class AddCategoryViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-       weak var delegate: AddCategoryViewControllerDelegate?
+    weak var delegate: AddCategoryViewControllerDelegate?
     // MARK: - LifeCircle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //загрузить из кордаты названия категорий
         view.backgroundColor = .WhiteDay
         addViews()
         setupConstraints()
@@ -116,7 +115,7 @@ final class AddCategoryViewController: UIViewController {
             categoryTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
             categoryTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             categoryTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            categoryTableView.bottomAnchor.constraint(equalTo: addCategoryButton.topAnchor, constant: 39),
+            categoryTableView.bottomAnchor.constraint(equalTo: addCategoryButton.topAnchor, constant: -39),
             
             placenolderImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             placenolderImageView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 246),
@@ -134,6 +133,10 @@ final class AddCategoryViewController: UIViewController {
     }
     
     @objc private func addCategoryButtonTapped() {
+        if checkFlag {
+            checkFlag = false
+            dismiss(animated: true)
+        }
         let model = AddNewCategoryModel()
         let viewModel = AddNewCategoryViewModel(model: model)
         let addNewcategoryViewController = AddNewCategoryViewController(viewModel: viewModel)
@@ -157,12 +160,13 @@ extension AddCategoryViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CategoryTableViewCell.categoryTableViewCellIdentifier) as? CategoryTableViewCell else { return UITableViewCell()}
+        cell.selectionStyle = .none
+        cell.backgroundColor = .clear
+        cell.accessoryType = .none
         let cellTitle = viewModel.categories[indexPath.row].title
         cell.configure(cellTitle: cellTitle, isSelected: cellTitle == categoryTitle)
         return cell
     }
-    
-    
 }
 
 extension AddCategoryViewController: UITableViewDelegate {
@@ -178,7 +182,16 @@ extension AddCategoryViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCategory = viewModel.categories[indexPath.row]
         delegate?.didNewCategorySelect(categoryTitle: selectedCategory.title)
-        dismiss(animated: true)
+       
+        let previousCell = tableView.cellForRow(at: indexPath) as? CategoryTableViewCell
+        previousCell?.categoryIsSelected(true)
+        checkFlag = true
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let previousCell = tableView.cellForRow(at: indexPath) as? CategoryTableViewCell
+        previousCell?.categoryIsSelected(false)
+        checkFlag = false
     }
 }
 

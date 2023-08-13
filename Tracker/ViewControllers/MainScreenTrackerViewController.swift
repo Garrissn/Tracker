@@ -432,20 +432,20 @@ extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDel
                 showAlertController(text: "Ошибка добавления нового трекера. Попробуйте еще раз")
             }
         }
-        //        todo
+                
         
-        //        if categories.contains(where: { $0.title == trackerCategory.title}) {
-        //            guard let index = categories.firstIndex(where: {$0.title == trackerCategory.title}) else { return }
-        //            let oldCategory = categories[index]
-        //            let updatedTrackers = oldCategory.trackers + trackerCategory.trackers
-        //            let updatedTrackerByCategory = TrackerCategory(title: trackerCategory.title, trackers: updatedTrackers)
-        //            categories[index] = updatedTrackerByCategory
-        //        } else {
-        //            categories.append(trackerCategory)
-        //        }
-        // collectionView.reloadData()
-        // reloadVisibleCategories(text: searchTextField.text, date: datePicker.date)
-        reloadPlaceHolder(for: .whatToTrack)
+//                if categories.contains(where: { $0.title == trackerCategory.title}) {
+//                    guard let index = categories.firstIndex(where: {$0.title == trackerCategory.title}) else { return }
+//                    let oldCategory = categories[index]
+//                    let updatedTrackers = oldCategory.trackers + trackerCategory.trackers
+//                    let updatedTrackerByCategory = TrackerCategory(title: trackerCategory.title, trackers: updatedTrackers)
+//                    categories[index] = updatedTrackerByCategory
+//                } else {
+//                    categories.append(trackerCategory)
+//                }
+//         collectionView.reloadData()
+//         reloadVisibleCategories(text: searchTextField.text, date: datePicker.date)
+//        reloadPlaceHolder(for: .whatToTrack)
     }
     
     private func findDiff(newCategories: [TrackerCategory]) {

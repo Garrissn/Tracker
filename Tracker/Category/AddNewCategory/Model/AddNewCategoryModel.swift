@@ -10,7 +10,6 @@ import Foundation
 final class AddNewCategoryModel {
     // выполняется проверка вводимого текста в поле название категории , название должно быть некороче одного символа
     private let requiredLength = 1
-    
     func didEnter(categoryTitleText: String) -> Result<Bool, Error> {
         do {
             try checkTitleFor(text: categoryTitleText)
@@ -34,7 +33,6 @@ final class AddNewCategoryModel {
 
 enum NameFieldErrors: Error {
     case shortString
-    
     var localizedDescription: String {
         switch self {
         case .shortString: return "Поле должно содержать не менее 1 символа!"

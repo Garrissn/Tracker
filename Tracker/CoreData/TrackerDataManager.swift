@@ -22,7 +22,7 @@ protocol TrackerDataManagerProtocol: AnyObject {
     func addTrackerCategory(_ trackerCategory: TrackerCategory) throws
     func fetchCategoriesFor(weekDay: String, animating: Bool)
     func fetchSearchCategories(textToSearch: String, weekDay: String)
-    
+    func addTrackerCategoryTitle(_ trackerCategory: TrackerCategory) throws
     func addTrackerRecord(forId: UUID, date: String) throws
     func deleteTrackerRecord(forId: UUID, date: String) throws
     func recordExists(forId: UUID, date: String) -> Bool
@@ -72,6 +72,10 @@ final class TrackerDataManager: NSObject { //берем трекеры из ко
 // MARK: - TrackerDataManagerProtocol
 
 extension TrackerDataManager: TrackerDataManagerProtocol {
+    func addTrackerCategoryTitle(_ trackerCategory: TrackerCategory) throws {
+        try trackerCategoryStore.addTrackerCategoryTitle(trackerCategory)
+    }
+    
     
     var categor: [TrackerCategoryEntity]  {
         let fetchRequest = TrackerCategoryEntity.fetchRequest()

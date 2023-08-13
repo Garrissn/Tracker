@@ -12,7 +12,6 @@ final class AddNewCategoryViewModel {
     
     @Observable
     private (set) var isCategoryTitleFilled = false
-    
     init(model: AddNewCategoryModel) {
         self.model = model
     }
@@ -21,7 +20,6 @@ final class AddNewCategoryViewModel {
     func checkCategoryTitle(text: String?) {
         guard let text = text else { return }
         let result = model.didEnter(categoryTitleText: text)
-        
         switch result {
         case.success(let result):
             isCategoryTitleFilled = result

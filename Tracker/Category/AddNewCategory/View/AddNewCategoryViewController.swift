@@ -48,7 +48,6 @@ final class AddNewCategoryViewController: UIViewController {
         button.clipsToBounds = true
         button.titleLabel?.font = UIFont.ypMedium16()
         button.layer.cornerRadius = 16
-        
         button.isUserInteractionEnabled = false
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         return button
@@ -59,7 +58,6 @@ final class AddNewCategoryViewController: UIViewController {
     private let viewModel: AddNewCategoryViewModel
     
     init(viewModel: AddNewCategoryViewModel) {
-        
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.bind()
@@ -71,7 +69,6 @@ final class AddNewCategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .WhiteDay
         addTableViews()
         setupTableConstraints()
@@ -104,19 +101,14 @@ final class AddNewCategoryViewController: UIViewController {
             doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
-            
         ])
-        
     }
     
     @objc private func doneButtonTapped() {
-        
         let trackerCategoryName = categoryNameTextField.text ?? ""
         let trackerCategory = TrackerCategory(title: trackerCategoryName, trackers: [])
         self.delegate?.didSelectNewCategory(name: trackerCategory )
-        
         dismiss(animated: true)
-        
     }
     
     private func updateDoneButton(isActive: Bool) {
@@ -130,8 +122,6 @@ final class AddNewCategoryViewController: UIViewController {
     }
 }
 // MARK: - UITextFieldDelegate
-
-
 extension AddNewCategoryViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -140,16 +130,6 @@ extension AddNewCategoryViewController: UITextFieldDelegate {
         viewModel.checkCategoryTitle(text: textField.text)
         return true
     }
-    
-//    func textFieldDidChangeSelection(_ textField: UITextField) {
-//        if textField.text?.isEmpty == true {
-//            doneButton.backgroundColor = .Gray
-//            doneButton.isEnabled = false
-//        } else {
-//            doneButton.isEnabled = true
-//            doneButton.backgroundColor = .BlackDay
-//        }
-//    }
 }
 
 

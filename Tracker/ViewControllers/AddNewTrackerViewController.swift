@@ -59,7 +59,8 @@ final class AddNewTrackerViewController: UIViewController {
         tableView.backgroundColor = .BackGroundDay
         tableView.layer.cornerRadius = 16
         tableView.clipsToBounds = true
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.register(AddNewTrackerTableViewCell.self, forCellReuseIdentifier: AddNewTrackerTableViewCell.AddNewTrackerTableViewCellIdentifier)
+        //        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.isScrollEnabled = false
         tableView.separatorColor = .Gray
         return tableView
@@ -135,8 +136,8 @@ final class AddNewTrackerViewController: UIViewController {
     private var newTrackerText: String = ""
     private var heightTableView: CGFloat = 75
     private let emojiesAndColors: EmojiesAndColors = EmojiesAndColors()
-//    private let trackerDataManager: TrackerDataManagerProtocol? /// dhghjc
-  
+    //    private let trackerDataManager: TrackerDataManagerProtocol? /// dhghjc
+    
     weak var delegate: AddNewTrackerViewControllerDelegate?
     var trackerType: TrackerType?
     
@@ -309,24 +310,12 @@ extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-        cell.accessoryType = .disclosureIndicator
-        cell.selectionStyle = .none
-        cell.backgroundColor = .clear
-        cell.detailTextLabel?.font = UIFont.ypRegular17()
-        cell.detailTextLabel?.textColor = .Gray
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AddNewTrackerTableViewCell.AddNewTrackerTableViewCellIdentifier) as? AddNewTrackerTableViewCell else { return UITableViewCell()}
         switch indexPath.row {
         case 0:
-            cell.textLabel?.text = "Категория"
-            cell.detailTextLabel?.text = currentCatergory
+            cell.configureTableViewCellForCategory(cellTitle: "Категория", detailTextLabelText: currentCatergory ?? "")
         case 1:
-            cell.textLabel?.text = "Расписание"
-            if schedule.count == 7 {
-                cell.detailTextLabel?.text = "Каждый день"
-            } else {
-                let scheduleShortValueText = schedule.map { $0.shortValue }.joined(separator: ",")
-                cell.detailTextLabel?.text = scheduleShortValueText
-            }
+            cell.configureTableViewCellForSchedule(cellTitle: "Расписание", shcedule: schedule)
         default: break
         }
         return cell
@@ -337,17 +326,17 @@ extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource
         switch indexPath.row {
         case 0:
             
-                let model = AddCategoryModel()
-                let viewModel = AddCategoryViewModel(model: model)
+            let model = AddCategoryModel()
+            let viewModel = AddCategoryViewModel(model: model)
             let value = currentCatergory ?? " "
             let addCategoryVC = AddCategoryViewController(viewModel: viewModel, categoryTitle: value)
-               
-            addCategoryVC.bind()
-                addCategoryVC.delegate = self
             
-                present(addCategoryVC, animated: true)
-           
-          
+            addCategoryVC.bind()
+            addCategoryVC.delegate = self
+            
+            present(addCategoryVC, animated: true)
+            
+            
         case 1:
             let addScheduleViewController = AddScheduleViewController()
             addScheduleViewController.delegate = self
@@ -358,6 +347,9 @@ extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
+    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        SeparatorLineHelper.configSeparatingLine(tableView: tableView, cell: cell, indexPath: indexPath)
     }
 }
 
@@ -472,3 +464,5 @@ extension AddNewTrackerViewController: AddCategoryViewControllerDelegate {
         tableView.reloadData()
     }
 }
+
+

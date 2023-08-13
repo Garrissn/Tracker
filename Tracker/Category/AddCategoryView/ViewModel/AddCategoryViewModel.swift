@@ -12,15 +12,13 @@ final class AddCategoryViewModel {
     
     init(model: AddCategoryModel) {
         self.model = model
-        model.setupDelegate(vc: self)
         model.trackerCategoryStore.onTrackerCategoryAdded = { [weak self] in
-                    self?.loadCategories()
-                }
+            self?.loadCategories()
+        }
     }
     
     @Observable
     private (set) var categories: [Category] = []
-    
     //вью через вьюмодельвью запрашивает категории из кордаты и записывает
     
     func loadCategories() {
@@ -36,7 +34,6 @@ final class AddCategoryViewModel {
     func selectedCategory(index: Int) {
         categories[index].isSelected = true
     }
-    
     
     func convertingData(with categories: [Category]?) {
         if let categories = categories {

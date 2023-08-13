@@ -29,11 +29,10 @@ final class AddScheduleViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "shceduleCell")
         tableView.layer.cornerRadius = 16
-        tableView.clipsToBounds = true
-        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.register(ScheduleTableViewCell.self, forCellReuseIdentifier: ScheduleTableViewCell.ScheduleTableViewCellIdentifier)
         tableView.separatorColor = .Gray
         tableView.backgroundColor = .WhiteDay
-        tableView.isScrollEnabled = false
+        
         return tableView
     }()
     
@@ -76,19 +75,18 @@ final class AddScheduleViewController: UIViewController {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            titleLabel.bottomAnchor.constraint(equalTo: view.topAnchor, constant: 40),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 27),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
+            tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             tableView.heightAnchor.constraint(equalToConstant: 525),
             
-            doneButton.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 39),
-            doneButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            doneButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            doneButton.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
+            doneButton.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
             doneButton.heightAnchor.constraint(equalToConstant: 60),
-            doneButton.widthAnchor.constraint(equalToConstant: 335)
+            doneButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50)
         ])
     }
     
@@ -130,18 +128,16 @@ extension AddScheduleViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let daySwitcher = UISwitch()
         daySwitcher.onTintColor = .Blue
         daySwitcher.tag = indexPath.row
         daySwitcher.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
-        
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "shceduleCell")
+      guard  let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTableViewCell.ScheduleTableViewCellIdentifier) as? ScheduleTableViewCell else { return UITableViewCell()}
         cell.selectionStyle = .none
         cell.backgroundColor = .BackGroundDay
         cell.textLabel?.font = .ypRegular17()
-        cell.textLabel?.text = allDay[indexPath.row].stringValue
-        
+        let textLabel = allDay[indexPath.row].stringValue
+        cell.configureScheduleTableCell(cellTitle: textLabel)
         cell.accessoryView = daySwitcher
         return cell
     }
@@ -151,5 +147,9 @@ extension AddScheduleViewController: UITableViewDataSource {
 extension AddScheduleViewController: UITableViewDelegate {  
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        SeparatorLineHelper.configSeparatingLine(tableView: tableView, cell: cell, indexPath: indexPath)
     }
 }

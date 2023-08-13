@@ -1,15 +1,14 @@
 //
-//  CategoryTableViewCell.swift
+//  ScheduleTableViewCell.swift
 //  Tracker
 //
-//  Created by Игорь Полунин on 10.08.2023.
+//  Created by Игорь Полунин on 13.08.2023.
 //
 
 import UIKit
-
-final class CategoryTableViewCell: UITableViewCell {
+final class ScheduleTableViewCell: UITableViewCell {
     
-    static let categoryTableViewCellIdentifier = "CategoryTableViewCellIdentifier"
+    static let ScheduleTableViewCellIdentifier = "ScheduleTableViewCellIdentifier"
     
     private  var cellTitleLabel: UILabel = {
         let label = UILabel()
@@ -19,11 +18,7 @@ final class CategoryTableViewCell: UITableViewCell {
         return label
     }()
     
-    private  var doneImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
+   
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -40,29 +35,25 @@ final class CategoryTableViewCell: UITableViewCell {
     
     private func   setupViews() {
         contentView.addSubview(cellTitleLabel)
-        contentView.addSubview(doneImageView)
+        
     }
     
     private func   setupConstraints() {
         
         NSLayoutConstraint.activate([
             cellTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            cellTitleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            cellTitleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
             
-            doneImageView.centerYAnchor.constraint(equalTo: cellTitleLabel.centerYAnchor),
-            doneImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         ])
     }
     
-    func configure(cellTitle: String, isSelected: Bool?) {
+    func configureScheduleTableCell(cellTitle: String) {
         self.cellTitleLabel.text = cellTitle
-        guard let isSelected = isSelected else { return }
-        
-        categoryIsSelected(_ : isSelected)
     }
     
     func categoryIsSelected(_ : Bool) {
-        let imageCheckMark = UIImage(named: "checkMark")
-        doneImageView.image = isSelected ? imageCheckMark : nil
+    
     }
 }
+
+
