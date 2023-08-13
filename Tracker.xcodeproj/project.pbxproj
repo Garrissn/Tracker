@@ -192,11 +192,10 @@
 				CEFCC5952A8531D900AF1F94 /* CategoryTableViewCell.swift */,
 				CE7286512A4B306D0011F679 /* HeaderCollectionView.swift */,
 				CE7ABCE52A4489A4000606DA /* CardTrackerViewCell.swift */,
+				CE6B3DF12A88F45200D28A91 /* ScheduleTableViewCell.swift */,
 				CE4BAD492A604A8A0057215D /* AddNewTrackerEmojiesViewCell.swift */,
 				CE6E071A2A7A6A86005DA586 /* AddNewTrackerColorViewCell.swift */,
 				CE846AB82A62E16D003F2AF7 /* AddNewTrackerHeaderCollectionView.swift */,
-				CE6F1DCE2A77B51A00076B96 /* CardTrackerViewModel.swift */,
-				CE6B3DF12A88F45200D28A91 /* ScheduleTableViewCell.swift */,
 				CE6B3DF32A89004000D28A91 /* AddNewTrackerTableViewCell.swift */,
 			);
 			path = Cell;
@@ -206,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				CE7A56DA2A55A8F600F494EF /* TrackerType.swift */,
+				CE6F1DCE2A77B51A00076B96 /* CardTrackerViewModel.swift */,
 				CE6692C52A5BF08000D7FB5F /* WeekDay.swift */,
 				CE6692C72A5BFC9300D7FB5F /* Tracker.swift */,
 				CE6692C92A5BFCE700D7FB5F /* TrackerCategory.swift */,
@@ -218,10 +218,12 @@
 		CE71C06B2A5344A0009836E7 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				CE34D0B32A826C2000FFC06E /* OnboardingViewController.swift */,
 				CEA04AB52A437B4A003A8F70 /* MainScreenTrackerViewController.swift */,
 				CE7784E42A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift */,
 				CE7B743A2A4DA5E9000A3676 /* AddNewTrackerViewController.swift */,
 				CE78C3DA2A4F172E00D28141 /* AddScheduleViewController.swift */,
+				CE6A3E992A839D0300B757AF /* TabBarController */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -257,7 +259,6 @@
 		CEA04AB02A437B4A003A8F70 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				CE6A3E992A839D0300B757AF /* TabBarController */,
 				CEA04AB12A437B4A003A8F70 /* AppDelegate.swift */,
 				CEA04AB32A437B4A003A8F70 /* SceneDelegate.swift */,
 				CE62DA982A5432A800CA1167 /* Mock */,
@@ -275,7 +276,6 @@
 				CE7ABCE22A448487000606DA /* Fonts */,
 				CE7ABCE02A447F87000606DA /* UIColors+Extensions.swift */,
 				CE71C0672A5343B9009836E7 /* UIFonts+Extensions.swift */,
-				CE34D0B32A826C2000FFC06E /* OnboardingViewController.swift */,
 			);
 			path = Tracker;
 			sourceTree = "<group>";

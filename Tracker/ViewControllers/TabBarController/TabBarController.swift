@@ -10,8 +10,6 @@ import UIKit
 final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-       
         let context = (UIApplication.shared.delegate as! AppDelegate).persistantConteiner.viewContext
         let trackerStore = TrackerStore(context: context)
         let trackerCategoryStore = TrackerCategoryStore(context: context,
@@ -23,8 +21,6 @@ final class TabBarController: UITabBarController {
                                                     context: context)
         trackerCategoryStore.setTrackerDataController(trackerDataManager.fetchResultController)
         let mainScreenViewController = MainScreenTrackerViewController(trackerDataManager: trackerDataManager)
-        
-        
         
         let mainScreenNavigationController = UINavigationController(rootViewController: mainScreenViewController)
         let statisticViewController = StatisticViewController()
@@ -40,11 +36,5 @@ final class TabBarController: UITabBarController {
         let lineView = UIView(frame: CGRect(x: 0, y: 0, width: tabBar.frame.width, height: 1))
         lineView.backgroundColor = UIColor.Gray
         tabBar.insertSubview(lineView, at: 0)
-        
-        
-        
-        
-        
     }
- 
 }

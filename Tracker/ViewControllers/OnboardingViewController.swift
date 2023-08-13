@@ -12,11 +12,7 @@ final class OnboardingViewController: UIPageViewController {
     private lazy var pages: [UIViewController] = {
         let firstPage = setupFirstPage()
         firstPage.view.backgroundColor = .clear
-        
-      
-        
         let secondPage = setupSecondPage()
-        
         secondPage.view.backgroundColor = .clear
         return [firstPage, secondPage]
     }()
@@ -41,11 +37,8 @@ final class OnboardingViewController: UIPageViewController {
         let pageControll = UIPageControl()
         pageControll.numberOfPages = pages.count
         pageControll.currentPage = 0
-        
         pageControll.currentPageIndicatorTintColor = .BlackDay
         pageControll.pageIndicatorTintColor = UIColor.BlackDay.withAlphaComponent(0.3)
-
-        
         pageControll.translatesAutoresizingMaskIntoConstraints = false
         return pageControll
     }()
@@ -128,17 +121,6 @@ final class OnboardingViewController: UIPageViewController {
                         onboardingButton.widthAnchor.constraint(equalToConstant: 335)
         ])
     }
-    
-//    private func configurePageView() {
-//        if let first = pages.first {
-//            setViewControllers(
-//                [first],
-//                direction: .forward,
-//                animated: true,
-//                completion: nil
-//            )
-//        }
-//    }
     
     private func setupFirstPage() -> UIViewController {
         let firstPage = UIViewController()
