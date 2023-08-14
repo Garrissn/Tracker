@@ -13,6 +13,12 @@ class MainScreenTrackerViewController: UIViewController {
         case notFound
         case whatToTrack
     }
+    private enum MainscreenLocalize {
+        static let placeHolderLabelText = NSLocalizedString("placeholder.emptyTrackers.title", comment: "Title of the placeHolder whats to track")
+        static let searchBarplaceHolderText = NSLocalizedString("searchBar.placeholder.title", comment: "Title of the placeHolder on searchbar")
+        static let filterButtonText = NSLocalizedString("button.filters.title", comment: "Title of the filterbuttontext")
+        static let placeholderNothingFoundText = NSLocalizedString("placeholder.nothingFound.title", comment: "Title of the placeHolder nothingFound")
+    }
     // MARK: - Private Properties
     
     private lazy var collectionView: UICollectionView = {
@@ -32,7 +38,7 @@ class MainScreenTrackerViewController: UIViewController {
     
     private lazy var placeHolderText: UILabel = {
         let label = UILabel ()
-        label.text = "Что будем отслеживать"
+        label.text = MainscreenLocalize.placeHolderLabelText
         label.textColor = .BlackDay
         label.font = UIFont.ypMedium12()
         label.isHidden = true
@@ -65,7 +71,7 @@ class MainScreenTrackerViewController: UIViewController {
         textField.backgroundColor = .BackGroundDay
         textField.layer.cornerRadius = 16
         let attributes = [ NSAttributedString.Key.foregroundColor: UIColor.gray]
-        let attributedPlaceHolder = NSAttributedString(string: "Поиск", attributes: attributes)
+        let attributedPlaceHolder = NSAttributedString(string: MainscreenLocalize.searchBarplaceHolderText, attributes: attributes)
         textField.attributedPlaceholder = attributedPlaceHolder
         textField.heightAnchor.constraint(equalToConstant: 36).isActive = true
         textField.textColor = .BlackDay
@@ -85,7 +91,7 @@ class MainScreenTrackerViewController: UIViewController {
     
     private let filterButton: UIButton = {
         let filterButton = UIButton(type: .system)
-        filterButton.setTitle("Фильтры", for: .normal)
+        filterButton.setTitle(MainscreenLocalize.filterButtonText, for: .normal)
         filterButton.backgroundColor = .blue
         filterButton.titleLabel?.font = UIFont.ypRegular17()
         filterButton.tintColor = .white
@@ -205,7 +211,6 @@ class MainScreenTrackerViewController: UIViewController {
     @objc private func dateChanged() {
         currentDate = datePicker.date
         self.dismiss(animated: false)
-        print("currentDate\(currentDate)")
         let weekDay = currentDate.weekDayNumber()
         if let weekDayString = WeekDay.allCases.first(where: { $0.numberValue == weekDay})
         { trackerDataManager.fetchCategoriesFor(weekDay: weekDayString.rawValue, animating: true)
@@ -232,7 +237,11 @@ class MainScreenTrackerViewController: UIViewController {
             
             let rightButton = UIBarButtonItem(customView: datePicker)
             navBar.topItem?.setRightBarButton(rightButton, animated: true)
-            navigationItem.title = "Трекеры"
+            let localizedTitle = NSLocalizedString(
+                "trackers.title",
+                comment: "Title of the trackers on the navigation bar"
+            )
+            navigationItem.title = localizedTitle
             navigationController?.navigationBar.prefersLargeTitles = true
         }
     }
@@ -269,11 +278,11 @@ class MainScreenTrackerViewController: UIViewController {
             switch view {
             case .notFound:
                 placeHolderImageView.image = UIImage(named: "error")
-                placeHolderText.text = "Что будем отслеживать?"
+                placeHolderText.text = MainscreenLocalize.placeHolderLabelText
             case .whatToTrack:
                
                 placeHolderImageView.image = UIImage(named: "errorNothingFound")
-                placeHolderText.text = "Ничего не найдено"
+                placeHolderText.text = MainscreenLocalize.placeholderNothingFoundText
             }
         } else {
             placeHolderText.isHidden = true
@@ -407,7 +416,6 @@ extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDel
         if trackersSchedule.isEmpty {
             guard let numberOfDay = currentDate.weekDayNumber() else { return }
             var currentDay = numberOfDay
-            print(" currentDay \(currentDay)")
             if numberOfDay == 1 {
                 currentDay = 8
             }

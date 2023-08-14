@@ -45,7 +45,7 @@ final class OnboardingViewController: UIPageViewController {
     
     private let firstPageLabel: UILabel = {
         let label = UILabel()
-        label.text = "Отслеживайте только то, что хотите"
+        label.text = Constants.firstPageTitle
         label.textAlignment = .center
         label.numberOfLines = 0
         label.textColor = .BlackDay
@@ -56,7 +56,7 @@ final class OnboardingViewController: UIPageViewController {
     
     private let secondPageLabel: UILabel = {
         let label = UILabel()
-        label.text = "Даже если это не литры воды и йога"
+        label.text = Constants.secondPageTitle
         label.textAlignment = .center
         label.numberOfLines = 0
         label.textColor = .BlackDay
@@ -67,7 +67,7 @@ final class OnboardingViewController: UIPageViewController {
     
     private lazy var onboardingButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Вот это технологии!", for: .normal)
+        button.setTitle(Constants.trackersScreenButtonTitle, for: .normal)
         button.backgroundColor = .BlackDay
         button.titleLabel?.font = UIFont.ypMedium16()
         button.tintColor = .WhiteDay

@@ -10,7 +10,15 @@ import UIKit
 protocol AddNewTrackerViewControllerDelegate: AnyObject {
     func didSelectNewTracker(newTracker: TrackerCategory)
 }
-
+private enum LocalisedCases {
+    static let habitTrackerLabelText = NSLocalizedString("newRegularEvent.title", comment: "Title of new habit")
+    static let irregularEventTrackerLabelText = NSLocalizedString("newIrregularEvent.title", comment: "Title of new irregulat habit")
+    static let textFieldPlaceHolderText = NSLocalizedString("textField.tracker.title", comment: "Title of attributedPlaceholder in textfield")
+    static let cancelButtonText = NSLocalizedString("button.cancel.title", comment: "Text on cancelButton")
+    static let createButtonText = NSLocalizedString("button.create.title", comment: "Text on createButton")
+    static let categoryLabelText = NSLocalizedString("category.title", comment: "Text on tableview category")
+    static let scheduleLabelText = NSLocalizedString("schedule.title", comment: "Text on tableview schedule")
+}
 
 final class AddNewTrackerViewController: UIViewController {
     
@@ -21,8 +29,8 @@ final class AddNewTrackerViewController: UIViewController {
         switch trackerType {
         case .none:
             break
-        case .habitTracker: label.text = "Новая привычка"
-        case .irregularIvent: label.text = "Новое нерегулярное событие"
+        case .habitTracker: label.text = LocalisedCases.habitTrackerLabelText
+        case .irregularIvent: label.text = LocalisedCases.irregularEventTrackerLabelText
         }
         label.textColor = .BlackDay
         label.font = UIFont.ypMedium16()
@@ -38,7 +46,7 @@ final class AddNewTrackerViewController: UIViewController {
         textField.layer.cornerRadius = 16
         
         let attributes = [ NSAttributedString.Key.foregroundColor: UIColor.gray]
-        let attributedPlaceHolder = NSAttributedString(string: "Введите название трекера", attributes: attributes)
+        let attributedPlaceHolder = NSAttributedString(string: LocalisedCases.textFieldPlaceHolderText, attributes: attributes)
         textField.attributedPlaceholder = attributedPlaceHolder
         textField.heightAnchor.constraint(equalToConstant: 75).isActive = true
         let leftInsertView = UIView(frame: CGRect(x: 0, y: 0, width: 17, height: 30))
@@ -60,7 +68,6 @@ final class AddNewTrackerViewController: UIViewController {
         tableView.layer.cornerRadius = 16
         tableView.clipsToBounds = true
         tableView.register(AddNewTrackerTableViewCell.self, forCellReuseIdentifier: AddNewTrackerTableViewCell.AddNewTrackerTableViewCellIdentifier)
-        //        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.isScrollEnabled = false
         tableView.separatorColor = .Gray
         return tableView
@@ -102,7 +109,7 @@ final class AddNewTrackerViewController: UIViewController {
     private lazy var cancellButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Отменить", for: .normal)
+        button.setTitle(LocalisedCases.cancelButtonText, for: .normal)
         button.setTitleColor(.Red, for: .normal)
         button.titleLabel?.font = UIFont.ypMedium16()
         button.tintColor = .Red
@@ -118,7 +125,7 @@ final class AddNewTrackerViewController: UIViewController {
     private lazy var createButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Создать", for: .normal)
+        button.setTitle(LocalisedCases.createButtonText, for: .normal)
         button.titleLabel?.font = UIFont.ypMedium16()
         button.setTitleColor(.WhiteDay, for: .normal)
         button.layer.cornerRadius = 16
@@ -136,7 +143,6 @@ final class AddNewTrackerViewController: UIViewController {
     private var newTrackerText: String = ""
     private var heightTableView: CGFloat = 75
     private let emojiesAndColors: EmojiesAndColors = EmojiesAndColors()
-    //    private let trackerDataManager: TrackerDataManagerProtocol? /// dhghjc
     
     weak var delegate: AddNewTrackerViewControllerDelegate?
     var trackerType: TrackerType?
@@ -258,7 +264,6 @@ final class AddNewTrackerViewController: UIViewController {
 extension AddNewTrackerViewController : AddscheduleViewControllerDelegate {
     func didSelectScheduleValue(_ value: [WeekDay]) {
         self.schedule = value
-        print(" schedule :\(schedule)")
         tableView.reloadData()
         createButtonIsEnabled()
     }
@@ -313,9 +318,9 @@ extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AddNewTrackerTableViewCell.AddNewTrackerTableViewCellIdentifier) as? AddNewTrackerTableViewCell else { return UITableViewCell()}
         switch indexPath.row {
         case 0:
-            cell.configureTableViewCellForCategory(cellTitle: "Категория", detailTextLabelText: currentCatergory ?? "")
+            cell.configureTableViewCellForCategory(cellTitle: LocalisedCases.categoryLabelText, detailTextLabelText: currentCatergory ?? "")
         case 1:
-            cell.configureTableViewCellForSchedule(cellTitle: "Расписание", shcedule: schedule)
+            cell.configureTableViewCellForSchedule(cellTitle: LocalisedCases.scheduleLabelText, shcedule: schedule)
         default: break
         }
         return cell
@@ -449,7 +454,7 @@ extension AddNewTrackerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize { // размер ячейки 52х52
         let availableWifth = collectionView.frame.width - paramsForAddNewTrackerCell.paddingWidth
-        let cellWidth = availableWifth / CGFloat(paramsForAddNewTrackerCell.cellCount)
+        _ = availableWifth / CGFloat(paramsForAddNewTrackerCell.cellCount)
         return CGSize(width: 52, height: 52)
     }
     

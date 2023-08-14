@@ -73,7 +73,11 @@ final class AddNewTrackerTableViewCell: UITableViewCell {
     func configureTableViewCellForSchedule(cellTitle: String, shcedule: [WeekDay]) {
         self.cellTitleLabel.text = cellTitle
         if shcedule.count == 7 {
-            self.destriptionTitleLabel.text = "Каждый день"
+            let localizedEveryDayTitle = NSLocalizedString(
+                "everyDay",
+                comment: "Title everyday when alldays are picked"
+            )
+            self.destriptionTitleLabel.text = localizedEveryDayTitle
         } else {
             let scheduleShortValueText = shcedule.map { $0.shortValue }.joined(separator: ",")
             self.destriptionTitleLabel.text = scheduleShortValueText

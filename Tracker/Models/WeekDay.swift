@@ -24,26 +24,43 @@ enum WeekDay: String, CaseIterable {
     
     var stringValue: String {
         switch self {
-        case .monday: return "Понедельник"
-        case .tuesday: return "Вторник"
-        case .wednesday: return "Среда"
-        case .thursday: return "Четверг"
-        case .friday: return "Пятница"
-        case .saturday: return "Суббота"
-        case .sunday: return "Воскресенье"
+        case .monday: return WeekDayLocalize.monday
+        case .tuesday: return WeekDayLocalize.tuesday
+        case .wednesday: return WeekDayLocalize.wednesday
+        case .thursday: return WeekDayLocalize.thursday
+        case .friday: return WeekDayLocalize.friday
+        case .saturday: return WeekDayLocalize.saturday
+        case .sunday: return WeekDayLocalize.sunday
         }
     }
     
     var shortValue: String {
         switch self {
-        case .monday: return "Пн"
-        case .tuesday: return "Вт"
-        case .wednesday: return "Ср"
-        case .thursday: return "Чт"
-        case .friday: return "Пт"
-        case .saturday: return "Сб"
-        case .sunday: return "Вс"
+        case .monday: return WeekDayLocalize.mon
+        case .tuesday: return WeekDayLocalize.tue
+        case .wednesday: return WeekDayLocalize.wed
+        case .thursday: return WeekDayLocalize.thu
+        case .friday: return WeekDayLocalize.fri
+        case .saturday: return WeekDayLocalize.sat
+        case .sunday: return WeekDayLocalize.sun
         }
     }
+}
+
+private enum WeekDayLocalize {
+    static let monday = NSLocalizedString("monday", comment: "MondayTitle")
+    static let tuesday = NSLocalizedString("tuesday", comment: "tuesdayTitle")
+    static let wednesday = NSLocalizedString("wednesday", comment: "wednesdayTitle")
+    static let thursday = NSLocalizedString("thursday", comment: "thursdayTitle")
+    static let friday = NSLocalizedString("friday", comment: "fridayTitle")
+    static let saturday = NSLocalizedString("saturday", comment: "saturdayTitle")
+    static let sunday = NSLocalizedString("sunday", comment: "sundayTitle")
     
+    static let mon = NSLocalizedString("mon", comment: "monTitle")
+    static let tue = NSLocalizedString("tue", comment: "tueTitle")
+    static let wed = NSLocalizedString("wed", comment: "wedTitle")
+    static let thu = NSLocalizedString("thu", comment: "thuTitle")
+    static let fri = NSLocalizedString("fri", comment: "friTitle")
+    static let sat = NSLocalizedString("sat", comment: "satTitle")
+    static let sun = NSLocalizedString("sun", comment: "sunTitle")
 }

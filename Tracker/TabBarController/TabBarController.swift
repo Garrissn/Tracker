@@ -27,8 +27,16 @@ final class TabBarController: UITabBarController {
         self.viewControllers = [mainScreenNavigationController,statisticViewController]
         
         //настройка вкладок таббара
-        mainScreenViewController.tabBarItem = UITabBarItem(title: "Трекеры", image: UIImage(named:"record.circle.fill"), tag: 0)
-        statisticViewController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(named: "hare.fill"), tag: 1)
+        mainScreenViewController.tabBarItem = UITabBarItem(
+            title: NSLocalizedString("trackers.title", comment: "Title of the trackers item on the tab bar"),
+            image: UIImage(named:"record.circle.fill"),
+            tag: 0
+        )
+        statisticViewController.tabBarItem = UITabBarItem(
+            title: NSLocalizedString("statistics.title", comment: "Title of the statistics item on the tab bar"),
+            image: UIImage(named: "hare.fill"),
+            tag: 1
+        )
        
         guard  let tabBar = tabBarController?.tabBar else { return }
         tabBar.barTintColor = .Gray

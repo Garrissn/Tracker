@@ -10,12 +10,15 @@ import UIKit
 protocol AddNewCategoryViewControllerDelegate: AnyObject {
     func didSelectNewCategory(name: TrackerCategory)
 }
-
+private enum AddNewCategoryLocalize {
+    static let addNewCategoryLabelText = NSLocalizedString("newCategory.title", comment: "Title on navbar new category")
+    static let textFieldPlaceHolderText = NSLocalizedString("textField.category.title", comment: "Text on textfieldPlaceHolder")
+    }
 final class AddNewCategoryViewController: UIViewController {
     // MARK: - Private Properties
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Новая категория"
+        label.text = AddNewCategoryLocalize.addNewCategoryLabelText
         label.textColor = .BlackDay
         label.font = UIFont.ypMedium16()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -25,7 +28,7 @@ final class AddNewCategoryViewController: UIViewController {
     private lazy var categoryNameTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .BackGroundDay
-        textField.placeholder = "Введите название категории"
+        textField.placeholder = AddNewCategoryLocalize.textFieldPlaceHolderText
         textField.layer.cornerRadius = 16
         textField.delegate = self
         textField.textColor = .BlackDay

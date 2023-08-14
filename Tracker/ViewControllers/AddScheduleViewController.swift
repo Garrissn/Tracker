@@ -11,13 +11,16 @@ import UIKit
 protocol AddscheduleViewControllerDelegate: AnyObject {
     func didSelectScheduleValue( _ value: [WeekDay])
 }
-
+private enum AddScheduleLocalize {
+    static let scheduleLabelText = NSLocalizedString("schedule.title", comment: "Schedule titleLabel text on navbar")
+    static let doneButtonText = NSLocalizedString("button.confirm.title", comment: "Text on donebutton")
+}
 final class AddScheduleViewController: UIViewController {
     // MARK: - Private Properties
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Расписание"
+        label.text = AddScheduleLocalize.scheduleLabelText
         label.textColor = .BlackDay
         label.font = UIFont.ypMedium16()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +42,7 @@ final class AddScheduleViewController: UIViewController {
     private lazy var doneButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(AddScheduleLocalize.doneButtonText, for: .normal)
         button.titleLabel?.font = UIFont(name: "SP-Pro", size: 16)
         button.tintColor = .WhiteDay
         button.layer.cornerRadius = 16
