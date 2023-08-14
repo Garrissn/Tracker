@@ -94,15 +94,12 @@
 		CE6B3DF32A89004000D28A91 /* AddNewTrackerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTrackerTableViewCell.swift; sourceTree = "<group>"; };
 		CE6B3E052A8A61EB00D28A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		CE6B3E062A8A61EB00D28A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		CE6B3E082A8A61F500D28A91 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
-		CE6B3E092A8A61F500D28A91 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		CE6B3E0B2A8A621000D28A91 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Main.strings; sourceTree = "<group>"; };
 		CE6B3E0C2A8A621000D28A91 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		CE6B3E0E2A8A623600D28A91 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
 		CE6B3E0F2A8A623600D28A91 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		CE6B3E142A8A688200D28A91 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CE6B3E162A8A688500D28A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		CE6B3E172A8A688600D28A91 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CE6B3E182A8A688700D28A91 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CE6B3E192A8A688800D28A91 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CE6BA0CA2A7004DB00ADCDBF /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -493,7 +490,6 @@
 				en,
 				Base,
 				fr,
-				de,
 				uk,
 				ru,
 			);
@@ -626,7 +622,6 @@
 			children = (
 				CE6B3E142A8A688200D28A91 /* en */,
 				CE6B3E162A8A688500D28A91 /* fr */,
-				CE6B3E172A8A688600D28A91 /* de */,
 				CE6B3E182A8A688700D28A91 /* ru */,
 				CE6B3E192A8A688800D28A91 /* uk */,
 			);
@@ -638,7 +633,6 @@
 			children = (
 				CEA04AB82A437B4A003A8F70 /* Base */,
 				CE6B3E052A8A61EB00D28A91 /* fr */,
-				CE6B3E082A8A61F500D28A91 /* de */,
 				CE6B3E0B2A8A621000D28A91 /* uk */,
 				CE6B3E0E2A8A623600D28A91 /* ru */,
 			);
@@ -650,7 +644,6 @@
 			children = (
 				CEA04ABD2A437B4C003A8F70 /* Base */,
 				CE6B3E062A8A61EB00D28A91 /* fr */,
-				CE6B3E092A8A61F500D28A91 /* de */,
 				CE6B3E0C2A8A621000D28A91 /* uk */,
 				CE6B3E0F2A8A623600D28A91 /* ru */,
 			);
