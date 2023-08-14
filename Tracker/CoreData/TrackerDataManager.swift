@@ -8,6 +8,8 @@
 import Foundation
 import CoreData
 
+
+
 protocol TrackerDataManagerDelegate: AnyObject {
     func updateViewByController(_ update: TrackerCategoryStoreUpdate)
     func updateView(categories: [TrackerCategory], animating: Bool)
@@ -20,7 +22,7 @@ protocol TrackerDataManagerProtocol: AnyObject {
     func addTrackerCategory(_ trackerCategory: TrackerCategory) throws
     func fetchCategoriesFor(weekDay: String, animating: Bool)
     func fetchSearchCategories(textToSearch: String, weekDay: String)
-    
+    func addTrackerCategoryTitle(_ trackerCategory: TrackerCategory) throws
     func addTrackerRecord(forId: UUID, date: String) throws
     func deleteTrackerRecord(forId: UUID, date: String) throws
     func recordExists(forId: UUID, date: String) -> Bool
@@ -40,7 +42,11 @@ final class TrackerDataManager: NSObject { //берем трекеры из ко
     private var updatedIndexes: [IndexPath]?
     private var movedIndexes: [TrackerCategoryStoreUpdate.Move]?
     
-    init(trackerStore: TrackerStoreProtocol, trackerCategoryStore: TrackerCategoryStoreProtocol, trackerRecordStore: TrackerRecordStoreProtocol, context: NSManagedObjectContext) {
+    
+    init(trackerStore: TrackerStoreProtocol,
+         trackerCategoryStore: TrackerCategoryStoreProtocol,
+         trackerRecordStore: TrackerRecordStoreProtocol,
+         context: NSManagedObjectContext) {
         self.trackerStore = trackerStore
         self.trackerCategoryStore = trackerCategoryStore
         self.trackerRecordStore = trackerRecordStore
@@ -60,11 +66,33 @@ final class TrackerDataManager: NSObject { //берем трекеры из ко
         controller.delegate = self
         self.fetchResultController = controller
         try? controller.performFetch()
+        
     }
 }
 // MARK: - TrackerDataManagerProtocol
 
 extension TrackerDataManager: TrackerDataManagerProtocol {
+    func addTrackerCategoryTitle(_ trackerCategory: TrackerCategory) throws {
+        try trackerCategoryStore.addTrackerCategoryTitle(trackerCategory)
+    }
+    
+    
+    var categor: [TrackerCategoryEntity]  {
+        let fetchRequest = TrackerCategoryEntity.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \TrackerCategoryEntity.title, ascending: true)]
+        let fetchResultController = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: context,
+            sectionNameKeyPath: nil, cacheName: nil)
+        try? fetchResultController.performFetch()
+        
+        
+        guard let objects = fetchResultController.fetchedObjects else { return [] }
+        return objects
+    }
+    
+    
+
     var categories: [TrackerCategory]  {
         guard let objects = self.fetchResultController?.fetchedObjects else { return [] }
         do {
@@ -167,3 +195,6 @@ extension TrackerDataManager: NSFetchedResultsControllerDelegate {
         }
     }
 }
+
+
+
