@@ -22,6 +22,7 @@
 		CE6A3E9B2A839D2D00B757AF /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6A3E9A2A839D2D00B757AF /* TabBarController.swift */; };
 		CE6B3DF22A88F45200D28A91 /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6B3DF12A88F45200D28A91 /* ScheduleTableViewCell.swift */; };
 		CE6B3DF42A89004000D28A91 /* AddNewTrackerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6B3DF32A89004000D28A91 /* AddNewTrackerTableViewCell.swift */; };
+		CE6B3E132A8A688200D28A91 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE6B3E152A8A688200D28A91 /* Localizable.strings */; };
 		CE6BA0CB2A7004DB00ADCDBF /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE6BA0C92A7004DB00ADCDBF /* CoreDataModel.xcdatamodeld */; };
 		CE6C3B592A503E2800EB0985 /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6C3B582A503E2800EB0985 /* AddCategoryViewController.swift */; };
 		CE6E071B2A7A6A86005DA586 /* AddNewTrackerColorViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E071A2A7A6A86005DA586 /* AddNewTrackerColorViewCell.swift */; };
@@ -91,6 +92,19 @@
 		CE6A3E9A2A839D2D00B757AF /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		CE6B3DF12A88F45200D28A91 /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		CE6B3DF32A89004000D28A91 /* AddNewTrackerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTrackerTableViewCell.swift; sourceTree = "<group>"; };
+		CE6B3E052A8A61EB00D28A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
+		CE6B3E062A8A61EB00D28A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		CE6B3E082A8A61F500D28A91 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
+		CE6B3E092A8A61F500D28A91 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		CE6B3E0B2A8A621000D28A91 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Main.strings; sourceTree = "<group>"; };
+		CE6B3E0C2A8A621000D28A91 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		CE6B3E0E2A8A623600D28A91 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
+		CE6B3E0F2A8A623600D28A91 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		CE6B3E142A8A688200D28A91 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CE6B3E162A8A688500D28A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CE6B3E172A8A688600D28A91 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CE6B3E182A8A688700D28A91 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CE6B3E192A8A688800D28A91 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CE6BA0CA2A7004DB00ADCDBF /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		CE6C3B582A503E2800EB0985 /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
 		CE6E071A2A7A6A86005DA586 /* AddNewTrackerColorViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTrackerColorViewCell.swift; sourceTree = "<group>"; };
@@ -218,12 +232,10 @@
 		CE71C06B2A5344A0009836E7 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				CE34D0B32A826C2000FFC06E /* OnboardingViewController.swift */,
 				CEA04AB52A437B4A003A8F70 /* MainScreenTrackerViewController.swift */,
 				CE7784E42A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift */,
 				CE7B743A2A4DA5E9000A3676 /* AddNewTrackerViewController.swift */,
 				CE78C3DA2A4F172E00D28141 /* AddScheduleViewController.swift */,
-				CE6A3E992A839D0300B757AF /* TabBarController */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -261,6 +273,8 @@
 			children = (
 				CEA04AB12A437B4A003A8F70 /* AppDelegate.swift */,
 				CEA04AB32A437B4A003A8F70 /* SceneDelegate.swift */,
+				CE34D0B32A826C2000FFC06E /* OnboardingViewController.swift */,
+				CE6A3E992A839D0300B757AF /* TabBarController */,
 				CE62DA982A5432A800CA1167 /* Mock */,
 				CE71C06A2A534450009836E7 /* Models */,
 				CE71C06B2A5344A0009836E7 /* ViewControllers */,
@@ -272,6 +286,7 @@
 				CEA04ABA2A437B4C003A8F70 /* Assets.xcassets */,
 				CEA04ABC2A437B4C003A8F70 /* LaunchScreen.storyboard */,
 				CEA04ABF2A437B4C003A8F70 /* Info.plist */,
+				CE6B3E152A8A688200D28A91 /* Localizable.strings */,
 				CEFCC5972A8539D000AF1F94 /* Helpers */,
 				CE7ABCE22A448487000606DA /* Fonts */,
 				CE7ABCE02A447F87000606DA /* UIColors+Extensions.swift */,
@@ -477,6 +492,10 @@
 			knownRegions = (
 				en,
 				Base,
+				fr,
+				de,
+				uk,
+				ru,
 			);
 			mainGroup = CEA04AA52A437B4A003A8F70;
 			productRefGroup = CEA04AAF2A437B4A003A8F70 /* Products */;
@@ -495,6 +514,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE6B3E132A8A688200D28A91 /* Localizable.strings in Resources */,
 				CEA04ABE2A437B4C003A8F70 /* LaunchScreen.storyboard in Resources */,
 				CE7ABCE42A4484AE000606DA /* SF-Pro.ttf in Resources */,
 				CEA04ABB2A437B4C003A8F70 /* Assets.xcassets in Resources */,
@@ -601,10 +621,26 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		CE6B3E152A8A688200D28A91 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE6B3E142A8A688200D28A91 /* en */,
+				CE6B3E162A8A688500D28A91 /* fr */,
+				CE6B3E172A8A688600D28A91 /* de */,
+				CE6B3E182A8A688700D28A91 /* ru */,
+				CE6B3E192A8A688800D28A91 /* uk */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		CEA04AB72A437B4A003A8F70 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				CEA04AB82A437B4A003A8F70 /* Base */,
+				CE6B3E052A8A61EB00D28A91 /* fr */,
+				CE6B3E082A8A61F500D28A91 /* de */,
+				CE6B3E0B2A8A621000D28A91 /* uk */,
+				CE6B3E0E2A8A623600D28A91 /* ru */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -613,6 +649,10 @@
 			isa = PBXVariantGroup;
 			children = (
 				CEA04ABD2A437B4C003A8F70 /* Base */,
+				CE6B3E062A8A61EB00D28A91 /* fr */,
+				CE6B3E092A8A61F500D28A91 /* de */,
+				CE6B3E0C2A8A621000D28A91 /* uk */,
+				CE6B3E0F2A8A623600D28A91 /* ru */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -624,6 +664,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -684,6 +725,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";

@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Игорь Полунин on 14.08.2023.
+  
+*/
+
+"onboardingFirstLabelTitle" = "Отслеживайте только то, что хотите";
+"onboardingSecondLabel.title" = "Даже если это не литры воды и йога";
+
+"symbolsConstraintLabel.title" = "Ограничение 38 символов";
+

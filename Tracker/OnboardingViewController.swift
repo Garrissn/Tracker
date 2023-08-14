@@ -212,4 +212,14 @@ extension OnboardingViewController: UIPageViewControllerDelegate {
     }
 }
 
-
+private enum Constants {
+    static let firstPageTitle = NSLocalizedString("onboardingFirstLabelTitle", comment: "Title of the first onboarding page")
+    static let secondPageTitle = NSLocalizedString(
+        "onboardingSecondLabel.title",
+        comment: "Title of the second onboarding page"
+    )
+    static let trackersScreenButtonTitle = NSLocalizedString(
+        "button.onboarding.title",
+        comment: "Title of the button that switches to tracker screen"
+    )
+}
