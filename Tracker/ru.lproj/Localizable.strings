@@ -39,6 +39,7 @@
 "placeholder.emptyTrackers.title" = "Что будем отслеживать?";
 "placeholder.emptyCategories.title" = "Привычки и события можно объединить по смыслу";
 "placeholder.nothingFound.title" = "Ничего не найдено";
+"placeholder.emptyStatistics.title" = "Анализировать пока нечего";
 
 "monday" = "Понедельник";
 "tuesday" = "Вторник";

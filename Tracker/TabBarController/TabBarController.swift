@@ -21,10 +21,12 @@ final class TabBarController: UITabBarController {
                                                     context: context)
         trackerCategoryStore.setTrackerDataController(trackerDataManager.fetchResultController)
         let mainScreenViewController = MainScreenTrackerViewController(trackerDataManager: trackerDataManager)
+        let statisticViewController = StatisticViewController()
         
         let mainScreenNavigationController = UINavigationController(rootViewController: mainScreenViewController)
-        let statisticViewController = StatisticViewController()
-        self.viewControllers = [mainScreenNavigationController,statisticViewController]
+        let staticticNavigationController = UINavigationController(rootViewController: statisticViewController)
+        
+        self.viewControllers = [mainScreenNavigationController,staticticNavigationController]
         
         //настройка вкладок таббара
         mainScreenViewController.tabBarItem = UITabBarItem(
@@ -38,11 +40,11 @@ final class TabBarController: UITabBarController {
             tag: 1
         )
        
-        guard  let tabBar = tabBarController?.tabBar else { return }
+        
         tabBar.barTintColor = .Gray
         tabBar.backgroundColor = .WhiteDay
         let lineView = UIView(frame: CGRect(x: 0, y: 0, width: tabBar.frame.width, height: 1))
         lineView.backgroundColor = UIColor.Gray
-        tabBar.insertSubview(lineView, at: 0)
+        tabBar.addSubview(lineView)
     }
 }
