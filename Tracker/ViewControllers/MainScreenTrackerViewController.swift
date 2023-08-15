@@ -8,19 +8,9 @@
 import UIKit
 
 class MainScreenTrackerViewController: UIViewController {
-    
-    enum PlaceHolder {
-        case notFound
-        case whatToTrack
-    }
-    private enum MainscreenLocalize {
-        static let placeHolderLabelText = NSLocalizedString("placeholder.emptyTrackers.title", comment: "Title of the placeHolder whats to track")
-        static let searchBarplaceHolderText = NSLocalizedString("searchBar.placeholder.title", comment: "Title of the placeHolder on searchbar")
-        static let filterButtonText = NSLocalizedString("button.filters.title", comment: "Title of the filterbuttontext")
-        static let placeholderNothingFoundText = NSLocalizedString("placeholder.nothingFound.title", comment: "Title of the placeHolder nothingFound")
-    }
+  
     // MARK: - Private Properties
-    
+
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.register(CardTrackerViewCell.self, forCellWithReuseIdentifier: CardTrackerViewCell.cardTrackerViewCellIdentifier)
@@ -39,7 +29,7 @@ class MainScreenTrackerViewController: UIViewController {
     private lazy var placeHolderText: UILabel = {
         let label = UILabel ()
         label.text = MainscreenLocalize.placeHolderLabelText
-        label.textColor = .BlackDay
+        label.textColor = .TrackerBlack
         label.font = UIFont.ypMedium12()
         label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -48,7 +38,10 @@ class MainScreenTrackerViewController: UIViewController {
     
     private var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy"
+        
+        
+        dateFormatter.dateFormat = "dd.MM.yy"
+        dateFormatter.locale = .current
         return dateFormatter
     }()
     
@@ -57,11 +50,16 @@ class MainScreenTrackerViewController: UIViewController {
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.preferredDatePickerStyle = .compact
         datePicker.datePickerMode = .date
-        datePicker.locale = Locale(identifier: "ru_Ru")
+        datePicker.locale = .current
         datePicker.calendar.firstWeekday = 2
+        datePicker.clipsToBounds = true
         datePicker.layer.cornerRadius = 8
         datePicker.tintColor = .Blue
         datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        datePicker.widthAnchor.constraint(equalToConstant: 110).isActive = true
+        
         return datePicker
     }()
     
@@ -144,7 +142,7 @@ class MainScreenTrackerViewController: UIViewController {
     
     // MARK: - Private Methods
     private func configureView() {
-        view.backgroundColor = .WhiteDay
+        view.backgroundColor = .TrackerWhite
         searchTextField.returnKeyType = .done
         filterButton.layer.zPosition = 2
     }
@@ -190,7 +188,7 @@ class MainScreenTrackerViewController: UIViewController {
             placeHolderText.heightAnchor.constraint(equalToConstant: 18),
             
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            collectionView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor),
+            collectionView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 10),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
@@ -210,6 +208,8 @@ class MainScreenTrackerViewController: UIViewController {
     
     @objc private func dateChanged() {
         currentDate = datePicker.date
+        let ret = dateFormatter.string(from: datePicker.date)
+        print(ret)
         self.dismiss(animated: false)
         let weekDay = currentDate.weekDayNumber()
         if let weekDayString = WeekDay.allCases.first(where: { $0.numberValue == weekDay})
@@ -228,7 +228,8 @@ class MainScreenTrackerViewController: UIViewController {
     private func  setupNavigationBar() {
         if let navBar = navigationController?.navigationBar {
             let imageButton = UIImage(named: "PlusButton")
-            let button = UIButton(type: .custom)
+            let button = UIButton(type: .system)
+            button.tintColor = .TrackerBlack
             button.setImage(imageButton, for: .normal)
             button.addTarget(self, action: #selector(addTask), for: .touchUpInside)
             
@@ -275,6 +276,7 @@ class MainScreenTrackerViewController: UIViewController {
         if visibleCatergories.isEmpty  {
             placeHolderText.isHidden = false
             placeHolderImageView.isHidden = false
+            filterButton.isHidden = true
             switch view {
             case .notFound:
                 placeHolderImageView.image = UIImage(named: "error")
@@ -287,6 +289,7 @@ class MainScreenTrackerViewController: UIViewController {
         } else {
             placeHolderText.isHidden = true
             placeHolderImageView.isHidden = true
+            filterButton.isHidden = false
         }
     }
 }
@@ -546,7 +549,17 @@ extension MainScreenTrackerViewController {
     }
 }
 
+private enum MainscreenLocalize {
+    static let placeHolderLabelText = NSLocalizedString("placeholder.emptyTrackers.title", comment: "Title of the placeHolder whats to track")
+    static let searchBarplaceHolderText = NSLocalizedString("searchBar.placeholder.title", comment: "Title of the placeHolder on searchbar")
+    static let filterButtonText = NSLocalizedString("button.filters.title", comment: "Title of the filterbuttontext")
+    static let placeholderNothingFoundText = NSLocalizedString("placeholder.nothingFound.title", comment: "Title of the placeHolder nothingFound")
+}
 
+enum PlaceHolder {
+    case notFound
+    case whatToTrack
+}
 
 
 

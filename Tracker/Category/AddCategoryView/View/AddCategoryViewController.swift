@@ -22,7 +22,7 @@ final class AddCategoryViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = AddCategoryLocalize.addCategoryLabelText
-        label.textColor = .BlackDay
+        label.textColor = .TrackerBlack
         label.font = UIFont.ypMedium16()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -40,7 +40,7 @@ final class AddCategoryViewController: UIViewController {
     private lazy var placeHolderTextLabel: UILabel = {
         let label = UILabel ()
         label.text = AddCategoryLocalize.placeHolderText
-        label.textColor = .BlackDay
+        label.textColor = .TrackerBlack
         label.font = UIFont.ypMedium12()
         label.isHidden = false
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -61,8 +61,8 @@ final class AddCategoryViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(AddCategoryLocalize.addCategoryButtonText, for: .normal)
-        button.setTitleColor(.WhiteDay, for: .normal)
-        button.backgroundColor = .BlackDay
+        button.setTitleColor(.TrackerWhite, for: .normal)
+        button.backgroundColor = .TrackerBlack
         button.clipsToBounds = true
         button.titleLabel?.font = UIFont.ypMedium16()
         button.layer.cornerRadius = 16
@@ -90,7 +90,7 @@ final class AddCategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .WhiteDay
+        view.backgroundColor = .TrackerWhite
         addViews()
         setupConstraints()
         checkPlaceHolder()

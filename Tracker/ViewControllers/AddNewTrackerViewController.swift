@@ -32,7 +32,7 @@ final class AddNewTrackerViewController: UIViewController {
         case .habitTracker: label.text = LocalisedCases.habitTrackerLabelText
         case .irregularIvent: label.text = LocalisedCases.irregularEventTrackerLabelText
         }
-        label.textColor = .BlackDay
+        label.textColor = .TrackerBlack
         label.font = UIFont.ypMedium16()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -42,7 +42,7 @@ final class AddNewTrackerViewController: UIViewController {
     private lazy var habitNameTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .BackGroundDay
+        textField.backgroundColor = .TrackerBackGround
         textField.layer.cornerRadius = 16
         
         let attributes = [ NSAttributedString.Key.foregroundColor: UIColor.gray]
@@ -52,7 +52,7 @@ final class AddNewTrackerViewController: UIViewController {
         let leftInsertView = UIView(frame: CGRect(x: 0, y: 0, width: 17, height: 30))
         textField.leftView = leftInsertView
         textField.leftViewMode = .always
-        textField.textColor = .BlackDay
+        textField.textColor = .Gray
         textField.font = UIFont.ypRegular17()
         textField.layer.cornerRadius = 16
         textField.clipsToBounds = true
@@ -64,7 +64,7 @@ final class AddNewTrackerViewController: UIViewController {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.backgroundColor = .BackGroundDay
+        tableView.backgroundColor = .TrackerBackGround
         tableView.layer.cornerRadius = 16
         tableView.clipsToBounds = true
         tableView.register(AddNewTrackerTableViewCell.self, forCellReuseIdentifier: AddNewTrackerTableViewCell.AddNewTrackerTableViewCellIdentifier)
@@ -99,6 +99,7 @@ final class AddNewTrackerViewController: UIViewController {
         collectionView.register(AddNewTrackerEmojiesViewCell.self, forCellWithReuseIdentifier: AddNewTrackerEmojiesViewCell.addNewTrackerEmojiesViewCellIdentifier)
         collectionView.register(AddNewTrackerColorViewCell.self, forCellWithReuseIdentifier: AddNewTrackerColorViewCell.addNewTrackerColorViewCellIdentifier)
         collectionView.register(HeaderCollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderCollectionView.headerIdentifier)
+        collectionView.backgroundColor = .TrackerWhite
         collectionView.isScrollEnabled = false
         collectionView.allowsMultipleSelection = false
         collectionView.dataSource = self
@@ -113,7 +114,7 @@ final class AddNewTrackerViewController: UIViewController {
         button.setTitleColor(.Red, for: .normal)
         button.titleLabel?.font = UIFont.ypMedium16()
         button.tintColor = .Red
-        button.backgroundColor = .WhiteDay
+        button.backgroundColor = .TrackerWhite
         button.layer.borderColor = UIColor.Red.cgColor
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 16
@@ -127,7 +128,7 @@ final class AddNewTrackerViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(LocalisedCases.createButtonText, for: .normal)
         button.titleLabel?.font = UIFont.ypMedium16()
-        button.setTitleColor(.WhiteDay, for: .normal)
+        button.setTitleColor(.TrackerBlack, for: .normal)
         button.layer.cornerRadius = 16
         button.backgroundColor = .Gray
         button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
@@ -157,7 +158,7 @@ final class AddNewTrackerViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
-        view.backgroundColor = .WhiteDay
+        view.backgroundColor = .TrackerWhite
         collectionView.allowsMultipleSelection = false
         tableView.dataSource = self
         tableView.delegate = self
@@ -252,8 +253,8 @@ final class AddNewTrackerViewController: UIViewController {
     
     private func createButtonIsEnabled() {
         if habitNameTextField.text?.isEmpty == false && (currentCatergory?.isEmpty != nil ) && (selectedColorIndexPath != nil) && (selectedEmojiIndexPath != nil) {
-            createButton.backgroundColor = .BlackDay
-            createButton.setTitleColor(.WhiteDay, for: .normal)
+            createButton.backgroundColor = .TrackerBlack
+            createButton.setTitleColor(.TrackerWhite, for: .normal)
             createButton.isEnabled = true
         }
     }

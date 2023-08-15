@@ -28,7 +28,7 @@ final class CardTrackerViewCell: UICollectionViewCell {
         emojiLabel.clipsToBounds = true
         emojiLabel.layer.cornerRadius = 24 / 2
         emojiLabel.font = UIFont.systemFont(ofSize: 16)
-        emojiLabel.backgroundColor = .BackGroundDay
+        emojiLabel.backgroundColor = .EmojiBackGround
         emojiLabel.textAlignment = .center
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         return emojiLabel
@@ -131,20 +131,18 @@ final class CardTrackerViewCell: UICollectionViewCell {
     }
     
     private func pluralizeDays(_ count: Int) -> String {
-        let reminder10 = count % 10
-        let reminder100 = count % 100
-        if reminder10 == 1 && reminder100 != 11 {
-            return "\(count) день"
-        } else if reminder10 >= 2 && reminder10 <= 4 && (reminder100 < 10 || reminder100 >= 20) {
-            return "\(count) дня"
-        } else { return "\(count) дней"}
+        
+        let localizedCompletedDayz = NSLocalizedString("completedDays", comment: "Number of completed days")
+        return String.localizedStringWithFormat(localizedCompletedDayz, count)
     }
+    
     
     private let plusImage: UIImage = {
         let pointSize = UIImage.SymbolConfiguration(pointSize: 11)
         let image = UIImage(systemName: "plus", withConfiguration: pointSize) ?? UIImage()
         return image
     }()
+    
     private let doneImage = UIImage(named: "done")
 }
 

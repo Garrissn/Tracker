@@ -26,7 +26,7 @@ final class StatisticViewController: UIViewController {
         label.text = NSLocalizedString(
             "placeholder.emptyStatistics.title",
             comment: "Title of the state with empty statistics")
-        label.textColor = .BlackDay
+        label.textColor = .TrackerBlack
         label.font = UIFont.ypMedium12()
         label.isHidden = false
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +37,7 @@ final class StatisticViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       view.backgroundColor = .WhiteDay
+       view.backgroundColor = .TrackerWhite
         addNavigationBar()
         addPlaceholderView()
     }
@@ -53,7 +53,9 @@ private extension StatisticViewController {
             comment: "Title of the statistics in the navigation bar"
         )
         navigationItem.title = localizedTitle
+        
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.largeTitleTextAttributes = [ NSAttributedString.Key.foregroundColor: UIColor.TrackerBlack]
     }
     
     func addPlaceholderView() {

@@ -13,7 +13,7 @@ final class CategoryTableViewCell: UITableViewCell {
     
     private  var cellTitleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .BlackDay
+        label.textColor = .TrackerBlack
         label.font = UIFont.ypRegular17()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -27,7 +27,7 @@ final class CategoryTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = .BackGroundDay
+        contentView.backgroundColor = .TrackerBackGround
         
         setupViews()
         setupConstraints()

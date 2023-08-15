@@ -42,7 +42,7 @@ final class TabBarController: UITabBarController {
        
         
         tabBar.barTintColor = .Gray
-        tabBar.backgroundColor = .WhiteDay
+        tabBar.backgroundColor = .TrackerWhite
         let lineView = UIView(frame: CGRect(x: 0, y: 0, width: tabBar.frame.width, height: 1))
         lineView.backgroundColor = UIColor.Gray
         tabBar.addSubview(lineView)

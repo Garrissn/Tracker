@@ -12,7 +12,7 @@ final class AddNewTrackerTableViewCell: UITableViewCell {
     
     private  var cellTitleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .BlackDay
+        label.textColor = .TrackerBlack
         label.font = UIFont.ypRegular17()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -20,7 +20,7 @@ final class AddNewTrackerTableViewCell: UITableViewCell {
     
     private  var destriptionTitleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .BlackDay
+        
         label.font = UIFont.ypRegular17()
         label.textColor = .Gray
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +45,7 @@ final class AddNewTrackerTableViewCell: UITableViewCell {
     private func configCell() {
         self.accessoryType = .disclosureIndicator
         self.selectionStyle = .none
-        self.backgroundColor = .clear
+        self.backgroundColor = .TrackerBackGround
         self.detailTextLabel?.font = UIFont.ypRegular17()
         self.detailTextLabel?.textColor = .Gray
     }

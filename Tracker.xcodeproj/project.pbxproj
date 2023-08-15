@@ -23,6 +23,7 @@
 		CE6B3DF22A88F45200D28A91 /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6B3DF12A88F45200D28A91 /* ScheduleTableViewCell.swift */; };
 		CE6B3DF42A89004000D28A91 /* AddNewTrackerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6B3DF32A89004000D28A91 /* AddNewTrackerTableViewCell.swift */; };
 		CE6B3E132A8A688200D28A91 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE6B3E152A8A688200D28A91 /* Localizable.strings */; };
+		CE6B3E1C2A8AB44F00D28A91 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = CE6B3E1E2A8AB44F00D28A91 /* Localizable.stringsdict */; };
 		CE6BA0CB2A7004DB00ADCDBF /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE6BA0C92A7004DB00ADCDBF /* CoreDataModel.xcdatamodeld */; };
 		CE6C3B592A503E2800EB0985 /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6C3B582A503E2800EB0985 /* AddCategoryViewController.swift */; };
 		CE6E071B2A7A6A86005DA586 /* AddNewTrackerColorViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E071A2A7A6A86005DA586 /* AddNewTrackerColorViewCell.swift */; };
@@ -34,6 +35,7 @@
 		CE727B152A72A88100CA96D3 /* TrackerCategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE727B142A72A88100CA96D3 /* TrackerCategoryStore.swift */; };
 		CE7286522A4B306D0011F679 /* HeaderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7286512A4B306D0011F679 /* HeaderCollectionView.swift */; };
 		CE7286542A4B704D0011F679 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7286532A4B704D0011F679 /* DataManager.swift */; };
+		CE757A002A8B5497009EDB55 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE757A022A8B5497009EDB55 /* InfoPlist.strings */; };
 		CE7784DF2A45D78500E01A81 /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7784DE2A45D78500E01A81 /* StatisticViewController.swift */; };
 		CE7784E52A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE7784E42A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift */; };
 		CE78C3DB2A4F172E00D28141 /* AddScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE78C3DA2A4F172E00D28141 /* AddScheduleViewController.swift */; };
@@ -102,6 +104,10 @@
 		CE6B3E162A8A688500D28A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CE6B3E182A8A688700D28A91 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CE6B3E192A8A688800D28A91 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CE6B3E1D2A8AB44F00D28A91 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		CE6B3E1F2A8AB46800D28A91 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		CE6B3E202A8AB46A00D28A91 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		CE6B3E212A8AB46B00D28A91 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = uk; path = uk.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		CE6BA0CA2A7004DB00ADCDBF /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		CE6C3B582A503E2800EB0985 /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
 		CE6E071A2A7A6A86005DA586 /* AddNewTrackerColorViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTrackerColorViewCell.swift; sourceTree = "<group>"; };
@@ -113,6 +119,10 @@
 		CE727B142A72A88100CA96D3 /* TrackerCategoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategoryStore.swift; sourceTree = "<group>"; };
 		CE7286512A4B306D0011F679 /* HeaderCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionView.swift; sourceTree = "<group>"; };
 		CE7286532A4B704D0011F679 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		CE757A012A8B5497009EDB55 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CE757A032A8B549B009EDB55 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CE757A042A8B549C009EDB55 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CE757A052A8B549D009EDB55 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CE7784DE2A45D78500E01A81 /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
 		CE7784E42A461CAA00E01A81 /* TrackerTypeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTypeSelectionViewController.swift; sourceTree = "<group>"; };
 		CE78C3DA2A4F172E00D28141 /* AddScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleViewController.swift; sourceTree = "<group>"; };
@@ -283,7 +293,9 @@
 				CEA04ABA2A437B4C003A8F70 /* Assets.xcassets */,
 				CEA04ABC2A437B4C003A8F70 /* LaunchScreen.storyboard */,
 				CEA04ABF2A437B4C003A8F70 /* Info.plist */,
+				CE6B3E1E2A8AB44F00D28A91 /* Localizable.stringsdict */,
 				CE6B3E152A8A688200D28A91 /* Localizable.strings */,
+				CE757A022A8B5497009EDB55 /* InfoPlist.strings */,
 				CEFCC5972A8539D000AF1F94 /* Helpers */,
 				CE7ABCE22A448487000606DA /* Fonts */,
 				CE7ABCE02A447F87000606DA /* UIColors+Extensions.swift */,
@@ -419,6 +431,8 @@
 			dependencies = (
 			);
 			name = Tracker;
+			packageProductDependencies = (
+			);
 			productName = Tracker;
 			productReference = CEA04AAE2A437B4A003A8F70 /* Tracker.app */;
 			productType = "com.apple.product-type.application";
@@ -494,6 +508,8 @@
 				ru,
 			);
 			mainGroup = CEA04AA52A437B4A003A8F70;
+			packageReferences = (
+			);
 			productRefGroup = CEA04AAF2A437B4A003A8F70 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -511,10 +527,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE6B3E132A8A688200D28A91 /* Localizable.strings in Resources */,
+				CE757A002A8B5497009EDB55 /* InfoPlist.strings in Resources */,
 				CEA04ABE2A437B4C003A8F70 /* LaunchScreen.storyboard in Resources */,
 				CE7ABCE42A4484AE000606DA /* SF-Pro.ttf in Resources */,
 				CEA04ABB2A437B4C003A8F70 /* Assets.xcassets in Resources */,
 				CEA04AB92A437B4A003A8F70 /* Main.storyboard in Resources */,
+				CE6B3E1C2A8AB44F00D28A91 /* Localizable.stringsdict in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,6 +644,28 @@
 				CE6B3E192A8A688800D28A91 /* uk */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		CE6B3E1E2A8AB44F00D28A91 /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE6B3E1D2A8AB44F00D28A91 /* en */,
+				CE6B3E1F2A8AB46800D28A91 /* fr */,
+				CE6B3E202A8AB46A00D28A91 /* ru */,
+				CE6B3E212A8AB46B00D28A91 /* uk */,
+			);
+			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
+		CE757A022A8B5497009EDB55 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE757A012A8B5497009EDB55 /* en */,
+				CE757A032A8B549B009EDB55 /* fr */,
+				CE757A042A8B549C009EDB55 /* ru */,
+				CE757A052A8B549D009EDB55 /* uk */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		CEA04AB72A437B4A003A8F70 /* Main.storyboard */ = {

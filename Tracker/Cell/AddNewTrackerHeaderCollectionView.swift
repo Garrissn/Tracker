@@ -14,7 +14,7 @@ final class AddNewTrackerHeaderCollectionView: UICollectionReusableView {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.ypBold19()
-        label.textColor = .BlackDay
+        label.textColor = .TrackerBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

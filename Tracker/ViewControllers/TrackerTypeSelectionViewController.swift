@@ -24,8 +24,8 @@ final class TrackerTypeSelectionViewController: UIViewController {
         let habitButton = UIButton()
         habitButton.translatesAutoresizingMaskIntoConstraints = false
         habitButton.setTitle(TrackerTypeSelectionLocalize.habitButtonText, for: .normal)
-        habitButton.setTitleColor(.WhiteDay, for: .normal)
-        habitButton.backgroundColor = .BlackDay
+        habitButton.setTitleColor(.TrackerWhite, for: .normal)
+        habitButton.backgroundColor = .TrackerBlack
         habitButton.clipsToBounds = true
         habitButton.titleLabel?.font = UIFont.ypMedium16()
         habitButton.layer.cornerRadius = 16
@@ -37,8 +37,8 @@ final class TrackerTypeSelectionViewController: UIViewController {
         let irregularIventButton = UIButton()
         irregularIventButton.translatesAutoresizingMaskIntoConstraints = false
         irregularIventButton.setTitle(TrackerTypeSelectionLocalize.irregularEventButtonText, for: .normal)
-        irregularIventButton.setTitleColor(.WhiteDay, for: .normal)
-        irregularIventButton.backgroundColor = .BlackDay
+        irregularIventButton.setTitleColor(.TrackerWhite, for: .normal)
+        irregularIventButton.backgroundColor = .TrackerBlack
         irregularIventButton.clipsToBounds = true
         irregularIventButton.titleLabel?.font = UIFont.ypMedium16()
         irregularIventButton.layer.cornerRadius = 16
@@ -53,7 +53,7 @@ final class TrackerTypeSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .WhiteDay
+        view.backgroundColor = .TrackerWhite
         setupLayoutViews()
         setupNavigationBar()
     }
@@ -62,7 +62,7 @@ final class TrackerTypeSelectionViewController: UIViewController {
     private func  setupNavigationBar() {
         let titleLabel = UILabel()
         titleLabel.text = TrackerTypeSelectionLocalize.createTrackerLabel
-        titleLabel.textColor = .BlackDay
+        titleLabel.textColor = .TrackerBlack
         titleLabel.font = UIFont.ypMedium16()
         titleLabel.textAlignment = .center
         navigationItem.titleView = titleLabel

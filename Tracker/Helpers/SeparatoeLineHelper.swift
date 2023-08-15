@@ -13,6 +13,7 @@ final class SeparatorLineHelper {
         let lastRowIndex = tableView.numberOfRows(inSection: 0) - 1
         if indexPath.row == lastRowIndex {
             // Если текущая ячейка последняя, скрываем разделительную линию
+            
             cell.separatorInset = UIEdgeInsets(top: 0, left: tableView.bounds.size.width, bottom: 0, right: 0)
             cell.selectionStyle = .none
         } else {

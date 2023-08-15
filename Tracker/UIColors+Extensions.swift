@@ -8,6 +8,19 @@
 import UIKit
 
 extension UIColor {
+    static var TrackerWhite: UIColor {
+        UIColor(named: "TrackerWhite") ?? .white
+    }
+    static var TrackerBlack: UIColor {
+        UIColor(named: "TrackerBlack") ?? .black
+    }
+    static var TrackerBackGround: UIColor {
+        UIColor(named: "BackGroundDay") ?? .systemBackground
+    }
+    static var EmojiBackGround: UIColor {
+        UIColor(named: "EmojiBackGround") ?? .systemBackground
+    }
+    
     static var BackGroundDay: UIColor {
         UIColor(named: "BackGroundDay") ?? UIColor.black
     }

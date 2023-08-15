@@ -19,7 +19,7 @@ final class AddNewCategoryViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = AddNewCategoryLocalize.addNewCategoryLabelText
-        label.textColor = .BlackDay
+        label.textColor = .TrackerBlack
         label.font = UIFont.ypMedium16()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -27,11 +27,11 @@ final class AddNewCategoryViewController: UIViewController {
     
     private lazy var categoryNameTextField: UITextField = {
         let textField = UITextField()
-        textField.backgroundColor = .BackGroundDay
+        textField.backgroundColor = .TrackerBackGround
         textField.placeholder = AddNewCategoryLocalize.textFieldPlaceHolderText
         textField.layer.cornerRadius = 16
         textField.delegate = self
-        textField.textColor = .BlackDay
+        textField.textColor = .Gray
         textField.font = UIFont.ypRegular17()
         // Создаем отступ, для текста в плейсхолдере
         
@@ -46,7 +46,7 @@ final class AddNewCategoryViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Готово", for: .normal)
-        button.setTitleColor(.WhiteDay, for: .normal)
+        button.setTitleColor(.TrackerWhite, for: .normal)
         button.backgroundColor = .Gray
         button.clipsToBounds = true
         button.titleLabel?.font = UIFont.ypMedium16()
@@ -72,7 +72,7 @@ final class AddNewCategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .WhiteDay
+        view.backgroundColor = .TrackerWhite
         addTableViews()
         setupTableConstraints()
     }
@@ -117,7 +117,7 @@ final class AddNewCategoryViewController: UIViewController {
     private func updateDoneButton(isActive: Bool) {
         if isActive {
             doneButton.isUserInteractionEnabled = true
-            doneButton.backgroundColor = .BlackDay
+            doneButton.backgroundColor = .TrackerBlack
         } else {
             doneButton.isUserInteractionEnabled = false
             doneButton.backgroundColor = .Gray

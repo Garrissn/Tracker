@@ -21,7 +21,7 @@ final class AddScheduleViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = AddScheduleLocalize.scheduleLabelText
-        label.textColor = .BlackDay
+        label.textColor = .TrackerBlack
         label.font = UIFont.ypMedium16()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -34,7 +34,7 @@ final class AddScheduleViewController: UIViewController {
         tableView.layer.cornerRadius = 16
         tableView.register(ScheduleTableViewCell.self, forCellReuseIdentifier: ScheduleTableViewCell.ScheduleTableViewCellIdentifier)
         tableView.separatorColor = .Gray
-        tableView.backgroundColor = .WhiteDay
+        tableView.backgroundColor = .TrackerBackGround
         
         return tableView
     }()
@@ -63,7 +63,7 @@ final class AddScheduleViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
-        view.backgroundColor = .WhiteDay
+        view.backgroundColor = .TrackerWhite
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -114,11 +114,11 @@ final class AddScheduleViewController: UIViewController {
     private func doneButtonEnabled(_ isOn: Bool) {
         if isOn {
             doneButton.isEnabled = isOn
-            doneButton.backgroundColor = .BlackDay
-            doneButton.setTitleColor(.WhiteDay, for: .normal)
+            doneButton.backgroundColor = .TrackerBlack
+            doneButton.setTitleColor(.TrackerWhite, for: .normal)
         } else {
             doneButton.backgroundColor = .Gray
-            doneButton.setTitleColor(.WhiteDay, for: .normal)
+            doneButton.setTitleColor(.TrackerBlack, for: .normal)
         }
     }
 }
@@ -137,7 +137,7 @@ extension AddScheduleViewController: UITableViewDataSource {
         daySwitcher.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
       guard  let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTableViewCell.ScheduleTableViewCellIdentifier) as? ScheduleTableViewCell else { return UITableViewCell()}
         cell.selectionStyle = .none
-        cell.backgroundColor = .BackGroundDay
+        cell.backgroundColor = .TrackerBackGround
         cell.textLabel?.font = .ypRegular17()
         let textLabel = allDay[indexPath.row].stringValue
         cell.configureScheduleTableCell(cellTitle: textLabel)
