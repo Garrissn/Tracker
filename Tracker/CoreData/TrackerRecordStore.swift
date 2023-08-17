@@ -13,6 +13,7 @@ protocol TrackerRecordStoreProtocol {
     func numberOfRecords(forId: UUID) -> Int
     func addRecord(forId: UUID, date: String) throws
     func deleteRecord(forId: UUID, date: String) throws
+    
 }
 
 final class TrackerRecordStore {
@@ -64,4 +65,6 @@ extension TrackerRecordStore: TrackerRecordStoreProtocol {
         context.delete(trackerRecord)
         try context.save()
     }
+    
+   
 }

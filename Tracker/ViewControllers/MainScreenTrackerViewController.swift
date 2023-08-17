@@ -14,6 +14,8 @@ class MainScreenTrackerViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.register(CardTrackerViewCell.self, forCellWithReuseIdentifier: CardTrackerViewCell.cardTrackerViewCellIdentifier)
+        collectionView.allowsMultipleSelection = false
+        
         return collectionView
     }()
     
@@ -141,6 +143,19 @@ class MainScreenTrackerViewController: UIViewController {
     }
     
     // MARK: - Private Methods
+    
+    private func trackerPinned(at: IndexPath) {
+        
+    }
+    private func trackerUnPinned(at: IndexPath) {
+        
+    }
+    private func editTracker(at: IndexPath) {
+        
+    }
+    private func deleteTracker(at: IndexPath) {
+        
+    }
     private func configureView() {
         view.backgroundColor = .TrackerWhite
         searchTextField.returnKeyType = .done
@@ -157,7 +172,7 @@ class MainScreenTrackerViewController: UIViewController {
     
     private func setupCollectionView() {
         collectionView.translatesAutoresizingMaskIntoConstraints =  false
-        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
@@ -333,6 +348,7 @@ extension MainScreenTrackerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardTrackerViewCell.cardTrackerViewCellIdentifier, for: indexPath) as? CardTrackerViewCell else { return UICollectionViewCell() }
         cell.delegate = self
+        cell.contextMenuDelegate = self
         let cellViewModel = configColViewCell(indexPath: indexPath)
         cell.configure(with: cellViewModel)
         return cell
@@ -360,6 +376,66 @@ extension MainScreenTrackerViewController: UICollectionViewDataSource {
         return  trackerRecord.trackerId == id && isSameDay
     }
 }
+
+// MARK: - UICollectionViewDelegate
+extension MainScreenTrackerViewController: ContextMenuInteractionDelegate {
+    func contextMenuConfiguration(at indexPath: IndexPath) -> UIContextMenuConfiguration? {
+        let pinAction = UIAction(title: "Закрепить") { [weak self] _ in
+            guard let self else { return }
+            
+            // удалить трекер с этим индекс пасом из visualCategories
+            // записать треккер с эти индексом в кордату и дать ему название закрепленные , загрузить его из кор даты на экран
+            
+            let trackerto = self.visibleCatergories[indexPath.section].trackers[indexPath.row]
+         
+            do {
+               // let tracker = try trackerDataManager.getTracker(at: indexPath)
+                let newPin = TrackerCategory(title: "Закрепленные", trackers: [trackerto])
+                try trackerDataManager.addTrackerCategory(newPin)
+               
+                try trackerDataManager.deleteTracker(tracker: trackerto)
+                print(" rere ")
+                
+                
+                
+                
+            } catch {
+                showAlertController(text: "Ошибка прикрепления")
+            }
+                
+            
+           
+            
+//            let pinnedTarckerCategory = TrackerCategory(title: "Закрепленные", trackers: [trackToRemove])
+//            do {
+//                try trackerDataManager.addTrackerCategory(pinnedTarckerCategory)
+//            } catch {
+//                showAlertController(text: "Ошибка добавления нового трекера. Попробуйте еще раз")
+//            }
+            self.trackerPinned(at: indexPath)
+            self.reloadData()
+        }
+        
+        let unpinAction = UIAction(title: "Открепить") { [weak self] _ in
+            guard let self else { return }
+            self.trackerUnPinned(at: indexPath)
+            self.reloadData()
+        }
+        
+        let editAction = UIAction(title: "Редактировать") { _ in
+            print("Tapped EDIT for tracker")
+        }
+        
+        let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { _ in
+            print("Tapped DELETE for tracker")
+        }
+        
+        let menu = UIMenu(children: [pinAction, unpinAction, editAction, deleteAction])
+        return UIContextMenuConfiguration(actionProvider: { _ in menu })
+    }
+}
+
+
 // MARK: - CardTrackerViewCellDelegate
 
 extension MainScreenTrackerViewController: CardTrackerViewCellDelegate {
@@ -492,7 +568,7 @@ extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDel
     }
     
     private func performBatchUpdates() {
-        if  removedSectionsInSearch.isEmpty &&
+        if      removedSectionsInSearch.isEmpty &&
                 insertedSectionsInSearch.isEmpty &&
                 removedIndexesInSearch.isEmpty &&
                 insertedIndexesInSearch.isEmpty

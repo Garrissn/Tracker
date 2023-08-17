@@ -27,6 +27,9 @@ protocol TrackerDataManagerProtocol: AnyObject {
     func deleteTrackerRecord(forId: UUID, date: String) throws
     func recordExists(forId: UUID, date: String) -> Bool
     func numberOfRecords(forId: UUID) -> Int
+    func addPinnedCategory(tracker: Tracker) throws
+    func getTracker(at: IndexPath) throws -> Tracker
+    func deleteTracker(tracker: Tracker) throws
 }
 
 final class TrackerDataManager: NSObject { //берем трекеры из кордаты и конвертируем в трекеры и обратно
@@ -91,6 +94,20 @@ extension TrackerDataManager: TrackerDataManagerProtocol {
         return objects
     }
     
+    func getTracker(at: IndexPath) throws -> Tracker {
+        let fetchRequest = TrackerEntity.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \TrackerEntity.title, ascending: true)]
+        let fetchResultController = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: context,
+            sectionNameKeyPath: nil, cacheName: nil)
+        try? fetchResultController.performFetch()
+        
+        
+        let trackerEntity = fetchResultController.object(at: at)
+        let tracker = try trackerStore.convertTrackerEntityToTracker(trackerEntity)
+        return tracker
+    }
     
 
     var categories: [TrackerCategory]  {
@@ -123,6 +140,13 @@ extension TrackerDataManager: TrackerDataManagerProtocol {
     
     func numberOfRecords(forId: UUID) -> Int {
         trackerRecordStore.numberOfRecords(forId: forId)
+    }
+    
+    func addPinnedCategory(tracker: Tracker) throws {
+        try trackerCategoryStore.addPinnedCategory(tracker: tracker )
+    }
+    func deleteTracker(tracker: Tracker) throws {
+        try trackerCategoryStore.deleteTracker(tracker: tracker)
     }
     
     func fetchCategoriesFor(weekDay: String, animating: Bool) {
