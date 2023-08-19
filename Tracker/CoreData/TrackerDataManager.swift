@@ -27,7 +27,7 @@ protocol TrackerDataManagerProtocol: AnyObject {
     func deleteTrackerRecord(forId: UUID, date: String) throws
     func recordExists(forId: UUID, date: String) -> Bool
     func numberOfRecords(forId: UUID) -> Int
-    func addPinnedCategory(tracker: Tracker) throws
+    func trackerIsPinned(isPinned: Bool, tracker: Tracker) throws
     func getTracker(at: IndexPath) throws -> Tracker
     func deleteTracker(tracker: Tracker) throws
 }
@@ -142,21 +142,24 @@ extension TrackerDataManager: TrackerDataManagerProtocol {
         trackerRecordStore.numberOfRecords(forId: forId)
     }
     
-    func addPinnedCategory(tracker: Tracker) throws {
-        try trackerCategoryStore.addPinnedCategory(tracker: tracker )
+    func trackerIsPinned(isPinned: Bool, tracker: Tracker) throws {
+        try trackerCategoryStore.trackerIsPinned(isPinned: isPinned, tracker: tracker)
     }
     func deleteTracker(tracker: Tracker) throws {
-        try trackerCategoryStore.deleteTracker(tracker: tracker)
+      try  trackerCategoryStore.deleteTracker(tracker: tracker)
     }
     
     func fetchCategoriesFor(weekDay: String, animating: Bool) {
         let predicate = NSPredicate(format: "ANY %K.%K == %@", #keyPath(TrackerEntity.schedule), #keyPath(ScheduleEntity.weekDay), weekDay)
         var trackerCategories = trackerCategoryStore.fetchCategoriesWithPredicate(predicate)
         trackerCategories.sort { $0.title < $1.title }
+        
         print("запрос1")
         delegate?.updateView(categories: trackerCategories, animating: animating)
     }
-    
+    private func checkIsPinned() {
+        
+    }
     func fetchSearchCategories(textToSearch: String, weekDay: String) {
         let textPredicate = NSPredicate(format: "ANY %K CONTAINS[c] %@", #keyPath(TrackerEntity.title), textToSearch)
        // let weekDayPredicate = NSPredicate(format: "ANY %K.%K CONTAINS[c] %@", #keyPath(TrackerEntity.schedule), #keyPath(ScheduleEntity.weekDay), weekDay )
@@ -166,6 +169,7 @@ extension TrackerDataManager: TrackerDataManagerProtocol {
         print("запрос2")
         var trackerCategories = trackerCategoryStore.fetchCategoriesWithPredicate(predicate)
         trackerCategories.sort { $0.title < $1.title }
+        
         delegate?.updateView(categories: trackerCategories, animating: true)
     }
 }

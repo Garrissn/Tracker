@@ -239,7 +239,8 @@ final class AddNewTrackerViewController: UIViewController {
         let selectedColor = emojiesAndColors.colors[colorIndex.row]
         self.delegate?.didSelectNewTracker(newTracker: TrackerCategory(
             title: currentCatergory ?? "",
-            trackers: [Tracker.init(id: UUID(),
+            trackers: [Tracker.init(isPinned: false,
+                                    id: UUID(),
                                     title: trackerTitleName,
                                     color: selectedColor,
                                     emoji: selectedEmoji,

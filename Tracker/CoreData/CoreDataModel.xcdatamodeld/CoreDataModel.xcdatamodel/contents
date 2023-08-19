@@ -12,6 +12,7 @@
         <attribute name="color" attributeType="String"/>
         <attribute name="emoji" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isPinned" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String"/>
         <relationship name="schedule" toMany="YES" deletionRule="Nullify" destinationEntity="ScheduleEntity" inverseName="trackers" inverseEntity="ScheduleEntity"/>
         <relationship name="trackerCategory" maxCount="1" deletionRule="Nullify" destinationEntity="TrackerCategoryEntity" inverseName="trackers" inverseEntity="TrackerCategoryEntity"/>

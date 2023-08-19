@@ -53,6 +53,7 @@ final  class TrackerStore {
 
 extension TrackerStore: TrackerStoreProtocol {
     func convertTrackerEntityToTracker(_ object: TrackerEntity) throws -> Tracker {
+            let isPinned = object.isPinned
         guard let id = object.id,
               let title = object.title,
               let emoji = object.emoji,
@@ -64,7 +65,8 @@ extension TrackerStore: TrackerStoreProtocol {
         let schedule = convertScheduleEntityToArray(scheduleSet)
         let color = uiColorMarshalling.color(from: hexColor)
         
-        let tracker = Tracker(id: id,
+        let tracker = Tracker(isPinned: isPinned,
+                              id: id,
                               title: title,
                               color: color,
                               emoji: emoji,
@@ -80,6 +82,7 @@ extension TrackerStore: TrackerStoreProtocol {
         let color = tracker.color
         let hexColor = uiColorMarshalling.hexString(from: color)
         trackerEntity.color = hexColor
+        trackerEntity.isPinned = tracker.isPinned
         
          let schedule = tracker.schedule
             trackerEntity.schedule = convertScheduleArrayToScheduleEntity(schedule)

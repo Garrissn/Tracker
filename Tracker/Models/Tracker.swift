@@ -9,6 +9,7 @@
 import UIKit
 
 struct Tracker {
+    let isPinned: Bool
     let id: UUID
     let title: String
     let color: UIColor
