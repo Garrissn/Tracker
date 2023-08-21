@@ -82,18 +82,27 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
     func deleteTracker(tracker: Tracker) throws {
         let originTrackerFetchRequest = NSFetchRequest<TrackerEntity>(entityName: "TrackerEntity")
         originTrackerFetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerEntity.title), tracker.title)
+        
+        let scheduleFetchRequest = NSFetchRequest<ScheduleEntity>(entityName: "ScheduleEntity")
+        scheduleFetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(ScheduleEntity.trackers.title), tracker.title)
+        
         do {
-            let originalTrackers = try context.fetch(originTrackerFetchRequest)
-            if let originalTrackerEntity = originalTrackers.first {
-
-                context.delete(originalTrackerEntity)
-                try context.save()
+            let scheduleTrackers = try context.fetch(scheduleFetchRequest)
+            if let scheduleTrackerEntity = scheduleTrackers.first {
+                context.delete(scheduleTrackerEntity)
             }
+            
+            let originalTrackers = try context.fetch(originTrackerFetchRequest)
+           if let tracker =  originalTrackers.first {
+              
+                    context.delete(tracker)
+                }
         } catch {
-            throw TrackerErrors.decodingError
+            print(error.localizedDescription)
+            throw  TrackerErrors.decodingError
         }
        
-            
+    try context.save()
 
     }
     

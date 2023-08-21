@@ -30,6 +30,7 @@
 "newRegularEvent.title" = "Une nouvelle habitude";
 "newIrregularEvent.title" = "Nouvel événement irrégulier";
 "newCategory.title" = "Nouvelle catégorie";
+"editHabitTracker.title" = "Modifier les habitudes";
 
 "searchBar.placeholder.title" = "Recherche";
 "textField.tracker.title" = "Saisir le titre du traqueur";

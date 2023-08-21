@@ -121,7 +121,7 @@ class MainScreenTrackerViewController: UIViewController {
     private let trackerDataManager: TrackerDataManagerProtocol
     private var isPinned = false
     private var titleTextPinnedTracker: String = ""
-    
+    private var pinnedTracker: Tracker?
     init(trackerDataManager: TrackerDataManagerProtocol) {
         currentDate = Date()
         self.trackerDataManager = trackerDataManager
@@ -142,8 +142,9 @@ class MainScreenTrackerViewController: UIViewController {
         configureView()
         setupNavigationBar()
         trackerDataManager.delegate = self
-        reloadData()
-        reloadVisibleCategories(categories: visibleCatergories)
+      //  reloadData()
+      // reloadVisibleCategories()
+        dateChanged()
     }
     
     // MARK: - Private Methods
@@ -161,7 +162,7 @@ class MainScreenTrackerViewController: UIViewController {
             print( " weekdayStringRaw \(weekDayString.rawValue)")
         }
         
-        self.rlVC()
+        
         
     }
     
@@ -218,7 +219,7 @@ class MainScreenTrackerViewController: UIViewController {
     
     @objc private func dateChanged() {
         currentDate = datePicker.date
-        let ret = dateFormatter.string(from: datePicker.date)
+       // let ret = dateFormatter.string(from: datePicker.date)
         self.dismiss(animated: false)
         let weekDay = currentDate.weekDayNumber()
        
@@ -228,8 +229,8 @@ class MainScreenTrackerViewController: UIViewController {
         } else {
             print("ошибка дейтпикера")
         }
-        rlVC()
-        reloadPlaceHolder(for: .whatToTrack)
+        reloadVisibleCategories()
+        reloadPlaceHolder(for: .notFound)
       //  guard let weeksString = WeekDay.allCases.first(where: { $0.numberValue == currentDate.weekDayNumber()}) else { print ("date error")}
         
     }
@@ -261,40 +262,39 @@ class MainScreenTrackerViewController: UIViewController {
         }
     }
     
-    private func reloadVisibleCategories(categories: [TrackerCategory]) {
-//        let filterText = (text ?? "").lowercased()
-//        let filterWeekday = currentDate.weekDayNumber()
-//        if let filterWeekDayString = WeekDay.allCases.first(where: { $0.numberValue == filterWeekday}) {
-//            trackerDataManager.fetchSearchCategories(textToSearch: filterText, weekDay: filterWeekDayString.rawValue)
-//        }
-      //  _ = categories
-       // categoriesAll.compactMap { category in
-            //let trackers = category.trackers.filter { $0.isPinned
-              //  let textCondition = filterText.isEmpty ||
-               // tracker.title.lowercased().contains(filterText)
-               // let dateCondition = tracker.schedule.contains { weekDay in
-                  //  weekDay.numberValue == filterWeekday
-              //  } == true
-              //  return textCondition && dateCondition
-         //   }
-          //  if trackers.isEmpty {
-          //      return nil
-//            }
-//            return TrackerCategory(title: "ategory.title", trackers: trackers)
-//
-//                guard let weeksString = WeekDay.allCases.first(where: { $0.numberValue == currentDate.weekDayNumber()}) else { print ("date error")}
-//                let categoriesy = trackerDataManager.fetchCategoriesFor(weekDay: weeksString.rawValue, animating: true)
-//                visibleCatergories = categoriesy.map
-//        }
+    private func reloadVisibleCategories() {
+        let filterText = (searchTextField.text ?? "").lowercased()
+        let filterWeekday = currentDate.weekDayNumber()
+      //  if let filterWeekDayString = WeekDay.allCases.first(where: { $0.numberValue == filterWeekday}) {
+      //      trackerDataManager.fetchSearchCategories(textToSearch: filterText, weekDay: filterWeekDayString.rawValue)
+      //  }
+        let sortedByPinnedCategories = rlVC()
+        visibleCatergories = sortedByPinnedCategories.compactMap { category in
+           
+            
+                let trackers = category.trackers.filter { tracker in
+                let textCondition = filterText.isEmpty ||
+                tracker.title.lowercased().contains(filterText)
+                    
+                let dateCondition = tracker.schedule.contains { weekDay in
+                    weekDay.numberValue == filterWeekday
+                } == true
+                return textCondition && dateCondition
+            }
+            if trackers.isEmpty {
+                return nil
+            }
+            return TrackerCategory(title: category.title, trackers: trackers)
+            
+        }
+        //performBatchUpdates()
+        //updateView(categories: visibleCatergories, animating: true)
+        collectionView.reloadData()
+       // reloadPlaceHolder(for: .notFound)
         
-        
-        
-        
-        //collectionView.reloadData()
-       // reloadPlaceHolder(for: .whatToTrack)
     }
     
-    private func rlVC() {
+    private func rlVC() -> [TrackerCategory] {
         var sortedCategories: [TrackerCategory] = []
         var sortedPinnedcategories: [TrackerCategory] = []
         var sortedUnpinnedCategories: [TrackerCategory] = []
@@ -320,13 +320,14 @@ class MainScreenTrackerViewController: UIViewController {
         for category in sortedCategories {
                 print(category.title)
             }
-        visibleCatergories = sortedCategories
-       
-        for category in visibleCatergories {
-                print("visible category titles:\(category.title)")
-            }
-        collectionView.reloadData()
-        reloadPlaceHolder(for: .notFound)
+        return sortedCategories
+//        visibleCatergories = sortedCategories
+//
+//        for category in visibleCatergories {
+//                print("visible category titles:\(category.title)")
+//            }
+//        collectionView.reloadData()
+//        reloadPlaceHolder(for: .notFound)
     }
     
     private func reloadPlaceHolder(for view: PlaceHolder) {
@@ -355,17 +356,18 @@ class MainScreenTrackerViewController: UIViewController {
 
 extension MainScreenTrackerViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        let filterText = (textField.text ?? "").lowercased()
-        if  !filterText.isEmpty {
-            if let filterWeekDayString = WeekDay.allCases.first(where: { $0.numberValue == currentDate.weekDayNumber()}) {
-                trackerDataManager.fetchSearchCategories(textToSearch: filterText, weekDay: filterWeekDayString.rawValue)
-            }
-        } else {
-            if let filterWeekDayString = WeekDay.allCases.first(where: { $0.numberValue == currentDate.weekDayNumber()}) {
-                trackerDataManager.fetchCategoriesFor(weekDay: filterWeekDayString.rawValue, animating: true)
-            }
-        }
+//        textField.resignFirstResponder()
+//        let filterText = (textField.text ?? "").lowercased()
+//        if  !filterText.isEmpty {
+//            if let filterWeekDayString = WeekDay.allCases.first(where: { $0.numberValue == currentDate.weekDayNumber()}) {
+//                trackerDataManager.fetchSearchCategories(textToSearch: filterText, weekDay: filterWeekDayString.rawValue)
+//            }
+//        } else {
+//            if let filterWeekDayString = WeekDay.allCases.first(where: { $0.numberValue == currentDate.weekDayNumber()}) {
+//                trackerDataManager.fetchCategoriesFor(weekDay: filterWeekDayString.rawValue, animating: true)
+//            }
+//        }
+        reloadVisibleCategories()
         return true
     }
 }
@@ -383,6 +385,7 @@ extension MainScreenTrackerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionView.headerIdentifier, for: indexPath) as? HeaderCollectionView else { return UICollectionReusableView()}
         let titleCategory = visibleCatergories[indexPath.section].title
+        let isp = visibleCatergories[indexPath.section].trackers[indexPath.row].isPinned
         view.configureHeader(title: titleCategory)
         return view
     }
@@ -423,39 +426,64 @@ extension MainScreenTrackerViewController: UICollectionViewDataSource {
 extension MainScreenTrackerViewController: ContextMenuInteractionDelegate {
     func contextMenuConfiguration(at indexPath: IndexPath) -> UIContextMenuConfiguration? {
         
-        let trackerIsPinned = self.visibleCatergories[indexPath.section].trackers[indexPath.row]
-
-            if trackerIsPinned.isPinned {
+        let pinnedTracker = self.visibleCatergories[indexPath.section].trackers[indexPath.row]
+        if pinnedTracker.isPinned {
                 titleTextPinnedTracker = "Открепить"
                 isPinned = false
             } else {
                 isPinned = true
                 titleTextPinnedTracker = "Закрепить"
             }
+//        do {
+//            //let pTracker = try trackerDataManager.getTracker(at: indexPath)
+//
+//        } catch {
+//            print("error \(error.localizedDescription)")
+//        }
+       
+        
         let pinOrUnpinAction = UIAction(title: titleTextPinnedTracker) { [weak self] _ in
             guard let self else { return }
             do {
-                try trackerDataManager.trackerIsPinned(isPinned: isPinned, tracker: trackerIsPinned)
+                let pTracker = try trackerDataManager.getTracker(at: indexPath)
+                if pinnedTracker.isPinned {
+                        titleTextPinnedTracker = "Открепить"
+                        isPinned = false
+                    } else {
+                        isPinned = true
+                        titleTextPinnedTracker = "Закрепить"
+                    }
+                
+                try trackerDataManager.trackerIsPinned(isPinned: isPinned, tracker: pinnedTracker)
             } catch {
                 showAlertController(text: "error")
             }
             self.dateChanged()
-            collectionView.reloadData()
+            collectionView.reloadItems(at: [indexPath])
+            //collectionView.reloadData()
         }
         
-        let editAction = UIAction(title: "Редактировать") { _ in
-            print("Tapped EDIT for tracker")
+        let editAction = UIAction(title: "Редактировать") {[weak self] _ in
+            guard let self else { return }
+            
+            let addNewTrackerVC = AddNewTrackerViewController()
+            addNewTrackerVC.trackerType = .editHabitTracker
+            present(addNewTrackerVC, animated: true)
+            
+           
         }
         
         let deleteAction = UIAction(title: "Удалить", attributes: .destructive) {[weak self] _ in
             guard let self else { return }
             do {
-                try trackerDataManager.deleteTracker(tracker: trackerIsPinned)
+                let tracker = try trackerDataManager.getTracker(at: indexPath)
+                try trackerDataManager.deleteTracker(tracker: tracker)
+                self.dateChanged()
+                collectionView.reloadData()
             } catch {
                 showAlertController(text: "error while deleting Tracker")
             }
-            self.dateChanged()
-            collectionView.reloadData()
+            
         }
         
         let menu = UIMenu(children: [pinOrUnpinAction, editAction, deleteAction])
@@ -549,7 +577,8 @@ extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDel
                 showAlertController(text: "Ошибка добавления нового трекера. Попробуйте еще раз")
             }
         }
-        self.rlVC()
+      //  self.dateChanged()
+      //  self.reloadVisibleCategories()
                 
         // ToDo:
 //                if categories.contains(where: { $0.title == trackerCategory.title}) {
@@ -625,9 +654,9 @@ extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDel
 
 extension MainScreenTrackerViewController: TrackerDataManagerDelegate {
     func updateView(categories: [TrackerCategory], animating: Bool) {
-        categoriesAll = categories
+     //   categoriesAll = categories
         visibleCatergories = categories
-        
+        reloadVisibleCategories()
         findDiff(newCategories: categories)
         performBatchUpdates()
        

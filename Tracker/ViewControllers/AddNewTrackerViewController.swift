@@ -11,6 +11,7 @@ protocol AddNewTrackerViewControllerDelegate: AnyObject {
     func didSelectNewTracker(newTracker: TrackerCategory)
 }
 private enum LocalisedCases {
+    static let editTrackerLabelText = NSLocalizedString("editHabitTracker.title", comment: "Title of edited habit")
     static let habitTrackerLabelText = NSLocalizedString("newRegularEvent.title", comment: "Title of new habit")
     static let irregularEventTrackerLabelText = NSLocalizedString("newIrregularEvent.title", comment: "Title of new irregulat habit")
     static let textFieldPlaceHolderText = NSLocalizedString("textField.tracker.title", comment: "Title of attributedPlaceholder in textfield")
@@ -31,6 +32,7 @@ final class AddNewTrackerViewController: UIViewController {
             break
         case .habitTracker: label.text = LocalisedCases.habitTrackerLabelText
         case .irregularIvent: label.text = LocalisedCases.irregularEventTrackerLabelText
+        case .editHabitTracker: label.text = LocalisedCases.editTrackerLabelText
         }
         label.textColor = .TrackerBlack
         label.font = UIFont.ypMedium16()
@@ -182,6 +184,7 @@ final class AddNewTrackerViewController: UIViewController {
     
     private func setupConstraints() {
         switch trackerType {
+        case.editHabitTracker: heightTableView = 150
         case .habitTracker: heightTableView = 150
         case .irregularIvent: heightTableView = 75
         case.none: break
@@ -290,6 +293,11 @@ extension AddNewTrackerViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if range.location == 0 &&  string == " " { return false }
         switch trackerType {
+        case .editHabitTracker:
+            if schedule.isEmpty == false {
+                createButtonIsEnabled()
+                return true
+            }
         case .habitTracker:
             if schedule.isEmpty == false {
                 createButtonIsEnabled()
@@ -310,6 +318,7 @@ extension AddNewTrackerViewController: UITextFieldDelegate {
 extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch trackerType {
+        case .editHabitTracker: return 2
         case .habitTracker: return 2
         case .irregularIvent: return 1
         case .none: return 0

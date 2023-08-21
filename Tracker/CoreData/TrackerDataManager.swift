@@ -149,6 +149,8 @@ extension TrackerDataManager: TrackerDataManagerProtocol {
       try  trackerCategoryStore.deleteTracker(tracker: tracker)
     }
     
+    
+   
     func fetchCategoriesFor(weekDay: String, animating: Bool) {
         let predicate = NSPredicate(format: "ANY %K.%K == %@", #keyPath(TrackerEntity.schedule), #keyPath(ScheduleEntity.weekDay), weekDay)
         var trackerCategories = trackerCategoryStore.fetchCategoriesWithPredicate(predicate)

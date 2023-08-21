@@ -31,6 +31,7 @@
 "newRegularEvent.title" = "Новая привычка";
 "newIrregularEvent.title" = "Новое нерегулярное событие";
 "newCategory.title" = "Новая категория";
+"editHabitTracker.title" = "Редактирование привычки";
 
 "searchBar.placeholder.title" = "Поиск";
 "textField.tracker.title" = "Введите название трекера";

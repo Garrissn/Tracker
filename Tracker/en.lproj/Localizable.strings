@@ -31,6 +31,7 @@
 "newRegularEvent.title" = "New habit";
 "newIrregularEvent.title" = "New irregular event";
 "newCategory.title" = "New category";
+"editHabitTracker.title" = "Editing habits";
 
 "searchBar.placeholder.title" = "Search";
 "textField.tracker.title" = "Type tracker name";
