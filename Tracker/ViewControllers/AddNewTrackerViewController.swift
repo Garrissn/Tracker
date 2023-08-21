@@ -149,7 +149,8 @@ final class AddNewTrackerViewController: UIViewController {
     
     weak var delegate: AddNewTrackerViewControllerDelegate?
     var trackerType: TrackerType?
-    
+    var editingTrackerCategory: TrackerCategory?
+    var editingIndexPath: IndexPath?
     private let paramsForAddNewTrackerCell = GeometricParams(cellCount:6,
                                                              leftInset: 0, rightInset: 0, cellSpacing: 5)
     
@@ -164,9 +165,19 @@ final class AddNewTrackerViewController: UIViewController {
         collectionView.allowsMultipleSelection = false
         tableView.dataSource = self
         tableView.delegate = self
+        editingTracker()
     }
     
     // MARK: - Private Methods
+    
+    private func editingTracker() {
+        if let editingTrackerCategory = editingTrackerCategory {
+            self.habitNameTextField.text = editingTrackerCategory.trackers[0].title
+            self.currentCatergory = editingTrackerCategory.title
+            self.schedule = editingTrackerCategory.trackers[0].schedule
+          
+        }
+    }
     
     private func setupViews() {
         view.addSubview(scrollView)
@@ -424,9 +435,16 @@ extension AddNewTrackerViewController: UICollectionViewDataSource {
                let previousCell = collectionView.cellForItem(at: selectedEmojiIndexPath) as? AddNewTrackerEmojiesViewCell {
                 previousCell.deselected()
             }
+            
+            if let editingIndexPath = editingIndexPath {
+                guard let cellEmoji = collectionView.cellForItem(at: editingIndexPath) as? AddNewTrackerEmojiesViewCell else { return }
+                cellEmoji.selected()
+                selectedEmojiIndexPath = indexPath
+            }
             guard let cellEmoji = collectionView.cellForItem(at: indexPath) as? AddNewTrackerEmojiesViewCell else { return }
             cellEmoji.selected()
             selectedEmojiIndexPath = indexPath
+            
         case 1:
             if let selectedColorIndexPath,
                let previousCell = collectionView.cellForItem(at: selectedColorIndexPath) as? AddNewTrackerColorViewCell {

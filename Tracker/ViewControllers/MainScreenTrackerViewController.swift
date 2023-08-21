@@ -434,18 +434,11 @@ extension MainScreenTrackerViewController: ContextMenuInteractionDelegate {
                 isPinned = true
                 titleTextPinnedTracker = "Закрепить"
             }
-//        do {
-//            //let pTracker = try trackerDataManager.getTracker(at: indexPath)
-//
-//        } catch {
-//            print("error \(error.localizedDescription)")
-//        }
-       
         
         let pinOrUnpinAction = UIAction(title: titleTextPinnedTracker) { [weak self] _ in
             guard let self else { return }
             do {
-                let pTracker = try trackerDataManager.getTracker(at: indexPath)
+              //  let pTracker = try trackerDataManager.getTracker(at: indexPath)
                 if pinnedTracker.isPinned {
                         titleTextPinnedTracker = "Открепить"
                         isPinned = false
@@ -465,8 +458,11 @@ extension MainScreenTrackerViewController: ContextMenuInteractionDelegate {
         
         let editAction = UIAction(title: "Редактировать") {[weak self] _ in
             guard let self else { return }
-            
+            let categoryName = self.visibleCatergories[indexPath.section].title
+            let trackerForEditing = TrackerCategory(title: categoryName, trackers: [pinnedTracker])
             let addNewTrackerVC = AddNewTrackerViewController()
+            addNewTrackerVC.editingIndexPath = indexPath
+            addNewTrackerVC.editingTrackerCategory = trackerForEditing
             addNewTrackerVC.trackerType = .editHabitTracker
             present(addNewTrackerVC, animated: true)
             
