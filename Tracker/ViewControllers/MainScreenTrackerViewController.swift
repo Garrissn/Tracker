@@ -427,6 +427,12 @@ extension MainScreenTrackerViewController: ContextMenuInteractionDelegate {
     func contextMenuConfiguration(at indexPath: IndexPath) -> UIContextMenuConfiguration? {
         
         let pinnedTracker = self.visibleCatergories[indexPath.section].trackers[indexPath.row]
+        let pinnedTrackerId = pinnedTracker.id
+       
+        
+        
+       
+        
         if pinnedTracker.isPinned {
                 titleTextPinnedTracker = "Открепить"
                 isPinned = false
@@ -435,36 +441,37 @@ extension MainScreenTrackerViewController: ContextMenuInteractionDelegate {
                 titleTextPinnedTracker = "Закрепить"
             }
         
+       
         let pinOrUnpinAction = UIAction(title: titleTextPinnedTracker) { [weak self] _ in
             guard let self else { return }
             do {
-              //  let pTracker = try trackerDataManager.getTracker(at: indexPath)
-                if pinnedTracker.isPinned {
-                        titleTextPinnedTracker = "Открепить"
-                        isPinned = false
-                    } else {
-                        isPinned = true
-                        titleTextPinnedTracker = "Закрепить"
-                    }
-                
                 try trackerDataManager.trackerIsPinned(isPinned: isPinned, tracker: pinnedTracker)
             } catch {
                 showAlertController(text: "error")
             }
             self.dateChanged()
             collectionView.reloadItems(at: [indexPath])
-            //collectionView.reloadData()
         }
         
         let editAction = UIAction(title: "Редактировать") {[weak self] _ in
             guard let self else { return }
+            
             let categoryName = self.visibleCatergories[indexPath.section].title
-            let trackerForEditing = TrackerCategory(title: categoryName, trackers: [pinnedTracker])
-            let addNewTrackerVC = AddNewTrackerViewController()
-            addNewTrackerVC.editingIndexPath = indexPath
-            addNewTrackerVC.editingTrackerCategory = trackerForEditing
-            addNewTrackerVC.trackerType = .editHabitTracker
-            present(addNewTrackerVC, animated: true)
+        
+                let numberOfRecords =  trackerDataManager.numberOfRecords(forId: pinnedTrackerId)
+                let trackerForEditing = TrackerCategory(title: categoryName, trackers: [pinnedTracker])
+                let addNewTrackerVC = AddNewTrackerViewController()
+                addNewTrackerVC.numberOfRecordsEditedTracker = numberOfRecords
+                addNewTrackerVC.editingTrackerCategory = trackerForEditing
+                addNewTrackerVC.trackerType = .editHabitTracker
+                present(addNewTrackerVC, animated: true)
+          
+//            let trackerForEditing = TrackerCategory(title: categoryName, trackers: [tracckerPinned])
+//            let addNewTrackerVC = AddNewTrackerViewController()
+//            addNewTrackerVC.editingIndexPath = indexPath
+//            addNewTrackerVC.editingTrackerCategory = trackerForEditing
+//            addNewTrackerVC.trackerType = .editHabitTracker
+//            present(addNewTrackerVC, animated: true)
             
            
         }
@@ -556,7 +563,9 @@ extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDel
                                          title: trackerCategory.trackers[0].title,
                                          color: trackerCategory.trackers[0].color,
                                          emoji: trackerCategory.trackers[0].emoji,
-                                         schedule: (trackersSchedule) + [newSchedule])
+                                         schedule: (trackersSchedule) + [newSchedule],
+                                         selectedEmojiIndexPath: trackerCategory.trackers[0].selectedEmojiIndexPath,
+                                         selectedColorIndexPath: trackerCategory.trackers[0].selectedColorIndexPath)
             var updatedTrackers = trackerCategory.trackers
             updatedTrackers[0] = updatedTracker
             trackerCategory = TrackerCategory(title: trackerCategory.title, trackers: updatedTrackers)

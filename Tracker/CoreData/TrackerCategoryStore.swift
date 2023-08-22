@@ -19,9 +19,10 @@ protocol TrackerCategoryStoreProtocol {
     func convertTrackerCategoryEntityToTrackerCategories(_ trackersEntity: [TrackerEntity]) throws -> [TrackerCategory]
     func convertTrackerCategoryEntityToTrackerCategory(_ objects: [TrackerCategoryEntity]) throws -> [TrackerCategory]
     func fetchCategoriesWithPredicate(_ predicate: NSPredicate) -> [TrackerCategory]
-  
+    
     func trackerIsPinned(isPinned: Bool, tracker: Tracker) throws
-    func deleteTracker(tracker: Tracker) throws 
+    func deleteTracker(tracker: Tracker) throws
+    func getTrackerFromId(forId: UUID) throws
 }
 
 final class TrackerCategoryStore: NSObject {
@@ -76,8 +77,20 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         
     }
     
-  
-
+    func getTrackerFromId(forId: UUID) throws   {
+//        let request = NSFetchRequest<TrackerEntity>(entityName: "TrackerEntity")
+//        request.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerEntity.id), forId.uuidString)
+//
+//        guard let trackerEntities = try? context.fetch(request) else { throw  TrackerErrors.decodingError }
+//
+//
+//        if let trackerEntity = trackerEntities.first {
+//            let tracker = try trackerStore.convertTrackerEntityToTracker(trackerEntity)
+//            return tracker
+//        }
+//        throw TrackerErrors.decodingError
+        
+    }
     
     func deleteTracker(tracker: Tracker) throws {
         let originTrackerFetchRequest = NSFetchRequest<TrackerEntity>(entityName: "TrackerEntity")
@@ -114,7 +127,7 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
     
     func fetchTrackerEntity(for tracker: Tracker) throws -> TrackerEntity {
         let request: NSFetchRequest<TrackerEntity> = TrackerEntity.fetchRequest()
-        let predicate = NSPredicate(format: "id == %@", tracker.id as CVarArg)
+        let predicate = NSPredicate(format: "trackerId == %@", tracker.id as CVarArg)
         request.predicate = predicate
         guard let trackerEntity  = try context.fetch(request).first else {
             throw TrackerErrors.fetchError

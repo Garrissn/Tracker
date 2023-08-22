@@ -16,12 +16,16 @@ class DataManager {
                             title: "Полить цветы",
                             color: .ColorSelection5,
                             emoji: "🌺",
-                            schedule: [WeekDay.monday,WeekDay.friday,WeekDay.thursday]),
+                            schedule: [WeekDay.monday,WeekDay.friday,WeekDay.thursday],
+                               selectedEmojiIndexPath: "",
+                               selectedColorIndexPath: ""),
                         Tracker(isPinned: false, id: UUID(),
                             title: "Помыть посуду",
                             color: .ColorSelection9,
                             emoji: "🔥",
-                            schedule: [WeekDay.monday,WeekDay.wednesday,WeekDay.saturday,WeekDay.sunday])
+                            schedule: [WeekDay.monday,WeekDay.wednesday,WeekDay.saturday,WeekDay.sunday],
+                                selectedEmojiIndexPath: "",
+                                selectedColorIndexPath: "")
                     ]),
     TrackerCategory(title: "Приятные привычки",
                     trackers: [
@@ -29,7 +33,9 @@ class DataManager {
                             title: "Прогулка с собакой",
                             color: .ColorSelection1,
                             emoji: "🐶",
-                            schedule: [WeekDay.monday,WeekDay.thursday])
+                            schedule: [WeekDay.monday,WeekDay.thursday],
+                                selectedEmojiIndexPath: "",
+                                selectedColorIndexPath: "")
                     ])
     
     
