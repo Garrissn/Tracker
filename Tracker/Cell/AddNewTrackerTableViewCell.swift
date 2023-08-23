@@ -48,6 +48,8 @@ final class AddNewTrackerTableViewCell: UITableViewCell {
         self.backgroundColor = .TrackerBackGround
         self.detailTextLabel?.font = UIFont.ypRegular17()
         self.detailTextLabel?.textColor = .Gray
+        contentView.layer.cornerRadius = 16
+        contentView.clipsToBounds = true
     }
     
     required init?(coder: NSCoder) {

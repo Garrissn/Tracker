@@ -30,7 +30,8 @@ protocol TrackerDataManagerProtocol: AnyObject {
     func trackerIsPinned(isPinned: Bool, tracker: Tracker) throws
     func getTracker(at: IndexPath) throws -> Tracker
     func deleteTracker(tracker: Tracker) throws
-    func getTrackerFromId(forId: UUID) throws 
+    func getTrackerFromId(forId: UUID) throws
+    func getCompletedTrackers() -> [TrackerRecord]
 }
 
 final class TrackerDataManager: NSObject { //берем трекеры из кордаты и конвертируем в трекеры и обратно
@@ -151,6 +152,10 @@ extension TrackerDataManager: TrackerDataManagerProtocol {
     }
     func getTrackerFromId(forId: UUID) throws {
         try trackerCategoryStore.getTrackerFromId(forId: forId)
+    }
+    
+    func getCompletedTrackers() -> [TrackerRecord]  {
+        try trackerRecordStore.getCompletedTrackers()
     }
     
    

@@ -65,19 +65,31 @@ class MainScreenTrackerViewController: UIViewController {
         return datePicker
     }()
     
-    private lazy var searchTextField: UISearchTextField = {
-        let textField = UISearchTextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.backgroundColor = .BackGroundDay
-        textField.layer.cornerRadius = 16
-        let attributes = [ NSAttributedString.Key.foregroundColor: UIColor.gray]
-        let attributedPlaceHolder = NSAttributedString(string: MainscreenLocalize.searchBarplaceHolderText, attributes: attributes)
-        textField.attributedPlaceholder = attributedPlaceHolder
-        textField.heightAnchor.constraint(equalToConstant: 36).isActive = true
-        textField.textColor = .BlackDay
-        textField.font = UIFont.ypRegular17()
-        textField.delegate = self
-        return textField
+//    private lazy var searchTextField: UISearchTextField = {
+//        let textField = UISearchTextField()
+//        textField.translatesAutoresizingMaskIntoConstraints = false
+//        textField.backgroundColor = .BackGroundDay
+//        textField.layer.cornerRadius = 16
+//        let attributes = [ NSAttributedString.Key.foregroundColor: UIColor.gray]
+//        let attributedPlaceHolder = NSAttributedString(string: MainscreenLocalize.searchBarplaceHolderText, attributes: attributes)
+//        textField.attributedPlaceholder = attributedPlaceHolder
+//        textField.heightAnchor.constraint(equalToConstant: 36).isActive = true
+//        textField.textColor = .BlackDay
+//        textField.font = UIFont.ypRegular17()
+//        textField.delegate = self
+//        return textField
+//    }()
+    private lazy var searchBar: TrackerSearchBar = {
+        let searchBar = TrackerSearchBar()
+        searchBar.delegate = self
+        searchBar.searchTextField.addTarget(self, action: #selector(searchBarTapped), for: .editingDidEndOnExit)
+        return searchBar
+    }()
+    
+    private lazy var tapGesture: UITapGestureRecognizer = {
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        recognizer.cancelsTouchesInView = false
+        return recognizer
     }()
     
     private lazy var cancelButton: UIButton = {
@@ -151,7 +163,7 @@ class MainScreenTrackerViewController: UIViewController {
     
     private func configureView() {
         view.backgroundColor = .TrackerWhite
-        searchTextField.returnKeyType = .done
+       // searchTextField.returnKeyType = .done
         filterButton.layer.zPosition = 2
     }
     
@@ -176,7 +188,9 @@ class MainScreenTrackerViewController: UIViewController {
     }
     
     private func addViews() {
-        view.addSubview(searchTextField)
+       // view.addSubview(searchTextField)
+        view.addSubview(searchBar)
+        view.addGestureRecognizer(tapGesture)
         view.addSubview(placeHolderImageView)
         view.addSubview(placeHolderText)
         view.addSubview(collectionView)
@@ -185,9 +199,13 @@ class MainScreenTrackerViewController: UIViewController {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate([
-            searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 7),
-            searchTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            searchTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+//            searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 7),
+//            searchTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+//            searchTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            
+            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 7),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
             placeHolderImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             placeHolderImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -199,7 +217,8 @@ class MainScreenTrackerViewController: UIViewController {
             placeHolderText.heightAnchor.constraint(equalToConstant: 18),
             
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            collectionView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 10),
+          //  collectionView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 10),
+            collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 10),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
@@ -234,7 +253,13 @@ class MainScreenTrackerViewController: UIViewController {
       //  guard let weeksString = WeekDay.allCases.first(where: { $0.numberValue == currentDate.weekDayNumber()}) else { print ("date error")}
         
     }
-   
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    @objc private func  searchBarTapped() {
+        reloadVisibleCategories()
+    }
     
     @objc private func  selectFilterTapped() {
         print("filter Tapped")
@@ -263,7 +288,7 @@ class MainScreenTrackerViewController: UIViewController {
     }
     
     private func reloadVisibleCategories() {
-        let filterText = (searchTextField.text ?? "").lowercased()
+        let filterText = (searchBar.searchTextField.text ?? "").lowercased()
         let filterWeekday = currentDate.weekDayNumber()
       //  if let filterWeekDayString = WeekDay.allCases.first(where: { $0.numberValue == filterWeekday}) {
       //      trackerDataManager.fetchSearchCategories(textToSearch: filterText, weekDay: filterWeekDayString.rawValue)
@@ -290,7 +315,7 @@ class MainScreenTrackerViewController: UIViewController {
         //performBatchUpdates()
         //updateView(categories: visibleCatergories, animating: true)
         collectionView.reloadData()
-       // reloadPlaceHolder(for: .notFound)
+        reloadPlaceHolder(for: .notFound)
         
     }
     
@@ -369,6 +394,31 @@ extension MainScreenTrackerViewController: UITextFieldDelegate {
 //        }
         reloadVisibleCategories()
         return true
+    }
+}
+
+// MARK: - SearchBarDelegate methods
+
+extension MainScreenTrackerViewController: UISearchBarDelegate {
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        searchBar.setShowsCancelButton(false, animated: true)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = nil
+        reloadVisibleCategories()
+        searchBar.setShowsCancelButton(false, animated: true)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        reloadVisibleCategories()
+        searchBar.resignFirstResponder()
     }
 }
 // MARK: - UICollectionViewDataSource

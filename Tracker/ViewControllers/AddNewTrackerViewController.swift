@@ -309,8 +309,7 @@ final class AddNewTrackerViewController: UIViewController {
     }
                      
     private func convertIndexPathToString(_ indexPath: IndexPath) -> String {
-        print("origin\(indexPath)")
-        print("'old''\(indexPath.section),\(indexPath.row)'''")
+        
                            return "\(indexPath.section),\(indexPath.row)"
                        }
     
@@ -319,7 +318,7 @@ final class AddNewTrackerViewController: UIViewController {
         if components.count == 2,
             let section = Int(components[0]),
            let row = Int(components[1]) {
-            print("new \(IndexPath(row: row, section: section))")
+           
             return IndexPath(row: row, section: section)
         }
         return nil
@@ -449,6 +448,7 @@ extension AddNewTrackerViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:

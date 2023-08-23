@@ -18,8 +18,6 @@ final class ScheduleTableViewCell: UITableViewCell {
         return label
     }()
     
-   
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .TrackerBackGround
@@ -27,7 +25,6 @@ final class ScheduleTableViewCell: UITableViewCell {
         setupViews()
         setupConstraints()
     }
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -39,20 +36,13 @@ final class ScheduleTableViewCell: UITableViewCell {
     }
     
     private func   setupConstraints() {
-        
         NSLayoutConstraint.activate([
             cellTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             cellTitleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
-            
         ])
     }
-    
     func configureScheduleTableCell(cellTitle: String) {
         self.cellTitleLabel.text = cellTitle
-    }
-    
-    func categoryIsSelected(_ : Bool) {
-    
     }
 }
 
