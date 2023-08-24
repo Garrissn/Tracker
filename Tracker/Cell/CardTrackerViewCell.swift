@@ -19,7 +19,7 @@ protocol ContextMenuInteractionDelegate: AnyObject {
 // MARK: - CollectionViewCell class
 final class CardTrackerViewCell: UICollectionViewCell {
     static let cardTrackerViewCellIdentifier = "CardTrackerCollectionViewIdentifier"
-    
+    private let analiticService = AnaliticsService.shared
     // MARK: - Properties
     
     private  let cardTrackerView: UIView = {
@@ -149,6 +149,10 @@ final class CardTrackerViewCell: UICollectionViewCell {
     }
     
     @objc private func plusButtonTapped() {
+        analiticService.report(event: "click", params: [
+            "screen": "Main",
+            "item": "track"
+        ])
         guard let trackerID = trackerID, let indexPath = indexPath else { return assertionFailure(" no id Tracker")}
         
             if isCompletedToday {

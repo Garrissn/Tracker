@@ -8,7 +8,7 @@
 import UIKit
 
 class MainScreenTrackerViewController: UIViewController {
-    
+    private let analiticService = AnaliticsService.shared
     // MARK: - Private Properties
     
     private lazy var collectionView: UICollectionView = {
@@ -146,6 +146,16 @@ class MainScreenTrackerViewController: UIViewController {
         dateChanged()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        analiticService.report(event: "open", params: ["screen": "Main"])
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analiticService.report(event: "close", params: ["screen": "Main"])
+    }
+    
     // MARK: - Private Methods
     
     private func configureView() {
@@ -214,6 +224,12 @@ class MainScreenTrackerViewController: UIViewController {
     }
     
     @objc private func addTask() {
+        
+        analiticService.report(event: "click", params: [
+            "screen": "Main",
+            "item": "add_track"
+        ])
+        
         let trackerTypeSelectionViewController = TrackerTypeSelectionViewController()
         trackerTypeSelectionViewController.delegate = self
         let navVC = UINavigationController(rootViewController: trackerTypeSelectionViewController)
@@ -240,12 +256,16 @@ class MainScreenTrackerViewController: UIViewController {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
+    
     @objc private func  searchBarTapped() {
         reloadVisibleCategories()
     }
     
     @objc private func  selectFilterTapped() {
-        print("filter Tapped")
+        analiticService.report(event: "click", params: ["screen": "Main",
+                                                        "item": "filter"])
+        let filterViewController = FilterViewController()
+        present(filterViewController, animated: true)
     }
     
     private func  setupNavigationBar() {
@@ -273,9 +293,6 @@ class MainScreenTrackerViewController: UIViewController {
     private func reloadVisibleCategories() {
         let filterText = (searchBar.searchTextField.text ?? "").lowercased()
         let filterWeekday = currentDate.weekDayNumber()
-        //  if let filterWeekDayString = WeekDay.allCases.first(where: { $0.numberValue == filterWeekday}) {
-        //      trackerDataManager.fetchSearchCategories(textToSearch: filterText, weekDay: filterWeekDayString.rawValue)
-        //  }
         let sortedByPinnedCategories = rlVC()
         visibleCatergories = sortedByPinnedCategories.compactMap { category in
             
@@ -357,17 +374,6 @@ class MainScreenTrackerViewController: UIViewController {
 
 extension MainScreenTrackerViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        //        textField.resignFirstResponder()
-        //        let filterText = (textField.text ?? "").lowercased()
-        //        if  !filterText.isEmpty {
-        //            if let filterWeekDayString = WeekDay.allCases.first(where: { $0.numberValue == currentDate.weekDayNumber()}) {
-        //                trackerDataManager.fetchSearchCategories(textToSearch: filterText, weekDay: filterWeekDayString.rawValue)
-        //            }
-        //        } else {
-        //            if let filterWeekDayString = WeekDay.allCases.first(where: { $0.numberValue == currentDate.weekDayNumber()}) {
-        //                trackerDataManager.fetchCategoriesFor(weekDay: filterWeekDayString.rawValue, animating: true)
-        //            }
-        //        }
         reloadVisibleCategories()
         return true
     }
@@ -456,8 +462,6 @@ extension MainScreenTrackerViewController: ContextMenuInteractionDelegate {
         let pinnedTracker = self.visibleCatergories[indexPath.section].trackers[indexPath.row]
         let pinnedTrackerId = pinnedTracker.id
         
-        let identifier = "\(indexPath)" as NSString
-        
         if pinnedTracker.isPinned {
             titleTextPinnedTracker = "Открепить"
             isPinned = false
@@ -480,6 +484,10 @@ extension MainScreenTrackerViewController: ContextMenuInteractionDelegate {
         
         let editAction = UIAction(title: "Редактировать") {[weak self] _ in
             guard let self else { return }
+            analiticService.report(event: "click", params: [
+                "screen": "Main",
+                "item": "edit"
+            ])
             
             let categoryName = self.visibleCatergories[indexPath.section].title
             
@@ -496,8 +504,11 @@ extension MainScreenTrackerViewController: ContextMenuInteractionDelegate {
         
         let deleteAction = UIAction(title: "Удалить", attributes: .destructive) {[weak self] _ in
             guard let self else { return }
+            analiticService.report(event: "click", params: [
+                "screen": "Main",
+                "item": "delete"
+            ])
             deleteItem(at: indexPath)
-            
         }
         
         let menu = UIMenu(children: [pinOrUnpinAction, editAction, deleteAction])
