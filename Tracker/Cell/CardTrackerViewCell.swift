@@ -104,7 +104,7 @@ final class CardTrackerViewCell: UICollectionViewCell {
         counterDaysLabelText.text = "\(wordDay)"
         let image = isCompletedToday ? doneImage : plusImage
         plusButton.setImage(image, for: .normal)
-        
+        self.pinImageView.isHidden = model.tracker.isPinned ? false : true
         cardTrackerView.addInteraction(contextMenuInteraction)
     }
     private func addCardViews() {
@@ -150,17 +150,16 @@ final class CardTrackerViewCell: UICollectionViewCell {
     
     @objc private func plusButtonTapped() {
         guard let trackerID = trackerID, let indexPath = indexPath else { return assertionFailure(" no id Tracker")}
-        if date > currentDate {
+        
             if isCompletedToday {
                 delegate?.uncompletedTracker(id: trackerID, at: indexPath)
             } else {
                 delegate?.completedTracker(id: trackerID, at: indexPath)
             }
-        }
+        
     }
     
     private func pluralizeDays(_ count: Int) -> String {
-        
         let localizedCompletedDayz = NSLocalizedString("completedDays", comment: "Number of completed days")
         return String.localizedStringWithFormat(localizedCompletedDayz, count)
     }

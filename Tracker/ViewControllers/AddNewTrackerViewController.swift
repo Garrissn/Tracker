@@ -155,7 +155,7 @@ final class AddNewTrackerViewController: UIViewController {
     private var newTrackerText: String = ""
     private var heightTableView: CGFloat = 75
     private let emojiesAndColors: EmojiesAndColors = EmojiesAndColors()
-    
+    private let helper = HelpersFunction()
     weak var delegate: AddNewTrackerViewControllerDelegate?
     var trackerType: TrackerType?
     var editingTrackerCategory: TrackerCategory?
@@ -184,11 +184,16 @@ final class AddNewTrackerViewController: UIViewController {
             self.habitNameTextField.text = editingTrackerCategory.trackers[0].title
             self.currentCatergory = editingTrackerCategory.title
             self.schedule = editingTrackerCategory.trackers[0].schedule
-            let colorIndexPath = convertStringToIndexPath(editingTrackerCategory.trackers[0].selectedColorIndexPath)
-            let emojiIndexPath = convertStringToIndexPath(editingTrackerCategory.trackers[0].selectedEmojiIndexPath)
+            let colorIndexPath = helper.convertStringToIndexPath(editingTrackerCategory.trackers[0].selectedColorIndexPath)
+            let emojiIndexPath = helper.convertStringToIndexPath(editingTrackerCategory.trackers[0].selectedEmojiIndexPath)
             self.selectedEmojiIndexPath = emojiIndexPath
             self.selectedColorIndexPath = colorIndexPath
-            //self.numberOfRecordsEditedTracker =
+            
+        }
+        if let numberOfRecordsEditedTracker = numberOfRecordsEditedTracker {
+            self.numberOfRecordsEditedTracker = numberOfRecordsEditedTracker
+            let daysIndex = helper.pluralizeDays(numberOfRecordsEditedTracker)
+            countDaysLabel.text = "\(daysIndex)"
         }
     }
     
@@ -283,14 +288,14 @@ final class AddNewTrackerViewController: UIViewController {
         guard let emojiIndex = selectedEmojiIndexPath else { return }
               let selectedEmoji = emojiesAndColors.emojies[emojiIndex.row]
         
-              let selectedEmojiTracker = convertIndexPathToString(emojiIndex)
+              let selectedEmojiTracker = helper.convertIndexPathToString(emojiIndex)
       
         guard let colorIndex = selectedColorIndexPath else { return }
               let selectedColor = emojiesAndColors.colors[colorIndex.row]
         
-              let colorIndexTracker = convertIndexPathToString(colorIndex)
-        let ttr = convertStringToIndexPath(colorIndexTracker)
-        if ttr == colorIndex { print(" dds  ")}
+        let colorIndexTracker = helper.convertIndexPathToString(colorIndex)
+        
+       
         
         self.delegate?.didSelectNewTracker(newTracker: TrackerCategory(
             title: currentCatergory ?? "",
@@ -308,21 +313,22 @@ final class AddNewTrackerViewController: UIViewController {
         dismiss(animated: true)
     }
                      
-    private func convertIndexPathToString(_ indexPath: IndexPath) -> String {
-        
-                           return "\(indexPath.section),\(indexPath.row)"
-                       }
     
-    private func convertStringToIndexPath(_ string: String) -> IndexPath? {
-        let components = string.components(separatedBy: ",")
-        if components.count == 2,
-            let section = Int(components[0]),
-           let row = Int(components[1]) {
-           
-            return IndexPath(row: row, section: section)
-        }
-        return nil
-    }
+//    private func convertIndexPathToString(_ indexPath: IndexPath) -> String {
+//
+//                           return "\(indexPath.section),\(indexPath.row)"
+//                       }
+//
+//    private func convertStringToIndexPath(_ string: String) -> IndexPath? {
+//        let components = string.components(separatedBy: ",")
+//        if components.count == 2,
+//            let section = Int(components[0]),
+//           let row = Int(components[1]) {
+//
+//            return IndexPath(row: row, section: section)
+//        }
+//        return nil
+//    }
     
     @objc private func cancelButtonTapped() {
         dismiss(animated: true)

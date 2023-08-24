@@ -47,20 +47,13 @@ final class StatisticViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    init() {
-//            super.init(nibName: nil, bundle: nil)
-//        }
-//    
+
     init(viewModel: StatisticViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.bind()
     }
-    
-    private var statisticData:[(Int,String)] = [(6, "Лучший период"), (2, "Идеальные дни"), (5, "Трекеров завершено"), (4, "Среднее значение")]
-   
-    
+
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
