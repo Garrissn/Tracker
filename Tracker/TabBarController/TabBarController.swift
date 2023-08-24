@@ -8,6 +8,10 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let context = (UIApplication.shared.delegate as! AppDelegate).persistantConteiner.viewContext
@@ -21,7 +25,16 @@ final class TabBarController: UITabBarController {
                                                     context: context)
         trackerCategoryStore.setTrackerDataController(trackerDataManager.fetchResultController)
         let mainScreenViewController = MainScreenTrackerViewController(trackerDataManager: trackerDataManager)
-        let statisticViewController = StatisticViewController()
+        
+       
+        
+        //let trackerRecordStore = TrackerRecordStore(context: <#T##NSManagedObjectContext#>)
+         let statisticModel = StatisticModel(trackerRecordStore: trackerRecordStore)
+         let statisticViewModel = StatisticViewModel(model: statisticModel)
+        
+        let statisticViewController = StatisticViewController(viewModel: statisticViewModel)
+        
+       
         
         let mainScreenNavigationController = UINavigationController(rootViewController: mainScreenViewController)
         let staticticNavigationController = UINavigationController(rootViewController: statisticViewController)

@@ -8,13 +8,13 @@
 import Foundation
 
 final class StatisticModel {
-    private let trackerDatamanager: TrackerDataManagerProtocol
+    private let trackerRecordStore: TrackerRecordStoreProtocol
     
-    init(trackerDatamanager: TrackerDataManagerProtocol) {
-        self.trackerDatamanager = trackerDatamanager
+    init(trackerRecordStore: TrackerRecordStoreProtocol) {
+        self.trackerRecordStore = trackerRecordStore
     }
     
     func getTrackersRecordCount() -> [TrackerRecord] {
-        trackerDatamanager.getCompletedTrackers()
+        trackerRecordStore.getCompletedTrackers()
     }
 }

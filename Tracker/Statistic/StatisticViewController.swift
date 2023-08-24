@@ -10,6 +10,7 @@ import UIKit
 
 final class StatisticViewController: UIViewController {
     
+    private let viewModel: StatisticViewModel
     
     // MARK: - Properties
     
@@ -47,9 +48,15 @@ final class StatisticViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init() {
-            super.init(nibName: nil, bundle: nil)
-        }
+//    init() {
+//            super.init(nibName: nil, bundle: nil)
+//        }
+//    
+    init(viewModel: StatisticViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.bind()
+    }
     
     private var statisticData:[(Int,String)] = [(6, "Лучший период"), (2, "Идеальные дни"), (5, "Трекеров завершено"), (4, "Среднее значение")]
    
@@ -64,6 +71,19 @@ final class StatisticViewController: UIViewController {
         configCollectionView()
         statisticCollectionView.dataSource = self
         statisticCollectionView.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.getAllCompletedTrackersCount()
+        checkPlaceHolder()
+    }
+    
+    private func bind() {
+        viewModel.$allTimeTrackersCompleted.bind { [weak self] _ in
+            guard let self = self else { return }
+            self.statisticCollectionView.reloadData()
+        }
     }
 }
 
@@ -109,7 +129,15 @@ private extension StatisticViewController {
     }
     
     private func checkPlaceHolder() {
-        
+        if viewModel.allTimeTrackersCompleted.count > 0 {
+            placeHolderImageView.isHidden = true
+            placeHolderText.isHidden = true
+            statisticCollectionView.isHidden = false
+        } else {
+            placeHolderImageView.isHidden = false
+            placeHolderText.isHidden = false
+            statisticCollectionView.isHidden = true
+        }
     }
 }
 
@@ -120,9 +148,9 @@ extension StatisticViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StatisticCollectionViewCell.StatisticCollectionViewCellIdentifier, for: indexPath) as? StatisticCollectionViewCell else { return UICollectionViewCell() }
-      //  let trackerFinishedCount = viewModel.trackersCompletedTotaly.count
+        let trackersCount = viewModel.allTimeTrackersCompleted.count
         let cellName = "Трекеров завершено"
-        cell.configureStatisticCell(countLabel: "4", descriptionLabel: cellName)
+        cell.configureStatisticCell(countLabel: String(trackersCount), descriptionLabel: cellName)
         return cell
     }
 }

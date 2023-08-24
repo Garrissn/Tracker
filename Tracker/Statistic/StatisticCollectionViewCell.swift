@@ -8,6 +8,8 @@
 import UIKit
 
 final class StatisticCollectionViewCell: UICollectionViewCell {
+    
+    
     static let StatisticCollectionViewCellIdentifier = "StatisticCollectionViewCellIdentifier"
     
     private lazy var gradientView: UIView = {
