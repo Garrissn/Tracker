@@ -253,7 +253,6 @@ final class AddNewTrackerViewController: UIViewController {
             countDaysLabel.centerXAnchor.constraint(equalTo: conteinerView.centerXAnchor),
             countDaysLabel.heightAnchor.constraint(equalToConstant: 38),
             
-         //   habitNameTextField.topAnchor.constraint(equalTo: topConstraintCase.bottomAnchor, constant: 38),
             habitNameTextField.leadingAnchor.constraint(equalTo:conteinerView.leadingAnchor, constant: 16),
             habitNameTextField.trailingAnchor.constraint(equalTo: conteinerView.trailingAnchor, constant: -16),
             habitNameTextField.heightAnchor.constraint(equalToConstant: 75),
@@ -283,52 +282,40 @@ final class AddNewTrackerViewController: UIViewController {
     }
     
     @objc private func createButtonTapped() {
-              let trackerTitleName = habitNameTextField.text ?? ""
-       
+        let trackerTitleName = habitNameTextField.text ?? ""
+        
         guard let emojiIndex = selectedEmojiIndexPath else { return }
-              let selectedEmoji = emojiesAndColors.emojies[emojiIndex.row]
+        let selectedEmoji = emojiesAndColors.emojies[emojiIndex.row]
         
-              let selectedEmojiTracker = helper.convertIndexPathToString(emojiIndex)
-      
+        let selectedEmojiTracker = helper.convertIndexPathToString(emojiIndex)
+        
         guard let colorIndex = selectedColorIndexPath else { return }
-              let selectedColor = emojiesAndColors.colors[colorIndex.row]
-        
+        let selectedColor = emojiesAndColors.colors[colorIndex.row]
         let colorIndexTracker = helper.convertIndexPathToString(colorIndex)
         
-       
+        let category = TrackerCategory(title: currentCatergory ?? "Без категории", trackers: [])
+        let newTracker = Tracker(isPinned: false,
+                                 id: UUID(),
+                                 title: trackerTitleName,
+                                 color: selectedColor,
+                                 emoji: selectedEmoji,
+                                 schedule: self.schedule,
+                                 selectedEmojiIndexPath: selectedEmojiTracker,
+                                 selectedColorIndexPath: colorIndexTracker
+        )
         
-        self.delegate?.didSelectNewTracker(newTracker: TrackerCategory(
-            title: currentCatergory ?? "",
-            trackers: [Tracker.init(isPinned: false,
-                                    id: UUID(),
-                                    title: trackerTitleName,
-                                    color: selectedColor,
-                                    emoji: selectedEmoji,
-                                    schedule: self.schedule,
-                                    selectedEmojiIndexPath: selectedEmojiTracker,
-                                    selectedColorIndexPath: colorIndexTracker
-                                   )
-            ]
-        ))
-        dismiss(animated: true)
+        let userInfo: [String: Any] = [ "Category": category, "NewTracker": newTracker]
+        if trackerType == .editHabitTracker {
+            NotificationCenter.default.post(name: NSNotification.Name("EditedTrackerNotification"), object: nil, userInfo: userInfo)
+            dismiss(animated: true, completion: nil)
+        } else {
+            self.delegate?.didSelectNewTracker(newTracker: TrackerCategory(
+                title: currentCatergory ?? "",
+                trackers: [newTracker]))
+            dismiss(animated: true)
+        }
+        
     }
-                     
-    
-//    private func convertIndexPathToString(_ indexPath: IndexPath) -> String {
-//
-//                           return "\(indexPath.section),\(indexPath.row)"
-//                       }
-//
-//    private func convertStringToIndexPath(_ string: String) -> IndexPath? {
-//        let components = string.components(separatedBy: ",")
-//        if components.count == 2,
-//            let section = Int(components[0]),
-//           let row = Int(components[1]) {
-//
-//            return IndexPath(row: row, section: section)
-//        }
-//        return nil
-//    }
     
     @objc private func cancelButtonTapped() {
         dismiss(animated: true)
@@ -425,13 +412,10 @@ extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource
             let viewModel = AddCategoryViewModel(model: model)
             let value = currentCatergory ?? " "
             let addCategoryVC = AddCategoryViewController(viewModel: viewModel, categoryTitle: value)
-            
             addCategoryVC.bind()
             addCategoryVC.delegate = self
-            
             present(addCategoryVC, animated: true)
-            
-            
+    
         case 1:
             let addScheduleViewController = AddScheduleViewController()
             addScheduleViewController.delegate = self
@@ -493,10 +477,7 @@ extension AddNewTrackerViewController: UICollectionViewDataSource {
                     cellEmoji.selected()
                 }
             }
-            
-                
-                   
-            
+         
             return cellEmoji
         case 1:
             cellColor.colorViewFront.backgroundColor = emojiesAndColors.colors[indexPath.row]
@@ -504,14 +485,14 @@ extension AddNewTrackerViewController: UICollectionViewDataSource {
             let cr = emojiesAndColors.colors[indexPath.row]
             let hexStr = uiColorMarsh.hexString(from: cr)
             let crm = uiColorMarsh.color(from: hexStr)
-
+            
             if let editingTrackerCategory = editingTrackerCategory {
-               let color = editingTrackerCategory.trackers[0].color
-                   if color == crm {
+                let color = editingTrackerCategory.trackers[0].color
+                if color == crm {
                     let coloru = emojiesAndColors.colors[indexPath.row]
-                        cellColor.selectedColor(forColor: coloru)
-                        }
-                    }
+                    cellColor.selectedColor(forColor: coloru)
+                }
+            }
             
             return cellColor
         default:
@@ -522,18 +503,11 @@ extension AddNewTrackerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0:
-            
-            print("IndexPathЭмоджи в ячецке1: \(selectedEmojiIndexPath)")
             if let selectedEmojiIndexPath,
-               
-               let previousCell = collectionView.cellForItem(at: selectedEmojiIndexPath) as? AddNewTrackerEmojiesViewCell {
+                let previousCell = collectionView.cellForItem(at: selectedEmojiIndexPath) as? AddNewTrackerEmojiesViewCell {
                 previousCell.deselected()
-                print("IndexPathЭмоджи в ячецке2: \(selectedEmojiIndexPath)")
             }
-            
-
             guard let cellEmoji = collectionView.cellForItem(at: indexPath) as? AddNewTrackerEmojiesViewCell else { return }
-            print("IndexPathЭмоджи в ячецке3: \(indexPath)")
             cellEmoji.selected()
             selectedEmojiIndexPath = indexPath
             
@@ -542,8 +516,6 @@ extension AddNewTrackerViewController: UICollectionViewDataSource {
                let previousCell = collectionView.cellForItem(at: selectedColorIndexPath) as? AddNewTrackerColorViewCell {
                 previousCell.deselectedColor()
             }
-            
-
             guard let cellColor = collectionView.cellForItem(at: indexPath) as? AddNewTrackerColorViewCell else { return }
             let coloru = emojiesAndColors.colors[indexPath.row]
             cellColor.selectedColor(forColor: coloru)

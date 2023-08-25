@@ -141,8 +141,8 @@ class MainScreenTrackerViewController: UIViewController {
         configureView()
         setupNavigationBar()
         trackerDataManager.delegate = self
-        //  reloadData()
-        // reloadVisibleCategories()
+        NotificationCenter.default.addObserver(self, selector: #selector(getEditedTracker(_:)), name: Notification.Name("EditedTrackerNotification"), object: nil)
+        
         dateChanged()
     }
     
@@ -170,10 +170,8 @@ class MainScreenTrackerViewController: UIViewController {
         { trackerDataManager.fetchCategoriesFor(weekDay: weekDayString.rawValue, animating: true)
             print( " weekdayStringRaw \(weekDayString.rawValue)")
         }
-        
-        
-        
     }
+    
     
     private func setupCollectionView() {
         collectionView.translatesAutoresizingMaskIntoConstraints =  false
@@ -238,7 +236,6 @@ class MainScreenTrackerViewController: UIViewController {
     
     @objc private func dateChanged() {
         currentDate = datePicker.date
-        // let ret = dateFormatter.string(from: datePicker.date)
         self.dismiss(animated: false)
         let weekDay = currentDate.weekDayNumber()
         
@@ -251,6 +248,22 @@ class MainScreenTrackerViewController: UIViewController {
         reloadVisibleCategories()
         reloadPlaceHolder(for: .notFound)
  
+    }
+    
+    @objc private func getEditedTracker(_ notification: Notification) {
+        if let userInfo = notification.userInfo {
+            if let category = userInfo["Category"] as? TrackerCategory,
+               let tracker = userInfo["NewTracker"] as? Tracker {
+                let trackerCategory = TrackerCategory (title: category.title, trackers: [tracker])
+                do {
+                    try trackerDataManager.addTrackerCategory(trackerCategory)
+                } catch {
+                    showAlertController(text: "Ошибка добавления нового трекера. Попробуйте еще раз")
+                }
+            }
+        }
+        reloadVisibleCategories()
+        
     }
     
     @objc func dismissKeyboard() {
@@ -417,7 +430,7 @@ extension MainScreenTrackerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: HeaderCollectionView.headerIdentifier, for: indexPath) as? HeaderCollectionView else { return UICollectionReusableView()}
         let titleCategory = visibleCatergories[indexPath.section].title
-        let isp = visibleCatergories[indexPath.section].trackers[indexPath.row].isPinned
+     
         view.configureHeader(title: titleCategory)
         return view
     }
@@ -498,8 +511,6 @@ extension MainScreenTrackerViewController: ContextMenuInteractionDelegate {
             addNewTrackerVC.editingTrackerCategory = trackerForEditing
             addNewTrackerVC.trackerType = .editHabitTracker
             present(addNewTrackerVC, animated: true)
-            
-            
         }
         
         let deleteAction = UIAction(title: "Удалить", attributes: .destructive) {[weak self] _ in
@@ -522,10 +533,8 @@ extension MainScreenTrackerViewController: ContextMenuInteractionDelegate {
             self.deleteTracker(at: indexPath)
         }
         alertController.addAction(deleteAction)
-        
         let cancelAction = UIAlertAction(title: "Отменить", style: .cancel)
         alertController.addAction(cancelAction)
-        
         present(alertController, animated: true)
     }
     
@@ -645,22 +654,6 @@ extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDel
                 showAlertController(text: "Ошибка добавления нового трекера. Попробуйте еще раз")
             }
         }
-        //  self.dateChanged()
-        //  self.reloadVisibleCategories()
-        
-        // ToDo:
-        //                if categories.contains(where: { $0.title == trackerCategory.title}) {
-        //                    guard let index = categories.firstIndex(where: {$0.title == trackerCategory.title}) else { return }
-        //                    let oldCategory = categories[index]
-        //                    let updatedTrackers = oldCategory.trackers + trackerCategory.trackers
-        //                    let updatedTrackerByCategory = TrackerCategory(title: trackerCategory.title, trackers: updatedTrackers)
-        //                    categories[index] = updatedTrackerByCategory
-        //                } else {
-        //                    categories.append(trackerCategory)
-        //                }
-        //         collectionView.reloadData()
-        //         reloadVisibleCategories(text: searchTextField.text, date: datePicker.date)
-        //        reloadPlaceHolder(for: .whatToTrack)
     }
     
     private func findDiff(newCategories: [TrackerCategory]) {

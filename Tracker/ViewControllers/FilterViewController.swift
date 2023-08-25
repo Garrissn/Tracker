@@ -7,8 +7,8 @@
 
 import UIKit
 final class FilterViewController: UIViewController {
-    private let filters = ["Все трекеры", "Трекеры на сегодня", "Завешенные", "Не завершенные"]
-
+    private let filters = ["Все трекеры", "Трекеры на сегодня", "Завершенные", "Не завершенные"]
+    
     private let pageTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Категория"
@@ -25,7 +25,9 @@ final class FilterViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
-
+    
+    private var checkFlag = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.systemBackground
@@ -65,7 +67,7 @@ extension FilterViewController: UITableViewDataSource {
                 CategoryTableViewCell else { return UITableViewCell() }
         
         cell.selectionStyle = .none
-        cell.backgroundColor = .clear
+        cell.backgroundColor = .TrackerBackGround
         cell.accessoryType = .none
         cell.configure(cellTitle: filters[indexPath.row], isSelected: true)
         return cell
@@ -79,5 +81,19 @@ extension FilterViewController: UITableViewDataSource {
 extension FilterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         SeparatorLineHelper.configSeparatingLine(tableView: tableView, cell: cell, indexPath: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
+        let previousCell = tableView.cellForRow(at: indexPath) as? CategoryTableViewCell
+        previousCell?.categoryIsSelected(true)
+        checkFlag = true
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let previousCell = tableView.cellForRow(at: indexPath) as? CategoryTableViewCell
+        previousCell?.categoryIsSelected(false)
+        checkFlag = false
     }
 }
