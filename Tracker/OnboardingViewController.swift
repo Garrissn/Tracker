@@ -8,6 +8,7 @@
 import UIKit
 
 final class OnboardingViewController: UIPageViewController {
+    var confirmedByUser: (() -> Void)?
     
     private lazy var pages: [UIViewController] = {
         let firstPage = setupFirstPage()
@@ -79,8 +80,8 @@ final class OnboardingViewController: UIPageViewController {
     }()
     
     override init(transitionStyle: UIPageViewController.TransitionStyle,
-                 navigationOrientation: UIPageViewController.NavigationOrientation,
-                 options: [UIPageViewController.OptionsKey : Any]?) {
+                  navigationOrientation: UIPageViewController.NavigationOrientation,
+                  options: [UIPageViewController.OptionsKey : Any]?) {
         super.init(transitionStyle: .scroll,
                    navigationOrientation: .horizontal)
         if let first = pages.first {
@@ -118,7 +119,7 @@ final class OnboardingViewController: UIPageViewController {
             onboardingButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 24),
             onboardingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             onboardingButton.heightAnchor.constraint(equalToConstant: 60),
-                        onboardingButton.widthAnchor.constraint(equalToConstant: 335)
+            onboardingButton.widthAnchor.constraint(equalToConstant: 335)
         ])
     }
     
@@ -137,7 +138,7 @@ final class OnboardingViewController: UIPageViewController {
             firstPageLabel.topAnchor.constraint(equalTo: firstImageView.topAnchor, constant: 432),
             firstPageLabel.leadingAnchor.constraint(equalTo: firstImageView.leadingAnchor, constant: 16),
             firstPageLabel.trailingAnchor.constraint(equalTo: firstImageView.trailingAnchor, constant: -16),
-          
+            
             onboardingButton.topAnchor.constraint(equalTo: firstPageLabel.bottomAnchor, constant: 24),
             onboardingButton.leadingAnchor.constraint(equalTo: firstImageView.leadingAnchor, constant: 20),
             onboardingButton.heightAnchor.constraint(equalToConstant: 60),
@@ -161,7 +162,7 @@ final class OnboardingViewController: UIPageViewController {
             secondPageLabel.topAnchor.constraint(equalTo: secondImageView.topAnchor, constant: 388),
             secondPageLabel.leadingAnchor.constraint(equalTo: secondImageView.leadingAnchor, constant: 16),
             secondPageLabel.trailingAnchor.constraint(equalTo: secondImageView.trailingAnchor, constant: -16),
-                        
+            
             onboardingButton.topAnchor.constraint(equalTo: secondPageLabel.bottomAnchor, constant: 24),
             onboardingButton.leadingAnchor.constraint(equalTo: secondImageView.leadingAnchor, constant: 20),
             onboardingButton.heightAnchor.constraint(equalToConstant: 60),
@@ -172,17 +173,9 @@ final class OnboardingViewController: UIPageViewController {
     }
     
     @objc private func  onboardingButtonTapped() {
-        let tabbar = TabBarController()
-        guard let window = UIApplication.shared.windows.first else {
-            fatalError("Invalid Configuration")
-        }
-               window.rootViewController = tabbar
-               window.makeKeyAndVisible()
-           
-        present(tabbar, animated: true, completion: nil)
+        confirmedByUser?()
     }
 }
-
 extension OnboardingViewController:  UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let vcIndex = pages.firstIndex(of: viewController) else { return nil }

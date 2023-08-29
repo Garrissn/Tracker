@@ -21,6 +21,7 @@
 "button.onboarding.title" = "Вот это технологии!";
 "button.cancel.title" = "Отменить";
 "button.create.title" = "Создать";
+"button.createSave.title" = "Сохранить";
 "button.filters.title" = "Фильтры";
 "button.regularEvent.title" = "Привычка";
 "button.irregularEvent.title" = "Нерегулярное событие";

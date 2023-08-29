@@ -20,6 +20,7 @@
 "button.onboarding.title" = "Ось це технології!";
 "button.cancel.title" = "Скасувати";
 "button.create.title" = "Створити";
+"button.createSave.title" = "Зберігши";
 "button.filters.title" = "Фільтри";
 "button.regularEvent.title" = "Звичка";
 "button.irregularEvent.title" = "Нерегулярна подія";

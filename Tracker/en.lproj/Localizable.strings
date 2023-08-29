@@ -21,6 +21,7 @@
 "button.onboarding.title" = "That's technology!";
 "button.cancel.title" = "Cancel";
 "button.create.title" = "Create";
+"button.createSave.title" = "Save";
 "button.filters.title" = "Filters";
 "button.regularEvent.title" = "Habit";
 "button.irregularEvent.title" = "Irregular event";

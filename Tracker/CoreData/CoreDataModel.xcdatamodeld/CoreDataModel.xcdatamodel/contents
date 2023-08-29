@@ -12,10 +12,11 @@
         <attribute name="color" attributeType="String"/>
         <attribute name="emoji" attributeType="String"/>
         <attribute name="isPinned" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="previousCategory" optional="YES" attributeType="String"/>
         <attribute name="selectedColorIndexPath" attributeType="String"/>
         <attribute name="selectedEmojiIndexPath" attributeType="String"/>
         <attribute name="title" attributeType="String"/>
-        <attribute name="trackerId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="trackerId" optional="YES" attributeType="String"/>
         <relationship name="schedule" toMany="YES" deletionRule="Nullify" destinationEntity="ScheduleEntity" inverseName="trackers" inverseEntity="ScheduleEntity"/>
         <relationship name="trackerCategory" maxCount="1" deletionRule="Nullify" destinationEntity="TrackerCategoryEntity" inverseName="trackers" inverseEntity="TrackerCategoryEntity"/>
     </entity>

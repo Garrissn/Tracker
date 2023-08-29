@@ -38,6 +38,8 @@
 		CE6C3B592A503E2800EB0985 /* AddCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6C3B582A503E2800EB0985 /* AddCategoryViewController.swift */; };
 		CE6E071B2A7A6A86005DA586 /* AddNewTrackerColorViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6E071A2A7A6A86005DA586 /* AddNewTrackerColorViewCell.swift */; };
 		CE6F1DCF2A77B51A00076B96 /* CardTrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6F1DCE2A77B51A00076B96 /* CardTrackerViewModel.swift */; };
+		CE70ABC02A9E3E4800702357 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE70ABBF2A9E3E4800702357 /* LaunchViewController.swift */; };
+		CE70ABC22A9E3FA300702357 /* UserDefaultsBacked.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE70ABC12A9E3FA300702357 /* UserDefaultsBacked.swift */; };
 		CE711D972A7154B400C8A401 /* TrackerDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE711D962A7154B400C8A401 /* TrackerDataManager.swift */; };
 		CE711D992A716C0D00C8A401 /* TrackerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE711D982A716C0D00C8A401 /* TrackerStore.swift */; };
 		CE711D9B2A7195E800C8A401 /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE711D9A2A7195E800C8A401 /* UIColorMarshalling.swift */; };
@@ -136,6 +138,8 @@
 		CE6C3B582A503E2800EB0985 /* AddCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCategoryViewController.swift; sourceTree = "<group>"; };
 		CE6E071A2A7A6A86005DA586 /* AddNewTrackerColorViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTrackerColorViewCell.swift; sourceTree = "<group>"; };
 		CE6F1DCE2A77B51A00076B96 /* CardTrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTrackerViewModel.swift; sourceTree = "<group>"; };
+		CE70ABBF2A9E3E4800702357 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		CE70ABC12A9E3FA300702357 /* UserDefaultsBacked.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsBacked.swift; sourceTree = "<group>"; };
 		CE711D962A7154B400C8A401 /* TrackerDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerDataManager.swift; sourceTree = "<group>"; };
 		CE711D982A716C0D00C8A401 /* TrackerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStore.swift; sourceTree = "<group>"; };
 		CE711D9A2A7195E800C8A401 /* UIColorMarshalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshalling.swift; sourceTree = "<group>"; };
@@ -235,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				CE6A3E9A2A839D2D00B757AF /* TabBarController.swift */,
+				CE70ABBF2A9E3E4800702357 /* LaunchViewController.swift */,
 			);
 			path = TabBarController;
 			sourceTree = "<group>";
@@ -370,6 +375,7 @@
 				CEFCC5A72A856D8800AF1F94 /* Observable.swift */,
 				CE6B96142A9790EE005079AB /* HelpersFunction.swift */,
 				CE1043572A97E1CF00023E3D /* AnaliticsService.swift */,
+				CE70ABC12A9E3FA300702357 /* UserDefaultsBacked.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -714,10 +720,12 @@
 				CE6633C42A765C5E00607EC1 /* TrackerRecordStore.swift in Sources */,
 				CE71C0682A5343B9009836E7 /* UIFonts+Extensions.swift in Sources */,
 				CEFCC5A82A856D8800AF1F94 /* Observable.swift in Sources */,
+				CE70ABC02A9E3E4800702357 /* LaunchViewController.swift in Sources */,
 				CE34D0B42A826C2100FFC06E /* OnboardingViewController.swift in Sources */,
 				CE6633C62A76A72200607EC1 /* TrackerCategoryStoreUpdate.swift in Sources */,
 				CE1043582A97E1CF00023E3D /* AnaliticsService.swift in Sources */,
 				CE7B743B2A4DA5E9000A3676 /* AddNewTrackerViewController.swift in Sources */,
+				CE70ABC22A9E3FA300702357 /* UserDefaultsBacked.swift in Sources */,
 				CE7ABCE12A447F87000606DA /* UIColors+Extensions.swift in Sources */,
 				CE4BAD4C2A6169090057215D /* EmojiesAndColors.swift in Sources */,
 				CE6B96152A9790EE005079AB /* HelpersFunction.swift in Sources */,

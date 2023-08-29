@@ -20,6 +20,7 @@
 "button.onboarding.title" = "C'est de la technologie!";
 "button.cancel.title" = "Annuler";
 "button.create.title" = "Créer";
+"button.createSave.title" = "enregistrer";
 "button.filters.title" = "Filtres";
 "button.regularEvent.title" = "Habitude";
 "button.irregularEvent.title" = "Événement irrégulier";

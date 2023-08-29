@@ -135,7 +135,7 @@ extension AddScheduleViewController: UITableViewDataSource {
         daySwitcher.onTintColor = .Blue
         daySwitcher.tag = indexPath.row
         daySwitcher.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
-      guard  let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTableViewCell.ScheduleTableViewCellIdentifier) as? ScheduleTableViewCell else { return UITableViewCell()}
+        guard  let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleTableViewCell.ScheduleTableViewCellIdentifier) as? ScheduleTableViewCell else { return UITableViewCell()}
         cell.selectionStyle = .none
         cell.backgroundColor = .TrackerBackGround
         cell.textLabel?.font = .ypRegular17()

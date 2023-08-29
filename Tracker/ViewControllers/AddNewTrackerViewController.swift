@@ -17,6 +17,8 @@ private enum LocalisedCases {
     static let textFieldPlaceHolderText = NSLocalizedString("textField.tracker.title", comment: "Title of attributedPlaceholder in textfield")
     static let cancelButtonText = NSLocalizedString("button.cancel.title", comment: "Text on cancelButton")
     static let createButtonText = NSLocalizedString("button.create.title", comment: "Text on createButton")
+    static let createButtonSaveText = NSLocalizedString("button.createSave.title", comment: "Text on createButton")
+    
     static let categoryLabelText = NSLocalizedString("category.title", comment: "Text on tableview category")
     static let scheduleLabelText = NSLocalizedString("schedule.title", comment: "Text on tableview schedule")
 }
@@ -137,7 +139,14 @@ final class AddNewTrackerViewController: UIViewController {
     private lazy var createButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(LocalisedCases.createButtonText, for: .normal)
+        switch trackerType {
+        case .none:
+            break
+        case .habitTracker: button.setTitle(LocalisedCases.createButtonText, for: .normal)
+        case .irregularIvent: button.setTitle(LocalisedCases.createButtonText, for: .normal)
+        case .editHabitTracker: button.setTitle(LocalisedCases.createButtonSaveText, for: .normal)
+        }
+        //  button.setTitle(LocalisedCases.createButtonText, for: .normal)
         button.titleLabel?.font = UIFont.ypMedium16()
         button.setTitleColor(.TrackerBlack, for: .normal)
         button.layer.cornerRadius = 16
@@ -294,12 +303,28 @@ final class AddNewTrackerViewController: UIViewController {
         let colorIndexTracker = helper.convertIndexPathToString(colorIndex)
         
         let category = TrackerCategory(title: currentCatergory ?? "Без категории", trackers: [])
-        let newTracker = Tracker(isPinned: false,
-                                 id: UUID(),
+        var editedzUUID: UUID?
+        var edittedIsPinned: Bool?
+        if let editingTrackerCategory = editingTrackerCategory  {
+             let zeditedzUUID = editingTrackerCategory.trackers.first?.id
+             let zedittedIsPinned = editingTrackerCategory.trackers.first?.isPinned
+            editedzUUID = zeditedzUUID
+            edittedIsPinned = zedittedIsPinned
+        }
+        var scheduleForNewTracker = [WeekDay]()
+        if schedule.count > 0 {
+            print(schedule)
+            scheduleForNewTracker = self.schedule
+        } else {
+            scheduleForNewTracker = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+        }
+        
+        let newTracker = Tracker(isPinned: edittedIsPinned ?? false,
+                                 id: editedzUUID ?? UUID(),
                                  title: trackerTitleName,
                                  color: selectedColor,
                                  emoji: selectedEmoji,
-                                 schedule: self.schedule,
+                                 schedule: scheduleForNewTracker,
                                  selectedEmojiIndexPath: selectedEmojiTracker,
                                  selectedColorIndexPath: colorIndexTracker
         )
@@ -312,7 +337,8 @@ final class AddNewTrackerViewController: UIViewController {
             self.delegate?.didSelectNewTracker(newTracker: TrackerCategory(
                 title: currentCatergory ?? "",
                 trackers: [newTracker]))
-            dismiss(animated: true)
+     
+            self.presentingViewController?.presentingViewController?.dismiss(animated: true)
         }
         
     }
@@ -326,6 +352,10 @@ final class AddNewTrackerViewController: UIViewController {
             createButton.backgroundColor = .TrackerBlack
             createButton.setTitleColor(.TrackerWhite, for: .normal)
             createButton.isEnabled = true
+        } else {
+            createButton.backgroundColor = .Gray
+            createButton.setTitleColor(.TrackerWhite, for: .normal)
+            createButton.isEnabled = false
         }
     }
 }
@@ -415,7 +445,7 @@ extension AddNewTrackerViewController: UITableViewDelegate,UITableViewDataSource
             addCategoryVC.bind()
             addCategoryVC.delegate = self
             present(addCategoryVC, animated: true)
-    
+            
         case 1:
             let addScheduleViewController = AddScheduleViewController()
             addScheduleViewController.delegate = self
@@ -477,7 +507,7 @@ extension AddNewTrackerViewController: UICollectionViewDataSource {
                     cellEmoji.selected()
                 }
             }
-         
+            
             return cellEmoji
         case 1:
             cellColor.colorViewFront.backgroundColor = emojiesAndColors.colors[indexPath.row]
@@ -504,7 +534,7 @@ extension AddNewTrackerViewController: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             if let selectedEmojiIndexPath,
-                let previousCell = collectionView.cellForItem(at: selectedEmojiIndexPath) as? AddNewTrackerEmojiesViewCell {
+               let previousCell = collectionView.cellForItem(at: selectedEmojiIndexPath) as? AddNewTrackerEmojiesViewCell {
                 previousCell.deselected()
             }
             guard let cellEmoji = collectionView.cellForItem(at: indexPath) as? AddNewTrackerEmojiesViewCell else { return }
