@@ -27,9 +27,11 @@ protocol TrackerDataManagerProtocol: AnyObject {
     func getTrackerCategoryName(indexPath: IndexPath) -> String
     func getTrackerCoreData(indexPath: IndexPath) -> TrackerEntity
     func getTrackerObject(indexPath: IndexPath) -> Tracker?
-    func addTrackerCategory(_ trackerCategory: TrackerCategory) throws
-    func fetchCategoriesFor(weekDay: String, animating: Bool)
-    func fetchSearchCategories(textToSearch: String, weekDay: String)
+    //func addTrackerCategory(_ trackerCategory: TrackerCategory) throws
+    
+    
+    // func fetchCategoriesFor(weekDay: String, animating: Bool)
+    func fetchSearchCategories(textToSearch: String, weekDay: Date)
     func addTrackerCategoryTitle(_ trackerCategory: TrackerCategory) throws
     func addTrackerRecord(forId: UUID, date: String) throws
     func deleteTrackerRecord(forId: UUID, date: String) throws
@@ -37,13 +39,13 @@ protocol TrackerDataManagerProtocol: AnyObject {
     func numberOfRecords(forId: UUID) -> Int
     func trackerIsPinned(indexPath: IndexPath) throws
     func getTracker(at: IndexPath) throws -> Tracker
-    func deleteTracker(tracker: Tracker) throws 
+    //func deleteTracker(tracker: Tracker) throws
     func deleteTracker(trackerEntity: TrackerEntity) throws
     func getTracker(from trackerEntity: TrackerEntity) throws -> Tracker
     func getCompletedTrackers() -> [TrackerRecord]
     func fetchTracker(id: String) -> TrackerEntity?
     func createCategory(category: TrackerCategory) throws -> TrackerCategoryEntity
-    func convertScheduleArrayToScheduleEntity(_ weekDays: [WeekDay]) -> NSSet
+    //func convertScheduleArrayToScheduleEntity(_ weekDays: [WeekDay]) -> NSSet
     func updateTracker(trackerEntity: TrackerEntity, trackerCategoryEntity: TrackerCategoryEntity, trackerTitle: String) throws
     func addTracker(tracker: Tracker, trackerCategoryEntity: TrackerCategoryEntity) throws
 }
@@ -55,11 +57,6 @@ final class TrackerDataManager: NSObject { //берем трекеры из ко
     var fetchResultController: NSFetchedResultsController<TrackerEntity>?
     weak var delegate: TrackerDataManagerDelegate?
     private var context: NSManagedObjectContext
-    
-    private var insertedIndexes: [IndexPath]?
-    private var deletedIndexes: [IndexPath]?
-    private var updatedIndexes: [IndexPath]?
-    private var movedIndexes: [TrackerCategoryStoreUpdate.Move]?
     
     
     init(trackerStore: TrackerStoreProtocol,
@@ -93,90 +90,18 @@ final class TrackerDataManager: NSObject { //берем трекеры из ко
 // MARK: - TrackerDataManagerProtocol
 
 extension TrackerDataManager: TrackerDataManagerProtocol {
-    func addTrackerCategoryTitle(_ trackerCategory: TrackerCategory) throws {
-        try trackerCategoryStore.addTrackerCategoryTitle(trackerCategory)
-    }
-    
-    func addTracker(tracker: Tracker, trackerCategoryEntity: TrackerCategoryEntity) throws {
-        do {
-            try trackerStore.addTracker(tracker: tracker, trackerCategoryEntity: trackerCategoryEntity)
-        } catch {
-            fatalError("Failed to deleteTracker: \(error)")
-        }
-    }
-    
-    func updateTracker(trackerEntity: TrackerEntity, trackerCategoryEntity: TrackerCategoryEntity, trackerTitle: String) throws {
-        do {
-            try trackerStore.updateTracker(trackerEntity: trackerEntity, trackerCategoryEntity: trackerCategoryEntity, trackerTitle: trackerTitle)
-        } catch {
-            fatalError("Failed to addTracker: \(error)")
-        }
-    }
-    
-    func convertScheduleArrayToScheduleEntity(_ weekDays: [WeekDay]) -> NSSet {
-        trackerStore.convertScheduleArrayToScheduleEntity(weekDays)
-    }
-    
-    func fetchTracker(id: String) -> TrackerEntity? {
-        trackerStore.fetchTracker(id: id)
-    }
-    
-    func getTracker(from trackerEntity: TrackerEntity) throws -> Tracker {
-        do {
-            let tracker = try trackerStore.convertTrackerEntityToTracker(trackerEntity)
-            return tracker
-        } catch {
-            fatalError("Failed to addTracker: \(error)")
-        }
-    }
-    
-    var categor: [TrackerCategoryEntity]  {
-        let fetchRequest = TrackerCategoryEntity.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \TrackerCategoryEntity.title, ascending: true)]
-        let fetchResultController = NSFetchedResultsController(
-            fetchRequest: fetchRequest,
-            managedObjectContext: context,
-            sectionNameKeyPath: nil, cacheName: nil)
-        try? fetchResultController.performFetch()
-        
-        
-        guard let objects = fetchResultController.fetchedObjects else { return [] }
-        return objects
-    }
-    
-    func getTracker(at: IndexPath) throws -> Tracker {
-        let fetchRequest = TrackerEntity.fetchRequest()
-        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \TrackerEntity.title, ascending: true)]
-        let fetchResultController = NSFetchedResultsController(
-            fetchRequest: fetchRequest,
-            managedObjectContext: context,
-            sectionNameKeyPath: nil, cacheName: nil)
-        try? fetchResultController.performFetch()
-        
-        
-        let trackerEntity = fetchResultController.object(at: at)
-        let tracker = try trackerStore.convertTrackerEntityToTracker(trackerEntity)
-        return tracker
-    }
     
     
     var categories: [TrackerCategory]  {
         guard let objects = self.fetchResultController?.fetchedObjects else { return [] }
         do {
-            var trackerCategories = try trackerCategoryStore.convertTrackerCategoryEntityToTrackerCategories(objects)
+            var trackerCategories =  trackerCategoryStore.convertTrackerCategoryEntityToTrackerCategories(objects)
             trackerCategories.sort { $0.title < $1.title }
             return trackerCategories
         } catch {
             print("Error converting TrackerCategoryEntity to TrackerCategory: \(error)")
             return []
         }
-    }
-    
-    func getTrackerCoreData(indexPath: IndexPath) -> TrackerEntity {
-        guard let trackerEntity = fetchResultController?.object(at: indexPath) else {
-            fatalError("Failed to fetch tracker entity at indexPath: \(indexPath)")
-        }
-        return trackerEntity
     }
     
     var numberOfSections: Int {
@@ -195,24 +120,44 @@ extension TrackerDataManager: TrackerDataManagerProtocol {
         fetchResultController?.sections?[section].name ?? ""
     }
     
-    func addTrackerCategory(_ trackerCategory: TrackerCategory) throws {
-        try trackerCategoryStore.addTrackerCategory(trackerCategory)
-    }
-    
     func fetchCategory(title: String) -> TrackerCategoryEntity? {
         trackerCategoryStore.fetchCategory(title: title)
     }
     
+    func getTrackerCoreData(indexPath: IndexPath) -> TrackerEntity {
+        guard let trackerEntity = fetchResultController?.object(at: indexPath) else {
+            fatalError("Failed to fetch tracker entity at indexPath: \(indexPath)")
+        }
+        return trackerEntity
+    }
+    
     func getTrackerObject(indexPath: IndexPath) -> Tracker? {
         guard let trackerEntity = fetchResultController?.object(at: indexPath) else { return nil }
-        guard let tracker = try? trackerStore.convertTrackerEntityToTracker(trackerEntity) else { return nil }
+        guard let tracker = try? trackerStore.getTracker(from: trackerEntity) else { return nil }
         return tracker
     }
     
-    func getTrackerCategoryName(indexPath: IndexPath) -> String {
-        guard let trackerEntity = fetchResultController?.object(at: indexPath) else {return " "}
-        guard let categoryName = trackerEntity.trackerCategory?.title else { return "" }
-        return categoryName
+    func fetchSearchCategories(textToSearch: String, weekDay: Date) {
+        var predicates: [NSPredicate] = []
+        let dayNumber = WeekDay.getWeekDayInNumber(for: weekDay)
+        
+        let weekDayPredicate = NSPredicate(format: "%K CONTAINS[c] %@", #keyPath(TrackerEntity.schedule), dayNumber )
+        predicates.append(weekDayPredicate)
+        if !textToSearch.isEmpty {
+            let textPredicate = NSPredicate(format: "ANY %K CONTAINS[c] %@", #keyPath(TrackerEntity.title), textToSearch)
+            predicates.append(textPredicate)
+        }
+        print("запрос2")
+        do {
+            fetchResultController?.fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+            try fetchResultController?.performFetch()
+        } catch {
+            fatalError("Failed to fetch data with Predicates in method addFiltersForFetchResultController: \(error)")
+        }
+    }
+    
+    func addTrackerCategoryTitle(_ trackerCategory: TrackerCategory) throws {
+        try trackerCategoryStore.addTrackerCategoryTitle(trackerCategory)
     }
     
     func addTrackerRecord(forId: UUID, date: String) throws {
@@ -231,15 +176,6 @@ extension TrackerDataManager: TrackerDataManagerProtocol {
         trackerRecordStore.numberOfRecords(forId: forId)
     }
     
-    func createCategory(category: TrackerCategory) throws -> TrackerCategoryEntity {
-        do {
-            let newCategory = try trackerCategoryStore.createCategory(category: category)
-            return newCategory
-        } catch {
-            fatalError("Failed to create new category: \(error)")
-        }
-    }
-    
     func trackerIsPinned(indexPath: IndexPath) throws {
         let trackerEntityToToggle = getTrackerCoreData(indexPath: indexPath)
         trackerEntityToToggle.isPinned.toggle()
@@ -256,7 +192,7 @@ extension TrackerDataManager: TrackerDataManagerProtocol {
                 } catch {
                     fatalError("Failed to togglePinForTracker: \(error)")
                 }
-            }          
+            }
         } else {
             guard let previousCategory = trackerEntityToToggle.previousCategory,
                   let previousCategoryEntity = fetchCategory(title: previousCategory)
@@ -271,8 +207,17 @@ extension TrackerDataManager: TrackerDataManagerProtocol {
         }
     }
     
-    func deleteTracker(tracker: Tracker) throws {
-        try  trackerCategoryStore.deleteTracker(tracker: tracker)
+    func getTracker(at: IndexPath) throws -> Tracker {
+        let fetchRequest = TrackerEntity.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \TrackerEntity.title, ascending: true)]
+        let fetchResultController = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: context,
+            sectionNameKeyPath: nil, cacheName: nil)
+        try? fetchResultController.performFetch()
+        let trackerEntity = fetchResultController.object(at: at)
+        let tracker = try trackerStore.getTracker(from: trackerEntity)
+        return tracker
     }
     
     func deleteTracker(trackerEntity: TrackerEntity) throws {
@@ -283,38 +228,65 @@ extension TrackerDataManager: TrackerDataManagerProtocol {
         }
     }
     
+    func getTracker(from trackerEntity: TrackerEntity) throws -> Tracker {
+        try trackerStore.getTracker(from: trackerEntity)
+    }
+    
     
     func getCompletedTrackers() -> [TrackerRecord]  {
         trackerRecordStore.getCompletedTrackers()
     }
     
-    
-    func fetchCategoriesFor(weekDay: String, animating: Bool) {
-        let predicate = NSPredicate(format: "ANY %K.%K == %@", #keyPath(TrackerEntity.schedule), #keyPath(ScheduleEntity.weekDay), weekDay)
-        var trackerCategories = trackerCategoryStore.fetchCategoriesWithPredicate(predicate)
-        trackerCategories.sort { $0.title < $1.title }
-        
-        print("запрос1")
-        
+    func fetchTracker(id: String) -> TrackerEntity? {
+        trackerStore.fetchTracker(id: id)
     }
     
-    func fetchSearchCategories(textToSearch: String, weekDay: String) {
-        var predicates: [NSPredicate] = []
-        
-        let weekDayPredicate = NSPredicate(format: "ANY %K.%K CONTAINS[c] %@", #keyPath(TrackerEntity.schedule), #keyPath(ScheduleEntity.weekDay), weekDay )
-        predicates.append(weekDayPredicate)
-        if !textToSearch.isEmpty {
-            let textPredicate = NSPredicate(format: "ANY %K CONTAINS[c] %@", #keyPath(TrackerEntity.title), textToSearch)
-            predicates.append(textPredicate)
-        }
-        print("запрос2")
+    func createCategory(category: TrackerCategory) throws -> TrackerCategoryEntity {
         do {
-            fetchResultController?.fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-            try fetchResultController?.performFetch()
+            let newCategory = try trackerCategoryStore.createCategory(category: category)
+            return newCategory
         } catch {
-            fatalError("Failed to fetch data with Predicates in method addFiltersForFetchResultController: \(error)")
+            fatalError("Failed to create new category: \(error)")
         }
     }
+    
+    func updateTracker(trackerEntity: TrackerEntity, trackerCategoryEntity: TrackerCategoryEntity, trackerTitle: String) throws {
+        do {
+            try trackerStore.updateTracker(trackerEntity: trackerEntity, trackerCategoryEntity: trackerCategoryEntity, trackerTitle: trackerTitle)
+        } catch {
+            fatalError("Failed to addTracker: \(error)")
+        }
+    }
+    
+    func addTracker(tracker: Tracker, trackerCategoryEntity: TrackerCategoryEntity) throws {
+        do {
+            try trackerStore.addTracker(tracker: tracker, trackerCategoryEntity: trackerCategoryEntity)
+        } catch {
+            fatalError("Failed to deleteTracker: \(error)")
+        }
+    }
+    
+    func getTrackerCategoryName(indexPath: IndexPath) -> String {
+        guard let trackerEntity = fetchResultController?.object(at: indexPath) else {return " "}
+        guard let categoryName = trackerEntity.trackerCategory?.title else { return "" }
+        return categoryName
+    }
+    
+    var categor: [TrackerCategoryEntity]  {
+        let fetchRequest = TrackerCategoryEntity.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \TrackerCategoryEntity.title, ascending: true)]
+        let fetchResultController = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: context,
+            sectionNameKeyPath: nil, cacheName: nil)
+        try? fetchResultController.performFetch()
+        
+        
+        guard let objects = fetchResultController.fetchedObjects else { return [] }
+        return objects
+    }
+    
+    
 }
 // MARK: - NSFetchedResultsControllerDelegate
 extension TrackerDataManager: NSFetchedResultsControllerDelegate {

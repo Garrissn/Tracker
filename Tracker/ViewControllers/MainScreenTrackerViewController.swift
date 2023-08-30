@@ -162,9 +162,7 @@ class MainScreenTrackerViewController: UIViewController {
     private func reloadData() {
         let filterText = (searchBar.searchTextField.text ?? "").lowercased()
         currentDate = datePicker.date
-        let weekDay = currentDate.weekDayNumber()
-        if let weekDayString = WeekDay.allCases.first(where: { $0.numberValue == weekDay})
-        { trackerDataManager.fetchSearchCategories(textToSearch: filterText, weekDay: weekDayString.rawValue)}
+        trackerDataManager.fetchSearchCategories(textToSearch: filterText, weekDay: currentDate)
         collectionView.reloadData()
         reloadPlaceHolder(for: .notFound)
     }
@@ -268,9 +266,12 @@ class MainScreenTrackerViewController: UIViewController {
                 apdatedTrackerEntity.isPinned = tracker.isPinned
                 apdatedTrackerEntity.selectedColorIndexPath = tracker.selectedColorIndexPath
                 apdatedTrackerEntity.selectedEmojiIndexPath = tracker.selectedEmojiIndexPath
-                let schedule = tracker.schedule
-                let trackerSchedule = trackerDataManager.convertScheduleArrayToScheduleEntity(schedule)
-                apdatedTrackerEntity.addToSchedule(trackerSchedule)
+                
+                let scheduleString = tracker.schedule.map { $0.numberValue }
+                print(scheduleString)
+                let schedule = scheduleString.map(String.init).joined(separator: ", ")
+                
+                apdatedTrackerEntity.schedule = schedule
                 
                 do {
                     try trackerDataManager.updateTracker(trackerEntity: apdatedTrackerEntity, trackerCategoryEntity: categoryEntity, trackerTitle: tracker.title)
@@ -450,7 +451,6 @@ extension MainScreenTrackerViewController: ContextMenuInteractionDelegate {
         let pinOrUnpinAction = UIAction(title: titleTextPinnedTracker) { [weak self] _ in
             guard let self else { return }
             do {
-                // try trackerDataManager.trackerIsPinned(isPinned: isPinned, tracker: pinnedTracker)
                 try trackerDataManager.trackerIsPinned(indexPath: indexPath)
             } catch {
                 showAlertController(text: "error")
@@ -506,8 +506,7 @@ extension MainScreenTrackerViewController: ContextMenuInteractionDelegate {
         do {
             let trackerEntity =  trackerDataManager.getTrackerCoreData(indexPath: indexPath)
             let tracker = try trackerDataManager.getTracker(from: trackerEntity)
-            try trackerDataManager.deleteTracker(tracker: tracker)
-            //try trackerDataManager.deleteTracker(trackerEntity: trackerEntity )
+            try trackerDataManager.deleteTracker(trackerEntity: trackerEntity)
         } catch {
             showAlertController(text: "error while deleting Tracker")
         }
@@ -546,9 +545,7 @@ extension MainScreenTrackerViewController: CardTrackerViewCellDelegate {
             } catch {
                 showAlertController(text: "Ошибка добавления записи. Попробуйте еще раз")
             }
-            
         }
-        
         collectionView.reloadItems(at: [indexPath])
     }
 }
@@ -584,42 +581,7 @@ extension MainScreenTrackerViewController: UICollectionViewDelegateFlowLayout {
 
 extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDelegate {
     func didselectNewTracker(newTracker: TrackerCategory) {
-//        dismiss(animated: true)
-//        var trackerCategory = newTracker
-//        let trackersSchedule = trackerCategory.trackers[0].schedule
-//        if trackersSchedule.isEmpty {
-//            guard let numberOfDay = currentDate.weekDayNumber() else { return }
-//            var currentDay = numberOfDay
-//            if numberOfDay == 1 {
-//                currentDay = 8
-//            }
-//            let newSchedule = WeekDay.allCases[currentDay - 2]
-//            let updatedTracker = Tracker(isPinned: false,
-//                                         id: trackerCategory.trackers[0].id,
-//                                         title: trackerCategory.trackers[0].title,
-//                                         color: trackerCategory.trackers[0].color,
-//                                         emoji: trackerCategory.trackers[0].emoji,
-//                                         schedule: (trackersSchedule) + [newSchedule],
-//                                         selectedEmojiIndexPath: trackerCategory.trackers[0].selectedEmojiIndexPath,
-//                                         selectedColorIndexPath: trackerCategory.trackers[0].selectedColorIndexPath)
-//            var updatedTrackers = trackerCategory.trackers
-//            updatedTrackers[0] = updatedTracker
-//            trackerCategory = TrackerCategory(title: trackerCategory.title, trackers: updatedTrackers)
-//            do {
-//                try trackerDataManager.addTrackerCategory(trackerCategory)
-//            } catch {
-//                showAlertController(text: "Ошибка добавления нового трекера. Попробуйте еще раз")
-//            }
-//
-//        } else {
-//            do {
-//                try trackerDataManager.addTrackerCategory(trackerCategory)
-//            } catch {
-//                showAlertController(text: "Ошибка добавления нового трекера. Попробуйте еще раз")
-//            }
-//        }
-        
-        var trackerCategory = newTracker
+        let trackerCategory = newTracker
         let trackerCategoryTitle = trackerCategory.title
         guard let tracker = trackerCategory.trackers.first else { print (" не удалось взять первый трекер")
             return }
@@ -628,7 +590,7 @@ extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDel
             categoryEntity = existingCategory
         } else {
             do {
-                let newCategory = try self.trackerDataManager.createCategory(category: TrackerCategory(title: trackerCategoryTitle, trackers: []))
+                _ = try self.trackerDataManager.createCategory(category: TrackerCategory(title: trackerCategoryTitle, trackers: []))
             } catch {
                 print(error.localizedDescription)
             }
@@ -639,10 +601,7 @@ extension MainScreenTrackerViewController: TrackerTypeSelectionViewControllerDel
         } catch {
             print(error.localizedDescription)
         }
-            
     }
-    
-    
 }
 
 extension MainScreenTrackerViewController: TrackerDataManagerDelegate {

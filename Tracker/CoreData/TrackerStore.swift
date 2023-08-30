@@ -9,11 +9,9 @@ import Foundation
 import CoreData
 
 protocol TrackerStoreProtocol {
-    func convertTrackerEntityToTracker(_ object: TrackerEntity) throws -> Tracker
-    func convertTrackerToTrackerEntity(_ tracker: Tracker) -> TrackerEntity
     func deleteTracker(trackerEntity: TrackerEntity) throws
     func fetchTracker(id: String) -> TrackerEntity?
-    func convertScheduleArrayToScheduleEntity(_ weekDays: [WeekDay]) -> NSSet
+    func getTracker(from trackerEntity: TrackerEntity) throws -> Tracker
     func updateTracker(trackerEntity: TrackerEntity, trackerCategoryEntity: TrackerCategoryEntity, trackerTitle: String) throws
     func addTracker(tracker: Tracker, trackerCategoryEntity: TrackerCategoryEntity) throws
 }
@@ -30,17 +28,6 @@ final  class TrackerStore {
     
     init(context: NSManagedObjectContext) {
         self.context = context
-    }
-    
-    private func convertScheduleEntityToArray(_ scheduleSet: NSSet) -> [WeekDay] {
-        var scheduleArray: [WeekDay] = []
-        for element in scheduleSet {
-            guard let scheduleEntity = element as? ScheduleEntity,
-                  let dayString = scheduleEntity.weekDay,
-                  let day = WeekDay(rawValue: dayString) else { return [] }
-            scheduleArray.append(day)
-        }
-        return scheduleArray
     }
 }
 
@@ -59,28 +46,36 @@ extension TrackerStore: TrackerStoreProtocol {
         trackerEntity.isPinned = tracker.isPinned
         trackerEntity.selectedColorIndexPath = tracker.selectedColorIndexPath
         trackerEntity.selectedEmojiIndexPath = tracker.selectedEmojiIndexPath
-        
-        let schedule = tracker.schedule
-        trackerEntity.schedule = convertScheduleArrayToScheduleEntity(schedule)
+        let scheduleString = tracker.schedule.map { $0.numberValue }
+        trackerEntity.schedule = scheduleString.map(String.init).joined(separator: ", ")
         trackerEntity.trackerCategory = trackerCategoryEntity
+        try context.save()
     }
     
     
     
-    func convertTrackerEntityToTracker(_ object: TrackerEntity) throws -> Tracker {
-        let isPinned = object.isPinned
-        guard let selectedEmojiIndexPath = object.selectedEmojiIndexPath,
-              let selectedColorIndexPath = object.selectedColorIndexPath,
+    func getTracker(from trackerEntity: TrackerEntity) throws -> Tracker {
+        let isPinned = trackerEntity.isPinned
+        guard let selectedEmojiIndexPath = trackerEntity.selectedEmojiIndexPath,
+              let selectedColorIndexPath = trackerEntity.selectedColorIndexPath,
               
-                let id = object.trackerId,
-              let title = object.title,
-              let emoji = object.emoji,
-              let hexColor = object.color,
-              let scheduleSet = object.schedule
+                let id = trackerEntity.trackerId,
+              let title = trackerEntity.title,
+              let emoji = trackerEntity.emoji,
+              let hexColor = trackerEntity.color,
+              let scheduleSet = trackerEntity.schedule
         else {
             throw TrackerErrors.decodingError
         }
-        let schedule = convertScheduleEntityToArray(scheduleSet)
+        
+        let numbersArray = scheduleSet.components(separatedBy: ", ")
+        let schedule: [WeekDay] = numbersArray.compactMap { numnerString in
+            if let number = Int(numnerString) {
+                return WeekDay.allCases.first { $0.numberValue == number }
+            }
+            return nil
+        }
+        
         let color = uiColorMarshalling.color(from: hexColor)
         guard let trackerUUID = UUID(uuidString: id) else { fatalError("Error with UUID") }
         let tracker = Tracker(isPinned: isPinned,
@@ -94,39 +89,10 @@ extension TrackerStore: TrackerStoreProtocol {
         return tracker
     }
     
-    func convertTrackerToTrackerEntity(_ tracker: Tracker) -> TrackerEntity {
-        let trackerEntity = TrackerEntity(context: context)
-        
-        trackerEntity.trackerId = tracker.id.uuidString
-        trackerEntity.title = tracker.title
-        trackerEntity.emoji = tracker.emoji
-        let color = tracker.color
-        let hexColor = uiColorMarshalling.hexString(from: color)
-        trackerEntity.color = hexColor
-        trackerEntity.isPinned = tracker.isPinned
-        trackerEntity.selectedColorIndexPath = tracker.selectedColorIndexPath
-        trackerEntity.selectedEmojiIndexPath = tracker.selectedEmojiIndexPath
-        
-        let schedule = tracker.schedule
-        trackerEntity.schedule = convertScheduleArrayToScheduleEntity(schedule)
-        
-        return trackerEntity
-    }
-    
     func deleteTracker(trackerEntity: TrackerEntity) throws {
         
         context.delete(trackerEntity)
         try context.save()
-    }
-    
-    func convertScheduleArrayToScheduleEntity(_ weekDays: [WeekDay]) -> NSSet {
-        var scheduleEntitySet: Set<ScheduleEntity> = []
-        for day in weekDays {
-            let scheduleEntity = ScheduleEntity(context: context)
-            scheduleEntity.weekDay = day.rawValue
-            scheduleEntitySet.insert(scheduleEntity)
-        }
-        return NSSet(set: scheduleEntitySet)
     }
     
     func updateTracker(trackerEntity: TrackerEntity, trackerCategoryEntity: TrackerCategoryEntity, trackerTitle: String) throws {

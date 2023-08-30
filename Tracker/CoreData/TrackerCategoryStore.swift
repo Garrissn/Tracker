@@ -14,17 +14,13 @@ protocol TrackerCategoryStoreDelegate: AnyObject {
 
 protocol TrackerCategoryStoreProtocol {
     func fetchCategory(title: String) -> TrackerCategoryEntity?
-    
+    func convertTrackerCategoryEntityToTrackerCategory(_ objects: [TrackerCategoryEntity]) throws -> [TrackerCategory]
+    func convertTrackerCategoryEntityToTrackerCategories(_ trackersEntity: [TrackerEntity])   -> [TrackerCategory]
     func addTrackerCategoryTitle(_ trackerCategory: TrackerCategory) throws
     func setTrackerDataController(_ controller: NSFetchedResultsController<TrackerEntity>?)
-    func addTrackerCategory(_ trackerCategory: TrackerCategory) throws
-    func convertTrackerCategoryEntityToTrackerCategories(_ trackersEntity: [TrackerEntity]) throws -> [TrackerCategory]
-    func convertTrackerCategoryEntityToTrackerCategory(_ objects: [TrackerCategoryEntity]) throws -> [TrackerCategory]
     func fetchCategoriesWithPredicate(_ predicate: NSPredicate) -> [TrackerCategory]
-    
     func trackerIsPinned(isPinned: Bool, tracker: Tracker) throws
     func deleteTracker(tracker: Tracker) throws
-    
     func createCategory(category: TrackerCategory) throws -> TrackerCategoryEntity
 }
 
@@ -68,28 +64,6 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         onTrackerCategoryAdded?()
     }
     
-    func addTrackerCategory(_ trackerCategory: TrackerCategory) throws {
-        guard let firstTracker = trackerCategory.trackers.first else {
-            throw TrackerErrors.noTrackerInCategory
-        }
-        let trackerEntity =  trackerStore.convertTrackerToTrackerEntity(firstTracker)
-        
-        let request = NSFetchRequest<TrackerCategoryEntity>(entityName: "TrackerCategoryEntity")
-        request.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerCategoryEntity.title), trackerCategory.title)
-        
-        let categories = try context.fetch(request)
-        if let category = categories.first {
-            category.addToTrackers(trackerEntity)
-        } else {
-            let newCategory = TrackerCategoryEntity(context: context)
-            newCategory.title = trackerCategory.title
-            newCategory.addToTrackers(trackerEntity)
-        }
-        
-        try context.save()
-        
-    }
-    
     func createCategory(category: TrackerCategory) throws -> TrackerCategoryEntity {
         let trackerCategoryEntity = TrackerCategoryEntity(context: context)
         trackerCategoryEntity.title = category.title
@@ -102,29 +76,32 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         let originTrackerFetchRequest = NSFetchRequest<TrackerEntity>(entityName: "TrackerEntity")
         originTrackerFetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerEntity.title), tracker.title)
         
-        let scheduleFetchRequest = NSFetchRequest<ScheduleEntity>(entityName: "ScheduleEntity")
-        scheduleFetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(ScheduleEntity.trackers.title), tracker.title)
+        //  let scheduleFetchRequest = NSFetchRequest<ScheduleEntity>(entityName: "ScheduleEntity")
+        // scheduleFetchRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(ScheduleEntity.trackers.title), tracker.title)
         
-        do {
-            let scheduleTrackers = try context.fetch(scheduleFetchRequest)
-            if let scheduleTrackerEntity = scheduleTrackers.first {
-                context.delete(scheduleTrackerEntity)
-            }
+        //        do {
+        ////            let scheduleTrackers = try context.fetch(scheduleFetchRequest)
+        ////            if let scheduleTrackerEntity = scheduleTrackers.first {
+        ////                context.delete(scheduleTrackerEntity)
+        //            }
+        //
+        //            let originalTrackers = try context.fetch(originTrackerFetchRequest)
+        //            if let tracker =  originalTrackers.first {
+        //
+        //                context.delete(tracker)
+        //            }
+        //        } catch {
+        //            print(error.localizedDescription)
+        //            throw  TrackerErrors.decodingError
+        //        }
+        let originalTrackers = try context.fetch(originTrackerFetchRequest)
+        if let tracker =  originalTrackers.first {
             
-            let originalTrackers = try context.fetch(originTrackerFetchRequest)
-            if let tracker =  originalTrackers.first {
-                
-                context.delete(tracker)
-            }
-        } catch {
-            print(error.localizedDescription)
-            throw  TrackerErrors.decodingError
+            context.delete(tracker)
+            try context.save()
+            
         }
-        
-        try context.save()
-        
     }
-    
     func trackerIsPinned(isPinned: Bool, tracker: Tracker) throws {
         let trackerEntity = try fetchTrackerEntity(for: tracker)
         trackerEntity.isPinned = isPinned
@@ -141,16 +118,16 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         return trackerEntity
     }
     
-    func getPinnedCategory(tracker: Tracker) throws -> TrackerCategory {
-        if let pinnedCategories = try getCategories().first(where: {$0.title == "Закрепленные"}) {
-            return pinnedCategories
-        } else {
-            let pinnedCategory = TrackerCategory(title: "Закрепленные", trackers: [tracker])
-            try addTrackerCategory(pinnedCategory)
-            return pinnedCategory
-        }
-        
-    }
+    //    func getPinnedCategory(tracker: Tracker) throws -> TrackerCategory {
+    //        if let pinnedCategories = try getCategories().first(where: {$0.title == "Закрепленные"}) {
+    //            return pinnedCategories
+    //        } else {
+    //            let pinnedCategory = TrackerCategory(title: "Закрепленные", trackers: [tracker])
+    //            try addTrackerCategory(pinnedCategory)
+    //            return pinnedCategory
+    //        }
+    //
+    //    }
     func fetchCategoEntity(for category: TrackerCategory) throws -> TrackerCategoryEntity {
         let request: NSFetchRequest<TrackerCategoryEntity> = TrackerCategoryEntity.fetchRequest()
         let predicate = NSPredicate(format: "title == %@", category.title)
@@ -174,7 +151,7 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
         do {
             let trackersGroupedByTitle = Dictionary(grouping: trackersEntity) {$0.trackerCategory?.title}
             for (key, value) in trackersGroupedByTitle {
-                let trackers = try value.map ({ try trackerStore.convertTrackerEntityToTracker($0)})
+                let trackers = try value.map ({ try trackerStore.getTracker(from: ($0))})
                 guard let key else {
                     return []
                 }
@@ -195,7 +172,7 @@ extension TrackerCategoryStore: TrackerCategoryStoreProtocol {
             else {
                 throw TrackerErrors.decodingError
             }
-            let trackersArray = try object.trackers?.compactMap({ $0 as? TrackerEntity}).compactMap({ try trackerStore.convertTrackerEntityToTracker($0)
+            let trackersArray = try object.trackers?.compactMap({ $0 as? TrackerEntity}).compactMap({ try trackerStore.getTracker(from: ($0))
             }) ?? []
             let trackerCategory = TrackerCategory(title: title, trackers: trackersArray)
             trackerCategories.append(trackerCategory)
