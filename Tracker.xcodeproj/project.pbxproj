@@ -240,6 +240,7 @@
 			children = (
 				CE6A3E9A2A839D2D00B757AF /* TabBarController.swift */,
 				CE70ABBF2A9E3E4800702357 /* LaunchViewController.swift */,
+				CE34D0B32A826C2000FFC06E /* OnboardingViewController.swift */,
 			);
 			path = TabBarController;
 			sourceTree = "<group>";
@@ -327,7 +328,6 @@
 			children = (
 				CEA04AB12A437B4A003A8F70 /* AppDelegate.swift */,
 				CEA04AB32A437B4A003A8F70 /* SceneDelegate.swift */,
-				CE34D0B32A826C2000FFC06E /* OnboardingViewController.swift */,
 				CE6A3E992A839D0300B757AF /* TabBarController */,
 				CE62DA982A5432A800CA1167 /* Mock */,
 				CE71C06A2A534450009836E7 /* Models */,
