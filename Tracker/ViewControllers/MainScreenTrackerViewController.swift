@@ -87,7 +87,7 @@ class MainScreenTrackerViewController: UIViewController {
         return cancelButton
     }()
     
-    private let filterButton: UIButton = {
+    private lazy var filterButton: UIButton = {
         let filterButton = UIButton(type: .system)
         filterButton.setTitle(MainscreenLocalize.filterButtonText, for: .normal)
         filterButton.backgroundColor = .blue
