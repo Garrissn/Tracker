@@ -5,9 +5,10 @@
 //  Created by Игорь Полунин on 21.06.2023.
 //
 
+import YandexMobileMetrica
 import UIKit
 import CoreData
-import YandexMobileMetrica
+
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
