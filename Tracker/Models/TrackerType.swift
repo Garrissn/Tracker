@@ -10,4 +10,5 @@ import Foundation
 enum TrackerType {
     case habitTracker
     case irregularIvent
+    case editHabitTracker
 }

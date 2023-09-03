@@ -1,0 +1,60 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Игорь Полунин on 14.08.2023.
+  
+*/
+"onboardingFirstLabelTitle" = "Ne suivez que ce que vous voulez suivre";
+"onboardingSecondLabel.title" = "Même s'il ne s'agit pas de litres d'eau et de yoga";
+
+"symbolsConstraintLabel.title" = "Limite de 38 caractères";
+
+"trackers.title" = "Traqueurs";
+"statistics.title" = "Statistique";
+"category.title" = "Catégorie";
+"schedule.title" = "Horaire";
+"emoji.title" = "Émoji";
+"color.title" = "Couleur";
+
+"button.onboarding.title" = "C'est de la technologie!";
+"button.cancel.title" = "Annuler";
+"button.create.title" = "Créer";
+"button.createSave.title" = "enregistrer";
+"button.filters.title" = "Filtres";
+"button.regularEvent.title" = "Habitude";
+"button.irregularEvent.title" = "Événement irrégulier";
+"button.addCategory.title" = "Ajouter une catégorie";
+"button.confirm.title" = "Fait";
+
+"newTracker.title" = "Création d'un traqueur";
+"newRegularEvent.title" = "Une nouvelle habitude";
+"newIrregularEvent.title" = "Nouvel événement irrégulier";
+"newCategory.title" = "Nouvelle catégorie";
+"editHabitTracker.title" = "Modifier les habitudes";
+
+"searchBar.placeholder.title" = "Recherche";
+"textField.tracker.title" = "Saisir le titre du traqueur";
+"textField.category.title" = "Saisir le titre la catégorie";
+
+"placeholder.emptyTrackers.title" = "Qu'allons-nous traquer?";
+"placeholder.emptyCategories.title" = "Les habitudes et les événements peuvent être combinés dans le sens";
+"placeholder.nothingFound.title" = "Rien trouvé";
+"placeholder.emptyStatistics.title" = "Rien à analyser pour l'instant";
+
+"monday" = "Lundi";
+"tuesday" = "Mardi";
+"wednesday" = "Mercredi";
+"thursday" = "Jeudi";
+"friday" = "Vendredi";
+"saturday" = "Samedi";
+"sunday" = "Dimanche";
+
+"mon" = "Lun";
+"tue" = "Mar";
+"wed" = "Mer";
+"thu" = "Jeu";
+"fri" = "Ven";
+"sat" = "Sam";
+"sun" = "Dim";
+"everyDay" = "Tous les jours";

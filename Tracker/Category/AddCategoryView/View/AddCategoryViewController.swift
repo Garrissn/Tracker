@@ -10,14 +10,19 @@ import UIKit
 protocol AddCategoryViewControllerDelegate: AnyObject {
     func didNewCategorySelect(categoryTitle: String)
 }
+private enum AddCategoryLocalize {
+    static let addCategoryLabelText = NSLocalizedString("category.title", comment: "Title on navbar category")
+    static let placeHolderText = NSLocalizedString("placeholder.emptyCategories.title", comment: "Title on empty categories placeholder")
+    static let addCategoryButtonText = NSLocalizedString("button.addCategory.title", comment: "Text on addcategory button")
+}
 
 final class AddCategoryViewController: UIViewController {
     // MARK: - Private Properties
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Категория"
-        label.textColor = .BlackDay
+        label.text = AddCategoryLocalize.addCategoryLabelText
+        label.textColor = .TrackerBlack
         label.font = UIFont.ypMedium16()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -34,8 +39,8 @@ final class AddCategoryViewController: UIViewController {
     
     private lazy var placeHolderTextLabel: UILabel = {
         let label = UILabel ()
-        label.text = "Привычки и события можно объединить по смыслу"
-        label.textColor = .BlackDay
+        label.text = AddCategoryLocalize.placeHolderText
+        label.textColor = .TrackerBlack
         label.font = UIFont.ypMedium12()
         label.isHidden = false
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -55,9 +60,9 @@ final class AddCategoryViewController: UIViewController {
     private lazy var addCategoryButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Добавить категорию", for: .normal)
-        button.setTitleColor(.WhiteDay, for: .normal)
-        button.backgroundColor = .BlackDay
+        button.setTitle(AddCategoryLocalize.addCategoryButtonText, for: .normal)
+        button.setTitleColor(.TrackerWhite, for: .normal)
+        button.backgroundColor = .TrackerBlack
         button.clipsToBounds = true
         button.titleLabel?.font = UIFont.ypMedium16()
         button.layer.cornerRadius = 16
@@ -85,7 +90,7 @@ final class AddCategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .WhiteDay
+        view.backgroundColor = .TrackerWhite
         addViews()
         setupConstraints()
         checkPlaceHolder()

@@ -12,24 +12,30 @@ class DataManager {
     var categories: [TrackerCategory] = [
     TrackerCategory(title: "Работа по дому",
                     trackers: [
-                    Tracker(id: UUID(),
+                        Tracker(isPinned: false, id: UUID(),
                             title: "Полить цветы",
                             color: .ColorSelection5,
                             emoji: "🌺",
-                            schedule: [WeekDay.monday,WeekDay.friday,WeekDay.thursday]),
-                    Tracker(id: UUID(),
+                            schedule: [WeekDay.monday,WeekDay.friday,WeekDay.thursday],
+                               selectedEmojiIndexPath: "",
+                               selectedColorIndexPath: ""),
+                        Tracker(isPinned: false, id: UUID(),
                             title: "Помыть посуду",
                             color: .ColorSelection9,
                             emoji: "🔥",
-                            schedule: [WeekDay.monday,WeekDay.wednesday,WeekDay.saturday,WeekDay.sunday])
+                            schedule: [WeekDay.monday,WeekDay.wednesday,WeekDay.saturday,WeekDay.sunday],
+                                selectedEmojiIndexPath: "",
+                                selectedColorIndexPath: "")
                     ]),
     TrackerCategory(title: "Приятные привычки",
                     trackers: [
-                    Tracker(id: UUID(),
+                        Tracker(isPinned: false, id: UUID(),
                             title: "Прогулка с собакой",
                             color: .ColorSelection1,
                             emoji: "🐶",
-                            schedule: [WeekDay.monday,WeekDay.thursday])
+                            schedule: [WeekDay.monday,WeekDay.thursday],
+                                selectedEmojiIndexPath: "",
+                                selectedColorIndexPath: "")
                     ])
     
     

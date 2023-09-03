@@ -8,6 +8,10 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let context = (UIApplication.shared.delegate as! AppDelegate).persistantConteiner.viewContext
@@ -22,19 +26,38 @@ final class TabBarController: UITabBarController {
         trackerCategoryStore.setTrackerDataController(trackerDataManager.fetchResultController)
         let mainScreenViewController = MainScreenTrackerViewController(trackerDataManager: trackerDataManager)
         
+       
+        
+        //let trackerRecordStore = TrackerRecordStore(context: <#T##NSManagedObjectContext#>)
+         let statisticModel = StatisticModel(trackerRecordStore: trackerRecordStore)
+         let statisticViewModel = StatisticViewModel(model: statisticModel)
+        
+        let statisticViewController = StatisticViewController(viewModel: statisticViewModel)
+        
+       
+        
         let mainScreenNavigationController = UINavigationController(rootViewController: mainScreenViewController)
-        let statisticViewController = StatisticViewController()
-        self.viewControllers = [mainScreenNavigationController,statisticViewController]
+        let staticticNavigationController = UINavigationController(rootViewController: statisticViewController)
+        
+        self.viewControllers = [mainScreenNavigationController,staticticNavigationController]
         
         //настройка вкладок таббара
-        mainScreenViewController.tabBarItem = UITabBarItem(title: "Трекеры", image: UIImage(named:"record.circle.fill"), tag: 0)
-        statisticViewController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(named: "hare.fill"), tag: 1)
+        mainScreenViewController.tabBarItem = UITabBarItem(
+            title: NSLocalizedString("trackers.title", comment: "Title of the trackers item on the tab bar"),
+            image: UIImage(named:"record.circle.fill"),
+            tag: 0
+        )
+        statisticViewController.tabBarItem = UITabBarItem(
+            title: NSLocalizedString("statistics.title", comment: "Title of the statistics item on the tab bar"),
+            image: UIImage(named: "hare.fill"),
+            tag: 1
+        )
        
-        guard  let tabBar = tabBarController?.tabBar else { return }
+        
         tabBar.barTintColor = .Gray
-        tabBar.backgroundColor = .WhiteDay
+        tabBar.backgroundColor = .TrackerWhite
         let lineView = UIView(frame: CGRect(x: 0, y: 0, width: tabBar.frame.width, height: 1))
         lineView.backgroundColor = UIColor.Gray
-        tabBar.insertSubview(lineView, at: 0)
+        tabBar.addSubview(lineView)
     }
 }

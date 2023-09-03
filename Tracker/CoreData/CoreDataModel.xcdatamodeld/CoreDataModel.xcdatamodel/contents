@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22D68" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="ScheduleEntity" representedClassName="ScheduleEntity" syncable="YES" codeGenerationType="class">
-        <attribute name="weekDay" attributeType="String"/>
-        <relationship name="trackers" maxCount="1" deletionRule="Nullify" destinationEntity="TrackerEntity" inverseName="schedule" inverseEntity="TrackerEntity"/>
-    </entity>
     <entity name="TrackerCategoryEntity" representedClassName="TrackerCategoryEntity" syncable="YES" codeGenerationType="class">
         <attribute name="title" attributeType="String"/>
         <relationship name="trackers" toMany="YES" deletionRule="Nullify" destinationEntity="TrackerEntity" inverseName="trackerCategory" inverseEntity="TrackerEntity"/>
@@ -11,13 +7,19 @@
     <entity name="TrackerEntity" representedClassName="TrackerEntity" syncable="YES" codeGenerationType="class">
         <attribute name="color" attributeType="String"/>
         <attribute name="emoji" attributeType="String"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isPinned" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="previousCategory" optional="YES" attributeType="String"/>
+        <attribute name="schedule" optional="YES" attributeType="String"/>
+        <attribute name="selectedColorIndexPath" attributeType="String"/>
+        <attribute name="selectedEmojiIndexPath" attributeType="String"/>
         <attribute name="title" attributeType="String"/>
-        <relationship name="schedule" toMany="YES" deletionRule="Nullify" destinationEntity="ScheduleEntity" inverseName="trackers" inverseEntity="ScheduleEntity"/>
+        <attribute name="trackerId" optional="YES" attributeType="String"/>
+        <relationship name="records" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TrackerRecordEntity" inverseName="tracker" inverseEntity="TrackerRecordEntity"/>
         <relationship name="trackerCategory" maxCount="1" deletionRule="Nullify" destinationEntity="TrackerCategoryEntity" inverseName="trackers" inverseEntity="TrackerCategoryEntity"/>
     </entity>
     <entity name="TrackerRecordEntity" representedClassName="TrackerRecordEntity" syncable="YES" codeGenerationType="class">
         <attribute name="date" attributeType="String"/>
         <attribute name="trackerRecordID" attributeType="String"/>
+        <relationship name="tracker" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TrackerEntity" inverseName="records" inverseEntity="TrackerEntity"/>
     </entity>
 </model>

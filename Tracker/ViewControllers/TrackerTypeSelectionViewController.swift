@@ -10,6 +10,11 @@ import UIKit
 protocol TrackerTypeSelectionViewControllerDelegate: AnyObject {
     func didselectNewTracker(newTracker: TrackerCategory)
 }
+private enum TrackerTypeSelectionLocalize {
+    static let habitButtonText = NSLocalizedString("button.regularEvent.title", comment: "Title of the button on habitSelection")
+    static let irregularEventButtonText = NSLocalizedString("button.irregularEvent.title", comment: "Title of the button on irregularSelection")
+    static let createTrackerLabel = NSLocalizedString("newTracker.title", comment: "Title createTracker on navigationbar")
+}
 
 final class TrackerTypeSelectionViewController: UIViewController {
     
@@ -18,9 +23,9 @@ final class TrackerTypeSelectionViewController: UIViewController {
     private lazy var habitButton: UIButton = {
         let habitButton = UIButton()
         habitButton.translatesAutoresizingMaskIntoConstraints = false
-        habitButton.setTitle("Привычка", for: .normal)
-        habitButton.setTitleColor(.WhiteDay, for: .normal)
-        habitButton.backgroundColor = .BlackDay
+        habitButton.setTitle(TrackerTypeSelectionLocalize.habitButtonText, for: .normal)
+        habitButton.setTitleColor(.TrackerWhite, for: .normal)
+        habitButton.backgroundColor = .TrackerBlack
         habitButton.clipsToBounds = true
         habitButton.titleLabel?.font = UIFont.ypMedium16()
         habitButton.layer.cornerRadius = 16
@@ -31,9 +36,9 @@ final class TrackerTypeSelectionViewController: UIViewController {
     private lazy var irregularIventButton: UIButton = {
         let irregularIventButton = UIButton()
         irregularIventButton.translatesAutoresizingMaskIntoConstraints = false
-        irregularIventButton.setTitle("Не регулярное событие", for: .normal)
-        irregularIventButton.setTitleColor(.WhiteDay, for: .normal)
-        irregularIventButton.backgroundColor = .BlackDay
+        irregularIventButton.setTitle(TrackerTypeSelectionLocalize.irregularEventButtonText, for: .normal)
+        irregularIventButton.setTitleColor(.TrackerWhite, for: .normal)
+        irregularIventButton.backgroundColor = .TrackerBlack
         irregularIventButton.clipsToBounds = true
         irregularIventButton.titleLabel?.font = UIFont.ypMedium16()
         irregularIventButton.layer.cornerRadius = 16
@@ -48,7 +53,7 @@ final class TrackerTypeSelectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .WhiteDay
+        view.backgroundColor = .TrackerWhite
         setupLayoutViews()
         setupNavigationBar()
     }
@@ -56,8 +61,8 @@ final class TrackerTypeSelectionViewController: UIViewController {
     
     private func  setupNavigationBar() {
         let titleLabel = UILabel()
-        titleLabel.text = "Создание трекера"
-        titleLabel.textColor = .BlackDay
+        titleLabel.text = TrackerTypeSelectionLocalize.createTrackerLabel
+        titleLabel.textColor = .TrackerBlack
         titleLabel.font = UIFont.ypMedium16()
         titleLabel.textAlignment = .center
         navigationItem.titleView = titleLabel

@@ -1,0 +1,57 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Игорь Полунин on 14.08.2023.
+  
+*/
+"onboardingFirstLabelTitle" = "Отслеживайте только то, что хотите";
+"onboardingSecondLabel.title" = "Даже если это не литры воды и йога";
+
+"symbolsConstraintLabel.title" = "Ограничение 38 символов";
+
+"trackers.title" = "Трекеры";
+"statistics.title" = "Статистика";
+"category.title" = "Категория";
+"schedule.title" = "Расписание";
+"emoji.title" = "Emoji";
+"color.title" = "Цвет";
+
+"button.onboarding.title" = "Вот это технологии!";
+"button.cancel.title" = "Отменить";
+"button.create.title" = "Создать";
+"button.filters.title" = "Фильтры";
+"button.regularEvent.title" = "Привычка";
+"button.irregularEvent.title" = "Нерегулярное событие";
+"button.addCategory.title" = "Добавить категорию";
+"button.confirm.title" = "Готово";
+
+"newTracker.title" = "Создание трекера";
+"newRegularEvent.title" = "Новая привычка";
+"newIrregularEvent.title" = "Новое нерегулярное событие";
+"newCategory.title" = "Новая категория";
+
+"searchBar.placeholder.title" = "Поиск";
+"textField.tracker.title" = "Введите название трекера";
+"textField.category.title" = "Введите название категории";
+
+"placeholder.emptyTrackers.title" = "Что будем отслеживать?";
+"placeholder.emptyCategories.title" = "Привычки и события можно объединить по смыслу";
+"placeholder.nothingFound.title" = "Ничего не найдено";
+
+"monday" = "Понедельник";
+"tuesday" = "Вторник";
+"wednesday" = "Среда";
+"thursday" = "Четверг";
+"friday" = "Пятница";
+"saturday" = "Суббота";
+"sunday" = "Воскресенье";
+
+"mon" = "Пн";
+"tue" = "Вт";
+"wed" = "Ср";
+"thu" = "Чт";
+"fri" = "Пт";
+"sat" = "Сб";
+"sun" = "Вс";
+"everyDay" = "Каждый день";

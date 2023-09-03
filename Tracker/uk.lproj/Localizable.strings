@@ -1,0 +1,60 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Игорь Полунин on 14.08.2023.
+  
+*/
+"onboardingFirstLabelTitle" = "Відстежуйте лише те, що хочете";
+"onboardingSecondLabel.title" = "Навіть якщо це не літри води і йога";
+
+"symbolsConstraintLabel.title" = "Обмеження в 38 символів";
+
+"trackers.title" = "Трекери";
+"statistics.title" = "Статистика";
+"category.title" = "Категорія";
+"schedule.title" = "Розклад";
+"emoji.title" = "Емодзі";
+"color.title" = "Цвіт";
+
+"button.onboarding.title" = "Ось це технології!";
+"button.cancel.title" = "Скасувати";
+"button.create.title" = "Створити";
+"button.createSave.title" = "Зберігши";
+"button.filters.title" = "Фільтри";
+"button.regularEvent.title" = "Звичка";
+"button.irregularEvent.title" = "Нерегулярна подія";
+"button.addCategory.title" = "Додати категорію";
+"button.confirm.title" = "Готово";
+
+"newTracker.title" = "Створення трекера";
+"newRegularEvent.title" = "Нова звичка";
+"newIrregularEvent.title" = "Нова нерегулярна подія";
+"newCategory.title" = "Нова категорія";
+"editHabitTracker.title" = "Редагування звички";
+
+"searchBar.placeholder.title" = "Пошук";
+"textField.tracker.title" = "Введіть назву трекера";
+"textField.category.title" = "Введіть назву категорії";
+
+"placeholder.emptyTrackers.title" = "Що будемо відстежувати?";
+"placeholder.emptyCategories.title" = "Звички та події можна об'єднати за змістом";
+"placeholder.nothingFound.title" = "Нічого не знайдено";
+"placeholder.emptyStatistics.title" = "Аналізувати поки нічого";
+
+"monday" = "Понеділок";
+"tuesday" = "Вівторок";
+"wednesday" = "Середа";
+"thursday" = "Четвер";
+"friday" = "П'ятниця";
+"saturday" = "Субота";
+"sunday" = "Неділя";
+
+"mon" = "Пн";
+"tue" = "Вт";
+"wed" = "Ср";
+"thu" = "Чт";
+"fri" = "Пт";
+"sat" = "Сб";
+"sun" = "Нд";
+"everyDay" = "Кожного дня";

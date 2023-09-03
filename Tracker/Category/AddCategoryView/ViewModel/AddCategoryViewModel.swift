@@ -13,7 +13,9 @@ final class AddCategoryViewModel {
     init(model: AddCategoryModel) {
         self.model = model
         model.trackerCategoryStore.onTrackerCategoryAdded = { [weak self] in
-            self?.loadCategories()
+            guard let self = self else { return }
+            self.categoriesDidUpdate()
+            self.loadCategories()
         }
     }
     
@@ -44,11 +46,12 @@ final class AddCategoryViewModel {
             }
         }
     }
-}
-extension AddCategoryViewModel: TrackerCategoryStoreDelegate {
     func categoriesDidUpdate() {
         categories.removeAll()
-        loadCategories() 
+      //  loadCategories()
     }
+}
+extension AddCategoryViewModel: TrackerCategoryStoreDelegate {
+    
 }
 

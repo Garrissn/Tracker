@@ -6,14 +6,21 @@
 //
 
 import UIKit
-
+// MARK: - Protocols
 protocol CardTrackerViewCellDelegate: AnyObject  {
     func completedTracker(id: UUID, at indexPath: IndexPath)
     func uncompletedTracker(id: UUID, at indexPath: IndexPath)
 }
 
+protocol ContextMenuInteractionDelegate: AnyObject {
+    func contextMenuConfiguration(at indexPath: IndexPath) -> UIContextMenuConfiguration?
+}
+
+// MARK: - CollectionViewCell class
 final class CardTrackerViewCell: UICollectionViewCell {
     static let cardTrackerViewCellIdentifier = "CardTrackerCollectionViewIdentifier"
+    private let analiticService = AnaliticsService.shared
+    // MARK: - Properties
     
     private  let cardTrackerView: UIView = {
         let cardTrackerView = UIView()
@@ -28,7 +35,7 @@ final class CardTrackerViewCell: UICollectionViewCell {
         emojiLabel.clipsToBounds = true
         emojiLabel.layer.cornerRadius = 24 / 2
         emojiLabel.font = UIFont.systemFont(ofSize: 16)
-        emojiLabel.backgroundColor = .BackGroundDay
+        emojiLabel.backgroundColor = .EmojiBackGround
         emojiLabel.textAlignment = .center
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
         return emojiLabel
@@ -40,6 +47,13 @@ final class CardTrackerViewCell: UICollectionViewCell {
         cardTrackerText.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         cardTrackerText.translatesAutoresizingMaskIntoConstraints = false
         return cardTrackerText
+    }()
+    
+    private lazy var pinImageView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named:"pinImage")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private var counterDaysLabelText: UILabel = {
@@ -61,8 +75,14 @@ final class CardTrackerViewCell: UICollectionViewCell {
         return button
     }()
     
+    private lazy var contextMenuInteraction: UIContextMenuInteraction = {
+        let interaction = UIContextMenuInteraction(delegate: self)
+        return interaction
+    }()
+    
     private var isCompletedToday: Bool = false
     weak var delegate:CardTrackerViewCellDelegate?
+    weak var contextMenuDelegate: ContextMenuInteractionDelegate?
     private var trackerID: UUID?
     private var indexPath: IndexPath?
     private var currentDate: Date =  Date()
@@ -84,10 +104,13 @@ final class CardTrackerViewCell: UICollectionViewCell {
         counterDaysLabelText.text = "\(wordDay)"
         let image = isCompletedToday ? doneImage : plusImage
         plusButton.setImage(image, for: .normal)
+        self.pinImageView.isHidden = model.tracker.isPinned ? false : true
+        cardTrackerView.addInteraction(contextMenuInteraction)
     }
     private func addCardViews() {
         contentView.addSubview(cardTrackerView)
         cardTrackerView.addSubview(emojiLabel)
+        cardTrackerView.addSubview(pinImageView)
         cardTrackerView.addSubview(cardTrackerText)
         contentView.addSubview(plusButton)
         contentView.addSubview(counterDaysLabelText)
@@ -105,6 +128,12 @@ final class CardTrackerViewCell: UICollectionViewCell {
             emojiLabel.heightAnchor.constraint(equalToConstant: 24),
             emojiLabel.widthAnchor.constraint(equalToConstant: 24),
             
+            pinImageView.heightAnchor.constraint(equalToConstant: 12),
+            pinImageView.widthAnchor.constraint(equalToConstant: 8),
+            pinImageView.topAnchor.constraint(equalTo: cardTrackerView.topAnchor, constant: 18),
+            pinImageView.trailingAnchor.constraint(equalTo: cardTrackerView.trailingAnchor, constant: -12),
+            
+            
             cardTrackerText.leadingAnchor.constraint(equalTo: cardTrackerView.leadingAnchor, constant: 12),
             cardTrackerText.trailingAnchor.constraint(equalTo: cardTrackerView.trailingAnchor, constant: -12),
             cardTrackerText.bottomAnchor.constraint(equalTo: cardTrackerView.bottomAnchor, constant: -12),
@@ -120,33 +149,45 @@ final class CardTrackerViewCell: UICollectionViewCell {
     }
     
     @objc private func plusButtonTapped() {
+        analiticService.report(event: "click", params: [
+            "screen": "Main",
+            "item": "track"
+        ])
         guard let trackerID = trackerID, let indexPath = indexPath else { return assertionFailure(" no id Tracker")}
-        if date > currentDate {
+        
             if isCompletedToday {
                 delegate?.uncompletedTracker(id: trackerID, at: indexPath)
             } else {
                 delegate?.completedTracker(id: trackerID, at: indexPath)
             }
-        }
+        
     }
     
     private func pluralizeDays(_ count: Int) -> String {
-        let reminder10 = count % 10
-        let reminder100 = count % 100
-        if reminder10 == 1 && reminder100 != 11 {
-            return "\(count) день"
-        } else if reminder10 >= 2 && reminder10 <= 4 && (reminder100 < 10 || reminder100 >= 20) {
-            return "\(count) дня"
-        } else { return "\(count) дней"}
+        let localizedCompletedDayz = NSLocalizedString("completedDays", comment: "Number of completed days")
+        return String.localizedStringWithFormat(localizedCompletedDayz, count)
     }
+    
     
     private let plusImage: UIImage = {
         let pointSize = UIImage.SymbolConfiguration(pointSize: 11)
         let image = UIImage(systemName: "plus", withConfiguration: pointSize) ?? UIImage()
         return image
     }()
+    
     private let doneImage = UIImage(named: "done")
 }
+
+extension CardTrackerViewCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard let indexPath else { return nil }
+        return contextMenuDelegate?.contextMenuConfiguration(at: indexPath)
+    }
+}
+
 
 struct GeometricParams {
     let cellCount: Int

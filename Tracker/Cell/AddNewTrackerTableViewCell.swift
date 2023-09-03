@@ -12,7 +12,7 @@ final class AddNewTrackerTableViewCell: UITableViewCell {
     
     private  var cellTitleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .BlackDay
+        label.textColor = .TrackerBlack
         label.font = UIFont.ypRegular17()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -20,7 +20,7 @@ final class AddNewTrackerTableViewCell: UITableViewCell {
     
     private  var destriptionTitleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .BlackDay
+        
         label.font = UIFont.ypRegular17()
         label.textColor = .Gray
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -45,9 +45,11 @@ final class AddNewTrackerTableViewCell: UITableViewCell {
     private func configCell() {
         self.accessoryType = .disclosureIndicator
         self.selectionStyle = .none
-        self.backgroundColor = .clear
+        self.backgroundColor = .TrackerBackGround
         self.detailTextLabel?.font = UIFont.ypRegular17()
         self.detailTextLabel?.textColor = .Gray
+        contentView.layer.cornerRadius = 16
+        contentView.clipsToBounds = true
     }
     
     required init?(coder: NSCoder) {
@@ -73,7 +75,11 @@ final class AddNewTrackerTableViewCell: UITableViewCell {
     func configureTableViewCellForSchedule(cellTitle: String, shcedule: [WeekDay]) {
         self.cellTitleLabel.text = cellTitle
         if shcedule.count == 7 {
-            self.destriptionTitleLabel.text = "Каждый день"
+            let localizedEveryDayTitle = NSLocalizedString(
+                "everyDay",
+                comment: "Title everyday when alldays are picked"
+            )
+            self.destriptionTitleLabel.text = localizedEveryDayTitle
         } else {
             let scheduleShortValueText = shcedule.map { $0.shortValue }.joined(separator: ",")
             self.destriptionTitleLabel.text = scheduleShortValueText

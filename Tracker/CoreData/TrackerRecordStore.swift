@@ -13,6 +13,7 @@ protocol TrackerRecordStoreProtocol {
     func numberOfRecords(forId: UUID) -> Int
     func addRecord(forId: UUID, date: String) throws
     func deleteRecord(forId: UUID, date: String) throws
+    func getCompletedTrackers() -> [TrackerRecord] 
 }
 
 final class TrackerRecordStore {
@@ -48,6 +49,8 @@ extension TrackerRecordStore: TrackerRecordStoreProtocol {
         }
     }
     
+   
+    
     func addRecord(forId: UUID, date: String) throws {
         let newTrackerRecord = TrackerRecordEntity(context: context)
         newTrackerRecord.trackerRecordID = forId.uuidString
@@ -64,4 +67,31 @@ extension TrackerRecordStore: TrackerRecordStoreProtocol {
         context.delete(trackerRecord)
         try context.save()
     }
+    
+    func getCompletedTrackers() -> [TrackerRecord] {
+        let request = NSFetchRequest<TrackerRecordEntity>(entityName: "TrackerRecordEntity")
+        do {
+            let trackerRecordsEntity = try context.fetch(request)
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd.MM.yyy"
+            
+            let trackerRecords = trackerRecordsEntity.compactMap { coredataRecord -> TrackerRecord? in
+                guard let id = coredataRecord.trackerRecordID,
+                      let uuid = UUID(uuidString: id),
+                      let dateString = coredataRecord.date,
+                      let date = dateFormatter.date(from: dateString) else {
+                          return nil
+                      }
+                return TrackerRecord(trackerId: uuid, date: date)
+            }
+            
+            return trackerRecords
+        } catch {
+            print("Error fetching tracker records: \(error)")
+            return []
+        }
+    }
+
+    
+   
 }
